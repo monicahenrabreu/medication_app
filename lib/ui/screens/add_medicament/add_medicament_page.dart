@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_event.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_state.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
+import 'package:medicaments_app/ui/screens/widgets/date_time_medicament_picker.dart';
+import 'package:medicaments_app/ui/screens/widgets/days_choosed_medicament.dart';
+import 'package:medicaments_app/ui/screens/widgets/save_cancel_medicament_button.dart';
+import 'package:medicaments_app/ui/screens/widgets/text_medicament_form_field.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../home/utils.dart';
 
@@ -27,7 +30,6 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-  final _dateFormat = DateFormat('d MMM yyyy');
   late List<Medicament> _selectedEvents;
 
   @override
@@ -71,7 +73,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('Add Pill'),
+        title: const Text('Add Medicament'),
       ),
       body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
         builder: (context, state) {
@@ -108,98 +110,18 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
                     alignment: WrapAlignment.start,
                     runSpacing: 20.0,
                     children: [
-                      TextFormField(
-                          controller: _controllerName,
-                          validator: _validateName,
-                          keyboardType: TextInputType.name,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                              labelText: 'Pill name',
-                              labelStyle: const TextStyle(
-                                  fontSize: 18, color: Colors.grey),
-                              hintText: 'ex: Benuron',
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                                borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16)))),
+                      TextMedicamentFormField(_controllerName),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      _selectedDay != null
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Only one day'),
-                                Text(_dateFormat.format(_selectedDay!)),
-                              ],
-                            )
-                          : Container(),
-                      _rangeStart != null
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('From'),
-                                Text(_dateFormat.format(_rangeStart!)),
-                              ],
-                            )
-                          : Container(),
+                      DaysChoosedMedicament(
+                          _selectedDay, _rangeStart, _rangeEnd),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      _rangeEnd != null
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('To'),
-                                Text(_dateFormat.format(_rangeEnd!)),
-                              ],
-                            )
-                          : Container(),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      DateTimePicker(
-                        type: DateTimePickerType.time,
-                        controller: _timePickerController,
-                        icon: const Padding(
-                          padding: EdgeInsets.fromLTRB(5.0, 4.0, 0.0, 1.0),
-                          child: Icon(Icons.event),
-                        ),
-                        timeLabelText: 'DueTime',
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            child: Text('Cancel'),
-                            style: ElevatedButton.styleFrom(
-                              textStyle: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontSize: 18),
-                              primary: Theme.of(context).primaryColor,
-                            ),
-                            onPressed: _onPressedCancel,
-                          ),
-                          ElevatedButton(
-                            child: Text('Save'),
-                            style: ElevatedButton.styleFrom(
-                              textStyle: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontSize: 18),
-                              primary: Theme.of(context).primaryColor,
-                            ),
-                            onPressed: () => _onPressedSave(),
-                          ),
-                        ],
-                      ),
+                      DateTimeMedicamentPicker(_timePickerController),
+                      SaveCancelMedicamentButton(
+                          _onPressedCancel, _onPressedSave),
                     ],
                   ),
                 ),
@@ -209,13 +131,6 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
         },
       ),
     );
-  }
-
-  String? _validateName(String? text) {
-    if (text == null || text.isEmpty) {
-      return 'NoName';
-    }
-    return null;
   }
 
   _onPressedSave() async {
