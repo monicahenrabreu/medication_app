@@ -78,58 +78,61 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
       body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
         builder: (context, state) {
           return Column(
-            children: [
-              TableCalendar(
-                firstDay: calendarFirstDay,
-                lastDay: calendarLastDay,
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                rangeStartDay: _rangeStart,
-                rangeEndDay: _rangeEnd,
-                calendarFormat: _calendarFormat,
-                rangeSelectionMode: _rangeSelectionMode,
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                onDaySelected: _onDaySelected,
-                onRangeSelected: _onRangeSelected,
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Form(
-                  key: _formKey,
-                  child: Wrap(
-                    alignment: WrapAlignment.start,
-                    runSpacing: 20.0,
-                    children: [
-                      TextMedicamentFormField(_controllerName),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      DaysChoosedMedicament(
-                          _selectedDay, _rangeStart, _rangeEnd),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      DateTimeMedicamentPicker(_timePickerController),
-                      SaveCancelMedicamentButton(
-                          _onPressedCancel, _onPressedSave),
-                    ],
-                  ),
-                ),
-              )
-            ],
+            children: [buildCalendar(), _buildFormToAddMedicament()],
           );
         },
       ),
+    );
+  }
+
+  Padding _buildFormToAddMedicament() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Form(
+        key: _formKey,
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          runSpacing: 20.0,
+          children: [
+            TextMedicamentFormField(_controllerName),
+            const SizedBox(
+              height: 10.0,
+            ),
+            DaysChoosedMedicament(_selectedDay, _rangeStart, _rangeEnd),
+            const SizedBox(
+              height: 10.0,
+            ),
+            DateTimeMedicamentPicker(_timePickerController),
+            SaveCancelMedicamentButton(_onPressedCancel, _onPressedSave),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TableCalendar<dynamic> buildCalendar() {
+    return TableCalendar(
+      firstDay: calendarFirstDay,
+      lastDay: calendarLastDay,
+      focusedDay: _focusedDay,
+      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+      rangeStartDay: _rangeStart,
+      rangeEndDay: _rangeEnd,
+      calendarFormat: _calendarFormat,
+      rangeSelectionMode: _rangeSelectionMode,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      onDaySelected: _onDaySelected,
+      onRangeSelected: _onRangeSelected,
+      onFormatChanged: (format) {
+        if (_calendarFormat != format) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        }
+      },
+      onPageChanged: (focusedDay) {
+        _focusedDay = focusedDay;
+      },
     );
   }
 

@@ -98,78 +98,89 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             );
           }
-
           return Column(
             children: [
-              TableCalendar<Medicament>(
-                firstDay: calendarFirstDay,
-                lastDay: calendarLastDay,
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                rangeStartDay: _rangeStart,
-                rangeEndDay: _rangeEnd,
-                calendarFormat: _calendarFormat,
-                rangeSelectionMode: _rangeSelectionMode,
-                eventLoader: _getEventsForDay,
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                onDaySelected: _onDaySelected,
-                onRangeSelected: _onRangeSelected,
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
-                calendarBuilders: _calendarBuilder(),
-              ),
+              _buildCalendar(),
               const SizedBox(height: 8.0),
-              Align(
-                alignment: Alignment.centerRight,
-                child: FloatingActionButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => AddMedicamentPage()),
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-              ),
+              _addMedicamentIcon(context),
               const SizedBox(height: 8.0),
-              Expanded(
-                child: ValueListenableBuilder<List<Medicament>>(
-                  valueListenable: _selectedEvents,
-                  builder: (context, value, _) {
-                    return ListView.builder(
-                      itemCount: value.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 4.0,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: ListTile(
-                            title: Text(value[index].title),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
+              _buildMedicamentListOfDay(),
             ],
           );
         },
+      ),
+    );
+  }
+
+  TableCalendar<Medicament> _buildCalendar() {
+    return TableCalendar<Medicament>(
+      firstDay: calendarFirstDay,
+      lastDay: calendarLastDay,
+      focusedDay: _focusedDay,
+      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+      rangeStartDay: _rangeStart,
+      rangeEndDay: _rangeEnd,
+      calendarFormat: _calendarFormat,
+      rangeSelectionMode: _rangeSelectionMode,
+      eventLoader: _getEventsForDay,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      onDaySelected: _onDaySelected,
+      onRangeSelected: _onRangeSelected,
+      onFormatChanged: (format) {
+        if (_calendarFormat != format) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        }
+      },
+      onPageChanged: (focusedDay) {
+        _focusedDay = focusedDay;
+      },
+      calendarBuilders: _calendarBuilder(),
+    );
+  }
+
+  Expanded _buildMedicamentListOfDay() {
+    return Expanded(
+      child: ValueListenableBuilder<List<Medicament>>(
+        valueListenable: _selectedEvents,
+        builder: (context, value, _) {
+          return ListView.builder(
+            itemCount: value.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 4.0,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: ListTile(
+                  title: Text(value[index].title),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Align _addMedicamentIcon(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: FloatingActionButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => AddMedicamentPage()),
+        ),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
