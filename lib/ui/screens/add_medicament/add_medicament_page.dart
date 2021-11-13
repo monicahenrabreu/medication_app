@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:medicaments_app/models/medicament_event.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'utils.dart';
+import '../home/utils.dart';
 
 class AddMedicamentPage extends StatefulWidget {
   @override

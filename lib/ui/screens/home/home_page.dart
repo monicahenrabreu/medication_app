@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicaments_app/models/medicament_event.dart';
-import 'package:medicaments_app/ui/screens/home/add_medicament_page.dart';
+import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:badges/badges.dart';
 import 'utils.dart';
