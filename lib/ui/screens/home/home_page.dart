@@ -1,6 +1,10 @@
+import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:medicaments_app/models/medicament_event.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_bloc.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_state.dart';
+import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:badges/badges.dart';
 import 'utils.dart';
@@ -11,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final ValueNotifier<List<MedicamentEvent>> _selectedEvents;
+  late final ValueNotifier<List<Medicament>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
@@ -33,13 +37,13 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  List<MedicamentEvent> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return kEvents[day] ?? [];
+  List<Medicament> _getEventsForDay(DateTime day) {
+    LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+        context.read<MedicamentListBloc>().state.medicamentList;
+    return medicamentList![day] ?? [];
   }
 
-  List<MedicamentEvent> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
+  List<Medicament> _getEventsForRange(DateTime start, DateTime end) {
     final days = daysInRange(start, end);
 
     return [
@@ -52,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
+        _rangeStart = null;
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
@@ -87,81 +91,91 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Medicaments'),
       ),
-      body: Column(
-        children: [
-          TableCalendar<MedicamentEvent>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            calendarBuilders: _calendarBuilder(),
-          ),
-          const SizedBox(height: 8.0),
-          Align(
-            alignment: Alignment.centerRight,
-            child: FloatingActionButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => AddMedicamentPage()),
+      body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
+        builder: (context, state) {
+          if (state is MedicamentListLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Column(
+            children: [
+              TableCalendar<Medicament>(
+                firstDay: calendarFirstDay,
+                lastDay: calendarLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                eventLoader: _getEventsForDay,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                onDaySelected: _onDaySelected,
+                onRangeSelected: _onRangeSelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+                calendarBuilders: _calendarBuilder(),
               ),
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
+              const SizedBox(height: 8.0),
+              Align(
+                alignment: Alignment.centerRight,
+                child: FloatingActionButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => AddMedicamentPage()),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
               ),
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<MedicamentEvent>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        title: Text(value[index].title),
-                      ),
+              const SizedBox(height: 8.0),
+              Expanded(
+                child: ValueListenableBuilder<List<Medicament>>(
+                  valueListenable: _selectedEvents,
+                  builder: (context, value, _) {
+                    return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: ListTile(
+                            title: Text(value[index].title),
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
   _calendarBuilder() {
-    return CalendarBuilders<MedicamentEvent>(
+    return CalendarBuilders<Medicament>(
       markerBuilder: (context, date, events) {
         Widget children = Container();
 
@@ -175,11 +189,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildEventsMarker(DateTime date, List<MedicamentEvent> events) {
+  Widget _buildEventsMarker(DateTime date, List<Medicament> medicaments) {
     bool took = true;
 
-    for (MedicamentEvent medicamentEvent in events) {
-      if (medicamentEvent.tookPill == TookPill.didNotTook) {
+    for (Medicament medicament in medicaments) {
+      if (medicament.tookPill == TookPill.didNotTook) {
         took = false;
       }
     }
@@ -213,7 +227,7 @@ class _HomePageState extends State<HomePage> {
     return Badge(
       badgeColor: Colors.grey,
       badgeContent: Text(
-        events.length.toString(),
+        medicaments.length.toString(),
         style: const TextStyle().copyWith(
           color: Colors.white,
           fontSize: 10.0,

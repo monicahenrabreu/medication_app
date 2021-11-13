@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:medicaments_app/models/medicament_event.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_bloc.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_event.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_state.dart';
+import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../home/utils.dart';
 
@@ -24,7 +28,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   final _dateFormat = DateFormat('d MMM yyyy');
-  late List<MedicamentEvent> _selectedEvents;
+  late List<Medicament> _selectedEvents;
 
   @override
   void initState() {
@@ -69,133 +73,140 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Add Pill'),
       ),
-      body: Column(
-        children: [
-          TableCalendar(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Form(
-              key: _formKey,
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                runSpacing: 20.0,
-                children: [
-                  TextFormField(
-                      controller: _controllerName,
-                      validator: _validateName,
-                      keyboardType: TextInputType.name,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                          labelText: 'Pill name',
-                          labelStyle:
-                              const TextStyle(fontSize: 18, color: Colors.grey),
-                          hintText: 'ex: Benuron',
-                          hintStyle: const TextStyle(color: Colors.grey),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16)))),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  _selectedDay != null
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Only one day'),
-                            Text(_dateFormat.format(_selectedDay!)),
-                          ],
-                        )
-                      : Container(),
-                  _rangeStart != null
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('From'),
-                            Text(_dateFormat.format(_rangeStart!)),
-                          ],
-                        )
-                      : Container(),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  _rangeEnd != null
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('To'),
-                            Text(_dateFormat.format(_rangeEnd!)),
-                          ],
-                        )
-                      : Container(),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  DateTimePicker(
-                    type: DateTimePickerType.time,
-                    controller: _timePickerController,
-                    icon: const Padding(
-                      padding: EdgeInsets.fromLTRB(5.0, 4.0, 0.0, 1.0),
-                      child: Icon(Icons.event),
-                    ),
-                    timeLabelText: 'DueTime',
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              TableCalendar(
+                firstDay: calendarFirstDay,
+                lastDay: calendarLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                onDaySelected: _onDaySelected,
+                onRangeSelected: _onRangeSelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Form(
+                  key: _formKey,
+                  child: Wrap(
+                    alignment: WrapAlignment.start,
+                    runSpacing: 20.0,
                     children: [
-                      ElevatedButton(
-                        child: Text('Cancel'),
-                        style: ElevatedButton.styleFrom(
-                          textStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 18),
-                          primary: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: _onPressedCancel,
+                      TextFormField(
+                          controller: _controllerName,
+                          validator: _validateName,
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                              labelText: 'Pill name',
+                              labelStyle: const TextStyle(
+                                  fontSize: 18, color: Colors.grey),
+                              hintText: 'ex: Benuron',
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16)))),
+                      const SizedBox(
+                        height: 10.0,
                       ),
-                      ElevatedButton(
-                        child: Text('Save'),
-                        style: ElevatedButton.styleFrom(
-                          textStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 18),
-                          primary: Theme.of(context).primaryColor,
+                      _selectedDay != null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Only one day'),
+                                Text(_dateFormat.format(_selectedDay!)),
+                              ],
+                            )
+                          : Container(),
+                      _rangeStart != null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('From'),
+                                Text(_dateFormat.format(_rangeStart!)),
+                              ],
+                            )
+                          : Container(),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      _rangeEnd != null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('To'),
+                                Text(_dateFormat.format(_rangeEnd!)),
+                              ],
+                            )
+                          : Container(),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      DateTimePicker(
+                        type: DateTimePickerType.time,
+                        controller: _timePickerController,
+                        icon: const Padding(
+                          padding: EdgeInsets.fromLTRB(5.0, 4.0, 0.0, 1.0),
+                          child: Icon(Icons.event),
                         ),
-                        onPressed: () => _onPressedSave(context),
+                        timeLabelText: 'DueTime',
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            child: Text('Cancel'),
+                            style: ElevatedButton.styleFrom(
+                              textStyle: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 18),
+                              primary: Theme.of(context).primaryColor,
+                            ),
+                            onPressed: _onPressedCancel,
+                          ),
+                          ElevatedButton(
+                            child: Text('Save'),
+                            style: ElevatedButton.styleFrom(
+                              textStyle: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 18),
+                              primary: Theme.of(context).primaryColor,
+                            ),
+                            onPressed: () => _onPressedSave(),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          )
-        ],
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }
@@ -207,25 +218,29 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
     return null;
   }
 
-  _onPressedSave(context) async {
+  _onPressedSave() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     DateTime _time = _timeFormat.parse(_timePickerController.value.text);
-    MedicamentEvent event =
-        MedicamentEvent(title: _controllerName.text, hour: _time);
+    Medicament medicament =
+        Medicament(title: _controllerName.text, hour: _time);
 
     setState(() {
-      _selectedEvents.add(event);
+      _selectedEvents.add(medicament);
     });
 
     if (_selectedDay != null) {
-      addEvent(event, _selectedDay!);
+      context
+          .read<MedicamentListBloc>()
+          .add(AddMedicamentEvent(medicament, _selectedDay!));
     }
 
     if (_rangeStart != null && _rangeEnd != null) {
-      addRangeOfEvents(event, _rangeStart!, _rangeEnd!);
+      context
+          .read<MedicamentListBloc>()
+          .add(AddRangeMedicamentEvent(medicament, _rangeStart!, _rangeEnd!));
     }
 
     Navigator.of(context).pop();
