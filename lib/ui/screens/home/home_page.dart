@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_bloc.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_event.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_state.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:badges/badges.dart';
 import 'utils.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
+    context.read<MedicamentListBloc>().add(GetMedicamentListEvent());
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
@@ -37,10 +40,15 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  List<Medicament> _getEventsForDay(DateTime day) {
+  List<Medicament> _getEventsForDay(DateTime date) {
+    //since this param date is comming with Z at the end, we need to remove it
+    final _dateFormat = DateFormat('d MMM yyyy');
+    String dateInString = _dateFormat.format(date);
+    DateTime dateTransformed = _dateFormat.parse(dateInString);
+
     LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
         context.read<MedicamentListBloc>().state.medicamentList;
-    return medicamentList![day] ?? [];
+    return medicamentList![dateTransformed] ?? [];
   }
 
   List<Medicament> _getEventsForRange(DateTime start, DateTime end) {

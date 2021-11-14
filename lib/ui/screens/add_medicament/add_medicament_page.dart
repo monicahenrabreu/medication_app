@@ -158,7 +158,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
     if (_rangeStart != null && _rangeEnd != null) {
       context
           .read<MedicamentListBloc>()
-          .add(AddRangeMedicamentEvent(medicament, _rangeStart!, _rangeEnd!));
+          .add(AddRangeOfMedicamentEvent(medicament, _rangeStart!, _rangeEnd!));
     }
 
     Navigator.of(context).pop();
