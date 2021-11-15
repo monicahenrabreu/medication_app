@@ -41,16 +41,18 @@ class MedicamentProvider extends BaseMedicamentProvider {
   }
 
   @override
-  void addRangeOfMedicament(DateTime fromDate, DateTime toDate, Medicament medicament) {
+  void addRangeOfMedicament(
+      DateTime fromDate, DateTime toDate, Medicament medicament) {
     final _dateFormat = DateFormat('d MMM yyyy');
-    MedicamentEntity medicamentEntity = MedicamentEntity(
-        title: medicament.title,
-        hour: medicament.hour,
-        tookPill: medicament.tookPill);
 
     DateTime date = fromDate;
 
     while (date.compareTo(toDate) <= 0) {
+      MedicamentEntity medicamentEntity = MedicamentEntity(
+          title: medicament.title,
+          hour: medicament.hour,
+          tookPill: medicament.tookPill);
+
       Hive.box<MedicamentEntity>('medicaments')
           .put(_dateFormat.format(date), medicamentEntity);
       date = date.add(const Duration(days: 1));

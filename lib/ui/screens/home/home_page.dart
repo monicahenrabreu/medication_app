@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('Medicaments'),
+        title: const Text('medicaments'),
       ),
       body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
         builder: (context, state) {
