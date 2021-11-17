@@ -1,8 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_bloc.dart';
-import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_event.dart';
-import 'package:medicaments_app/bloc/medicament_list_bloc/medicament_list_state.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
