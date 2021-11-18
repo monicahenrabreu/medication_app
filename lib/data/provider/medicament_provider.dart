@@ -6,24 +6,34 @@ import 'package:medicaments_app/data/models/medicament_entity.dart';
 import 'package:medicaments_app/data/provider/base_medicament_provider.dart';
 
 class MedicamentProvider extends BaseMedicamentProvider {
+  final Box<List<MedicamentEntity>> hiveBox;
+
+  MedicamentProvider(this.hiveBox);
+
   @override
   LinkedHashMap<DateTime, List<Medicament>> getMedicamentList() {
-    Map list = Hive.box<MedicamentEntity>('medicaments').toMap();
-
+    Map hiveMap = hiveBox.toMap();
     LinkedHashMap<DateTime, List<Medicament>> medicamentList =
         LinkedHashMap<DateTime, List<Medicament>>();
 
-    list.forEach((key, value) {
+    hiveMap.forEach((key, value) {
       final _dateFormat = DateFormat('d MMM yyyy');
 
       DateTime date = _dateFormat.parse(key);
+      final medicamentEntities = hiveMap[key] as List<MedicamentEntity>?;
+
       List<Medicament> list = [];
 
-      list.add(Medicament(
-          title: value.title, hour: value.hour, tookPill: value.tookPill));
+      if (medicamentEntities != null && (medicamentEntities.isNotEmpty)) {
+        for (var medicament in medicamentEntities) {
+          list.add(Medicament(
+              title: medicament.title,
+              hour: medicament.hour,
+              tookPill: medicament.tookPill));
+        }
+      }
 
-      Map<DateTime, List<Medicament>> map = {date: list};
-      medicamentList.addAll(map);
+      medicamentList[date] = list;
     });
 
     return medicamentList;
@@ -36,8 +46,10 @@ class MedicamentProvider extends BaseMedicamentProvider {
         title: medicament.title,
         hour: medicament.hour,
         tookPill: medicament.tookPill);
-    Hive.box<MedicamentEntity>('medicaments')
-        .put(_dateFormat.format(date), medicamentEntity);
+    final key = _dateFormat.format(date);
+    final currentList = hiveBox.get(key) ?? <MedicamentEntity>[];
+    currentList.add(medicamentEntity);
+    hiveBox.put(_dateFormat.format(date), currentList);
   }
 
   @override
@@ -47,14 +59,17 @@ class MedicamentProvider extends BaseMedicamentProvider {
 
     DateTime date = fromDate;
 
+    final key = _dateFormat.format(date);
+    final currentList = hiveBox.get(key) ?? <MedicamentEntity>[];
+
     while (date.compareTo(toDate) <= 0) {
       MedicamentEntity medicamentEntity = MedicamentEntity(
           title: medicament.title,
           hour: medicament.hour,
           tookPill: medicament.tookPill);
 
-      Hive.box<MedicamentEntity>('medicaments')
-          .put(_dateFormat.format(date), medicamentEntity);
+      currentList.add(medicamentEntity);
+      hiveBox.put(_dateFormat.format(date), currentList);
       date = date.add(const Duration(days: 1));
     }
   }

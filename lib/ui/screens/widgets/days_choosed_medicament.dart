@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class DaysChoosedMedicament extends StatelessWidget {
-
   final DateTime? selectedDay;
   final DateTime? rangeStart;
   final DateTime? rangeEnd;
 
-  const DaysChoosedMedicament(this.selectedDay, this.rangeStart, this.rangeEnd, {Key? key})
+  const DaysChoosedMedicament(this.selectedDay, this.rangeStart, this.rangeEnd,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -19,33 +19,33 @@ class DaysChoosedMedicament extends StatelessWidget {
       children: [
         selectedDay != null
             ? Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Only one day'),
-            Text(_dateFormat.format(selectedDay!)),
-          ],
-        )
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Only one day'),
+                  Text(_dateFormat.format(selectedDay!)),
+                ],
+              )
             : Container(),
         rangeStart != null
             ? Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('From'),
-            Text(_dateFormat.format(rangeStart!)),
-          ],
-        )
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('From'),
+                  Text(_dateFormat.format(rangeStart!)),
+                ],
+              )
             : Container(),
         const SizedBox(
           height: 10.0,
         ),
         rangeEnd != null
             ? Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('To'),
-            Text(_dateFormat.format(rangeEnd!)),
-          ],
-        )
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('To'),
+                  Text(_dateFormat.format(rangeEnd!)),
+                ],
+              )
             : Container()
       ],
     );
