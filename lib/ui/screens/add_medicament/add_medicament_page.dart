@@ -12,6 +12,9 @@ import 'package:table_calendar/table_calendar.dart';
 import '../home/utils.dart';
 
 class AddMedicamentPage extends StatefulWidget {
+  final int id;
+
+  const AddMedicamentPage({Key? key, required this.id}) : super(key: key);
   @override
   _AddMedicamentPageState createState() => _AddMedicamentPageState();
 }

@@ -40,21 +40,21 @@ class MedicamentProvider extends BaseMedicamentProvider {
   }
 
   @override
-  void addMedicament(DateTime date, Medicament medicament) {
+  void addMedicament(DateTime date, Medicament medicament) async {
     final _dateFormat = DateFormat('d MMM yyyy');
     MedicamentEntity medicamentEntity = MedicamentEntity(
         title: medicament.title,
         hour: medicament.hour,
         tookPill: medicament.tookPill);
     final key = _dateFormat.format(date);
-    final currentList = hiveBox.get(key) ?? <MedicamentEntity>[];
+    final List<MedicamentEntity> currentList = hiveBox.get(key) ?? <MedicamentEntity>[];
     currentList.add(medicamentEntity);
-    hiveBox.put(_dateFormat.format(date), currentList);
+    await hiveBox.put(_dateFormat.format(date), currentList);
   }
 
   @override
   void addRangeOfMedicament(
-      DateTime fromDate, DateTime toDate, Medicament medicament) {
+      DateTime fromDate, DateTime toDate, Medicament medicament) async {
     final _dateFormat = DateFormat('d MMM yyyy');
 
     DateTime date = fromDate;
@@ -69,7 +69,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
           tookPill: medicament.tookPill);
 
       currentList.add(medicamentEntity);
-      hiveBox.put(_dateFormat.format(date), currentList);
+      await hiveBox.put(_dateFormat.format(date), currentList);
       date = date.add(const Duration(days: 1));
     }
   }

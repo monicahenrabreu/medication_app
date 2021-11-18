@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
+import 'package:medicaments_app/ui/medicaments_app.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -178,10 +179,7 @@ class _HomePageState extends State<HomePage> {
     return Align(
       alignment: Alignment.centerRight,
       child: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => AddMedicamentPage()),
-        ),
+        onPressed: () => Navigator.of(context).pushNamed(routeAdd, arguments: 12),
         child: const Icon(
           Icons.add,
           color: Colors.white,
