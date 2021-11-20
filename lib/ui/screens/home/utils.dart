@@ -8,5 +8,7 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 final calendarToday = DateTime.now();
-final calendarFirstDay = DateTime(calendarToday.year, calendarToday.month - 3, calendarToday.day);
-final calendarLastDay = DateTime(calendarToday.year, calendarToday.month + 3, calendarToday.day);
+final calendarFirstDay =
+    DateTime(calendarToday.year, calendarToday.month - 3, calendarToday.day);
+final calendarLastDay =
+    DateTime(calendarToday.year, calendarToday.month + 3, calendarToday.day);

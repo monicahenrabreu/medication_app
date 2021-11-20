@@ -28,9 +28,10 @@ class MedicamentListBloc
     emit(state.copyWith(medicamentList: medicamentList));
   }
 
-  void _onAddRangeOfMedicamentEvent(
-      AddRangeOfMedicamentEvent event, Emitter<MedicamentListState> emit) async {
-    provider.addRangeOfMedicament(event.fromDate, event.toDate, event.medicament);
+  void _onAddRangeOfMedicamentEvent(AddRangeOfMedicamentEvent event,
+      Emitter<MedicamentListState> emit) async {
+    provider.addRangeOfMedicament(
+        event.fromDate, event.toDate, event.medicament);
     emit(state.copyLoading(isLoading: true));
     final medicamentList = provider.getMedicamentList();
     emit(state.copyWith(medicamentList: medicamentList));

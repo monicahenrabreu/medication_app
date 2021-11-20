@@ -4,8 +4,9 @@ import 'package:medicaments_app/data/models/medicament.dart';
 part 'medicament_entity.g.dart';
 
 @HiveType(typeId: 0)
-class MedicamentEntity extends HiveObject{
-  MedicamentEntity({required this.title, required this.hour, required this.tookPill});
+class MedicamentEntity extends HiveObject {
+  MedicamentEntity(
+      {required this.title, required this.hour, required this.tookPill});
 
   @HiveField(0)
   String title;
