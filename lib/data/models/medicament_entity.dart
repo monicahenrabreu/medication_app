@@ -16,4 +16,17 @@ class MedicamentEntity extends HiveObject {
 
   @HiveField(2)
   TookPill? tookPill;
+
+  factory MedicamentEntity.fromJson(Map<String, dynamic> json) =>
+      MedicamentEntity(
+        title: json["title"],
+        hour: json["hour"],
+        tookPill: json["tookPill"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "title": title,
+        "hour": hour,
+        "tookPill": tookPill,
+      };
 }

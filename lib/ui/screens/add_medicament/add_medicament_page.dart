@@ -1,20 +1,24 @@
+import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
+import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
+import 'package:medicaments_app/ui/screens/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/screens/widgets/date_time_medicament_picker.dart';
 import 'package:medicaments_app/ui/screens/widgets/days_choosed_medicament.dart';
 import 'package:medicaments_app/ui/screens/widgets/save_cancel_medicament_button.dart';
 import 'package:medicaments_app/ui/screens/widgets/text_medicament_form_field.dart';
-import 'package:table_calendar/table_calendar.dart';
-import '../home/utils.dart';
+import 'package:provider/src/provider.dart';
 
 class AddMedicamentPage extends StatefulWidget {
   final int id;
 
   const AddMedicamentPage({Key? key, required this.id}) : super(key: key);
+
   @override
   _AddMedicamentPageState createState() => _AddMedicamentPageState();
 }
@@ -24,49 +28,12 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
   late TextEditingController _timePickerController;
   final _formKey = GlobalKey<FormState>();
   final DateFormat _timeFormat = DateFormat('HH:mm');
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by longpressing a date
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
-  late List<Medicament> _selectedEvents;
 
   @override
   void initState() {
     super.initState();
-    _selectedEvents = List.of([]);
-    _selectedDay = _focusedDay;
     _timePickerController =
         TextEditingController(text: _timeFormat.format(DateTime.now()));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
-    }
-  }
-
-  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-    setState(() {
-      _selectedDay = null;
-      _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-    });
   }
 
   @override
@@ -79,7 +46,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
       body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
         builder: (context, state) {
           return Column(
-            children: [buildCalendar(), _buildFormToAddMedicament()],
+            children: [const CalendarWidget(), _buildFormToAddMedicament()],
           );
         },
       ),
@@ -99,7 +66,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
             const SizedBox(
               height: 10.0,
             ),
-            DaysChoosedMedicament(_selectedDay, _rangeStart, _rangeEnd),
+            const DaysChoosedMedicament(),
             const SizedBox(
               height: 10.0,
             ),
@@ -108,32 +75,6 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
           ],
         ),
       ),
-    );
-  }
-
-  TableCalendar<dynamic> buildCalendar() {
-    return TableCalendar(
-      firstDay: calendarFirstDay,
-      lastDay: calendarLastDay,
-      focusedDay: _focusedDay,
-      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-      rangeStartDay: _rangeStart,
-      rangeEndDay: _rangeEnd,
-      calendarFormat: _calendarFormat,
-      rangeSelectionMode: _rangeSelectionMode,
-      startingDayOfWeek: StartingDayOfWeek.monday,
-      onDaySelected: _onDaySelected,
-      onRangeSelected: _onRangeSelected,
-      onFormatChanged: (format) {
-        if (_calendarFormat != format) {
-          setState(() {
-            _calendarFormat = format;
-          });
-        }
-      },
-      onPageChanged: (focusedDay) {
-        _focusedDay = focusedDay;
-      },
     );
   }
 
@@ -146,20 +87,33 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
     Medicament medicament =
         Medicament(title: _controllerName.text, hour: _time);
 
-    setState(() {
-      _selectedEvents.add(medicament);
-    });
+    Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 
-    if (_selectedDay != null) {
+    if (calendar != null && calendar.selectedDay != null) {
       context
           .read<MedicamentListBloc>()
-          .add(AddMedicamentEvent(medicament, _selectedDay!));
+          .add(AddMedicamentEvent(medicament, calendar.selectedDay!));
+
+      late final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+          context.read<MedicamentListBloc>().state.medicamentList;
+
+      context
+          .read<CalendarBloc>()
+          .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
     }
 
-    if (_rangeStart != null && _rangeEnd != null) {
+    if (calendar != null &&
+        calendar.rangeStartDay != null &&
+        calendar.rangeEndDay != null) {
+      context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
+          medicament, calendar.rangeStartDay!, calendar.rangeEndDay!));
+
+      late final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+          context.read<MedicamentListBloc>().state.medicamentList;
+
       context
-          .read<MedicamentListBloc>()
-          .add(AddRangeOfMedicamentEvent(medicament, _rangeStart!, _rangeEnd!));
+          .read<CalendarBloc>()
+          .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
     }
 
     Navigator.of(context).pop();
