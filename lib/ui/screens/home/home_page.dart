@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
-import 'package:medicaments_app/ui/medicaments_app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medicaments_app/ui/screens/widgets/add_medicament_icon.dart';
 import 'package:medicaments_app/ui/screens/widgets/calendar_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               CalendarWidget(medicamentList: state.copyWith().medicamentList),
               const SizedBox(height: 8.0),
-              _addMedicamentIcon(context),
+              const AddMedicamentIcon(),
               const SizedBox(height: 8.0),
               _buildMedicamentListOfDay(),
             ],
@@ -75,21 +75,6 @@ class _HomePageState extends State<HomePage> {
             },
           );
         },
-      ),
-    );
-  }
-
-  Align _addMedicamentIcon(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: FloatingActionButton(
-        onPressed: () =>
-            Navigator.of(context).pushNamed(routeAdd, arguments: 12),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
