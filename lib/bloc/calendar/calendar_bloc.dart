@@ -94,6 +94,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   void _onCalendarOnAddMedicamentEvent(
       CalendarOnAddMedicamentEvent event, Emitter<CalendarState> emit) async {
+    print("CalendarOnAddMedicamentEvent");
     emit(state.copyWith(
         calendar: event.calendar, medicamentList: event.medicamentList));
   }

@@ -26,6 +26,7 @@ class MedicamentListBloc
     emit(state.copyLoading(isLoading: true));
     final medicamentList = provider.getMedicamentList();
     emit(state.copyWith(medicamentList: medicamentList));
+    print("AddMedicamentEvent");
   }
 
   void _onAddRangeOfMedicamentEvent(AddRangeOfMedicamentEvent event,

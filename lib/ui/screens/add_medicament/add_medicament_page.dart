@@ -90,11 +90,12 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
     Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 
     if (calendar != null && calendar.selectedDay != null) {
+      //TODO: Check aqui
       context
           .read<MedicamentListBloc>()
           .add(AddMedicamentEvent(medicament, calendar.selectedDay!));
 
-      late final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+      final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
           context.read<MedicamentListBloc>().state.medicamentList;
 
       context
@@ -108,7 +109,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
       context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
           medicament, calendar.rangeStartDay!, calendar.rangeEndDay!));
 
-      late final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+      final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
           context.read<MedicamentListBloc>().state.medicamentList;
 
       context

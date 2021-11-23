@@ -13,12 +13,9 @@ class MedicamentListOfDay extends StatelessWidget {
     return Expanded(
       child: BlocBuilder<CalendarBloc, CalendarState>(
         builder: (context, state) {
-          //add error
-          // if(state.calendar == null || state.calendar.selectedEvents == null || state.calendar.selectedEvents.isEmpty)
-
           if (state.calendar!.selectedEvents == null ||
               state.calendar!.selectedEvents!.isEmpty) {
-            return const Text('No medicaments yet!');
+            return const Text('No medicaments!');
           }
           return ListView.builder(
             itemCount: state.calendar!.selectedEvents!.length,
