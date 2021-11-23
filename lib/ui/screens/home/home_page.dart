@@ -6,6 +6,8 @@ import 'package:medicaments_app/ui/screens/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/screens/widgets/medicament_list_of_day.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -22,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('medicaments'),
+        title: const Text('Medicaments'),
       ),
       body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
         builder: (context, state) {

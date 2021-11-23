@@ -17,7 +17,7 @@ class MedicamentsApp extends StatelessWidget {
       ),
       initialRoute: routeHome,
       routes: {
-        routeHome: (context) => HomePage(),
+        routeHome: (context) => const HomePage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == routeAdd) {
