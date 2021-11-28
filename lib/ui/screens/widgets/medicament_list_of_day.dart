@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 
 class MedicamentListOfDay extends StatelessWidget {
+  MedicamentListOfDay({Key? key}) : super(key: key);
 
-  const MedicamentListOfDay({Key? key})
-      : super(key: key);
+  final DateFormat _timeFormat = DateFormat('HH:mm');
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,8 @@ class MedicamentListOfDay extends StatelessWidget {
                 ),
                 child: ListTile(
                   title: Text(state.calendar!.selectedEvents![index].title),
+                  subtitle: Text(_timeFormat
+                      .format(state.calendar!.selectedEvents![index].hour)),
                 ),
               );
             },

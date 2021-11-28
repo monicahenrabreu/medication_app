@@ -7,12 +7,12 @@ import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
+import 'package:medicaments_app/notifications.dart';
 import 'package:medicaments_app/ui/screens/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/screens/widgets/date_time_medicament_picker.dart';
 import 'package:medicaments_app/ui/screens/widgets/days_choosed_medicament.dart';
 import 'package:medicaments_app/ui/screens/widgets/save_cancel_medicament_button.dart';
 import 'package:medicaments_app/ui/screens/widgets/text_medicament_form_field.dart';
-import 'package:provider/src/provider.dart';
 
 class AddMedicamentPage extends StatefulWidget {
   final int id;
@@ -89,34 +89,44 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
 
     Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 
-    if (calendar != null && calendar.selectedDay != null) {
-      //TODO: Check aqui
-      context
-          .read<MedicamentListBloc>()
-          .add(AddMedicamentEvent(medicament, calendar.selectedDay!));
+    if (calendar != null) {
+      if (calendar.selectedDay != null) {
+        //TODO: Check aqui
+        context
+            .read<MedicamentListBloc>()
+            .add(AddMedicamentEvent(medicament, calendar.selectedDay!));
 
-      final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
-          context.read<MedicamentListBloc>().state.medicamentList;
+        final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+            context.read<MedicamentListBloc>().state.medicamentList;
 
-      context
-          .read<CalendarBloc>()
-          .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
+        context
+            .read<CalendarBloc>()
+            .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
+      }
+
+      if (calendar.rangeStartDay != null && calendar.rangeEndDay != null) {
+        context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
+            medicament, calendar.rangeStartDay!, calendar.rangeEndDay!));
+
+        final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+            context.read<MedicamentListBloc>().state.medicamentList;
+
+        context
+            .read<CalendarBloc>()
+            .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
+      }
+
+      if (calendar.selectedDay != null ||
+          (calendar.rangeStartDay != null && calendar.rangeEndDay != null)) {
+        DateTime date = DateTime(
+            calendar.selectedDay!.year,
+            calendar.selectedDay!.month,
+            calendar.selectedDay!.day,
+            _time.hour,
+            _time.minute);
+        Notifications.scheduleDailyNotification(date, medicament);
+      }
     }
-
-    if (calendar != null &&
-        calendar.rangeStartDay != null &&
-        calendar.rangeEndDay != null) {
-      context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
-          medicament, calendar.rangeStartDay!, calendar.rangeEndDay!));
-
-      final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
-          context.read<MedicamentListBloc>().state.medicamentList;
-
-      context
-          .read<CalendarBloc>()
-          .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
-    }
-
     Navigator.of(context).pop();
   }
 
