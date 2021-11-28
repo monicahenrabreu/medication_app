@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicaments_app/notifications.dart';
 
 class TookMedicamentPage extends StatefulWidget {
   const TookMedicamentPage(
@@ -52,6 +53,7 @@ class TookMedicamentPageState extends State<TookMedicamentPage> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  Notifications.zonedScheduleNotification();
                   Navigator.pop(context);
                 },
                 child: const Text('Snooze'),
