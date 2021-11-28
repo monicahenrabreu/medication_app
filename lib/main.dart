@@ -39,9 +39,6 @@ Future main() async {
       ],
       child: MedicamentsApp(
         initialRoute: initialRoute,
-        notificationAppLaunchDetails:
-            Notifications.notificationAppLaunchDetails,
-        selectedNotificationPayload: Notifications.selectedNotificationPayload,
       ),
     ),
   );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/ui/screens/widgets/add_medicament_icon.dart';
@@ -9,15 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:medicaments_app/notifications.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage(
-    this.notificationAppLaunchDetails, {
+  const HomePage({
     Key? key,
   }) : super(key: key);
-
-  final NotificationAppLaunchDetails? notificationAppLaunchDetails;
-
-  bool get didNotificationLaunchApp =>
-      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
 
   @override
   _HomePageState createState() => _HomePageState();
