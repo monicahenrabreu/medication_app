@@ -44,7 +44,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
     emit(state.copyWith(state.index! +
         1)); //, state.notifications!.flutterLocalNotificationsPlugin));
-    _getPendingNotificationCount();
   }
 
   Future<void> _onRescheduleNotificationEvent(RescheduleNotificationEvent event,
@@ -67,20 +66,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
     emit(state.copyWith(
         state.index! + 1)); //, state.flutterLocalNotificationsPlugin));
-
-    _getPendingNotificationCount();
   }
 
   tz.TZDateTime _scheduleDate(DateTime dateTime, DateTime hour) {
     tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, dateTime.year,
         dateTime.month, dateTime.day, hour.hour, hour.minute);
     return scheduledDate;
-  }
-
-  Future<void> _getPendingNotificationCount() async {
-    await state
-        .notifications!.flutterLocalNotificationsPlugin
-        .pendingNotificationRequests();
   }
 
   void _requestPermissions() {
