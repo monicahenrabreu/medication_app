@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
+import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
-import 'package:medicaments_app/notifications.dart';
 import 'package:medicaments_app/ui/screens/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/screens/widgets/date_time_medicament_picker.dart';
 import 'package:medicaments_app/ui/screens/widgets/days_choosed_medicament.dart';
@@ -124,7 +124,10 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
             calendar.selectedDay!.day,
             _time.hour,
             _time.minute);
-        Notifications.scheduleDailyNotification(date, medicament);
+        //Notifications.scheduleDailyNotification(date, medicament);
+        context
+            .read<NotificationBloc>()
+            .add(ScheduleDailyNotificationEvent(date, medicament));
       }
     }
     Navigator.of(context).pop();

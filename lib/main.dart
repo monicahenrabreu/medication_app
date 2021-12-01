@@ -10,13 +10,13 @@ import 'package:medicaments_app/data/models/medicament_list_entity.dart';
 import 'package:medicaments_app/data/provider/medicament_provider.dart';
 import 'package:medicaments_app/notifications.dart';
 import 'package:medicaments_app/ui/medicaments_app.dart';
-
-import 'data/models/medicament_entity.dart';
+import 'package:medicaments_app/bloc/notification/notification_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  String initialRoute = await Notifications.initialize();
+  Notifications notifications = Notifications();
+  String initialRoute = await notifications.initialize();
 
   //Hive initialization
   await Hive.initFlutter();
@@ -35,6 +35,9 @@ Future main() async {
         ),
         BlocProvider<CalendarBloc>(
           create: (context) => CalendarBloc(),
+        ),
+        BlocProvider<NotificationBloc>(
+          create: (context) => NotificationBloc(notifications),
         ),
       ],
       child: MedicamentsApp(
