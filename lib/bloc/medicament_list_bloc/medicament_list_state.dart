@@ -79,3 +79,15 @@ class MedicamentListLoadedState extends MedicamentListState {
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
       : super(false, medicamentList);
 }
+
+class MedicamentAddedState extends MedicamentListState {
+  MedicamentAddedState(
+      LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
+      : super(false, medicamentList);
+}
+
+class RangeMedicamentAddedState extends MedicamentListState {
+  RangeMedicamentAddedState(
+      LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
+      : super(false, medicamentList);
+}

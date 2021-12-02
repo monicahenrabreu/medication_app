@@ -43,12 +43,23 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Add Medicament'),
       ),
-      body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
-        builder: (context, state) {
-          return Column(
-            children: [const CalendarWidget(), _buildFormToAddMedicament()],
-          );
+      body: BlocListener<MedicamentListBloc, MedicamentListState>(
+        listener: (context, state) {
+          if(state is MedicamentAddedState || state is RangeMedicamentAddedState){
+            final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+                context.read<MedicamentListBloc>().state.medicamentList;
+
+            Calendar? calendar = context.read<CalendarBloc>().state.calendar;
+
+            context
+                .read<CalendarBloc>()
+                .add(CalendarOnAddMedicamentEvent(calendar!, medicamentList));
+            Navigator.of(context).pop();
+          }
         },
+        child: Column(
+            children: [const CalendarWidget(), _buildFormToAddMedicament()],
+          ),
       ),
     );
   }
@@ -91,29 +102,14 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
 
     if (calendar != null) {
       if (calendar.selectedDay != null) {
-        //TODO: Check aqui
         context
             .read<MedicamentListBloc>()
             .add(AddMedicamentEvent(medicament, calendar.selectedDay!));
-
-        final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
-            context.read<MedicamentListBloc>().state.medicamentList;
-
-        context
-            .read<CalendarBloc>()
-            .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
       }
 
       if (calendar.rangeStartDay != null && calendar.rangeEndDay != null) {
         context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
             medicament, calendar.rangeStartDay!, calendar.rangeEndDay!));
-
-        final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
-            context.read<MedicamentListBloc>().state.medicamentList;
-
-        context
-            .read<CalendarBloc>()
-            .add(CalendarOnAddMedicamentEvent(calendar, medicamentList));
       }
 
       if (calendar.selectedDay != null ||
@@ -124,13 +120,11 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
             calendar.selectedDay!.day,
             _time.hour,
             _time.minute);
-        //Notifications.scheduleDailyNotification(date, medicament);
         context
             .read<NotificationBloc>()
             .add(ScheduleDailyNotificationEvent(date, medicament));
       }
     }
-    Navigator.of(context).pop();
   }
 
   _onPressedCancel() {
