@@ -60,7 +60,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
         child: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Column(
-              children: [const CalendarWidget(), SizedBox(height: 200), _buildFormToAddMedicament()],
+              children: [const CalendarWidget(), _buildFormToAddMedicament()],
             ),
         ),
       ),
