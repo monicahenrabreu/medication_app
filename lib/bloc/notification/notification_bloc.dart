@@ -5,13 +5,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicaments_app/bloc/notification/notification_event.dart';
 import 'package:medicaments_app/bloc/notification/notification_state.dart';
 import 'package:medicaments_app/data/models/received_notification.dart';
-import 'package:medicaments_app/notifications.dart';
+import 'package:medicaments_app/data/provider/notifications_provider.dart';
 import 'package:medicaments_app/ui/medicaments_app.dart';
 import 'package:medicaments_app/ui/screens/took_medicament/took_medicament_page.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
-  NotificationBloc(Notifications notifications)
+  NotificationBloc(NotificationsProvider notifications)
       : super(NotificationInitialState(notifications)) {
     on<InitNotificationEvent>(_onInitNotificationEvent);
     on<ScheduleDailyNotificationEvent>(_onScheduleDailyNotificationEvent);

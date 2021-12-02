@@ -9,7 +9,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-class Notifications {
+class NotificationsProvider {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -26,7 +26,7 @@ class Notifications {
 
   late final NotificationAppLaunchDetails? notificationAppLaunchDetails;
 
-  Notifications();
+  NotificationsProvider();
 
   Future<String> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =

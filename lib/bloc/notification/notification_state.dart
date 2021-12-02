@@ -1,8 +1,8 @@
-import 'package:medicaments_app/notifications.dart';
+import 'package:medicaments_app/data/provider/notifications_provider.dart';
 
 class NotificationState {
   int? index;
-  Notifications? notifications;
+  NotificationsProvider? notifications;
 
   NotificationState(this.index, this.notifications);
 
@@ -12,9 +12,9 @@ class NotificationState {
 }
 
 class NotificationInitialState extends NotificationState {
-  NotificationInitialState(Notifications notifications) : super(0, notifications);
+  NotificationInitialState(NotificationsProvider notifications) : super(0, notifications);
 }
 
 class ReceivedNotificationState extends NotificationState {
-  ReceivedNotificationState(int? index, Notifications? notifications) : super(index, notifications);
+  ReceivedNotificationState(int? index, NotificationsProvider? notifications) : super(index, notifications);
 }
