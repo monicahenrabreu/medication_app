@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/notification/bloc.dart';
-import 'package:medicaments_app/ui/screens/widgets/add_medicament_icon.dart';
-import 'package:medicaments_app/ui/screens/widgets/calendar_widget.dart';
-import 'package:medicaments_app/ui/screens/widgets/medicament_list_of_day.dart';
+import 'package:medicaments_app/ui/widgets/add_medicament_icon.dart';
+import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
+import 'package:medicaments_app/ui/widgets/medicament_list_of_day.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomePage extends StatefulWidget {

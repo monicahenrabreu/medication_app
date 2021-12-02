@@ -8,11 +8,11 @@ import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
-import 'package:medicaments_app/ui/screens/widgets/calendar_widget.dart';
-import 'package:medicaments_app/ui/screens/widgets/date_time_medicament_picker.dart';
-import 'package:medicaments_app/ui/screens/widgets/days_choosed_medicament.dart';
-import 'package:medicaments_app/ui/screens/widgets/save_cancel_medicament_button.dart';
-import 'package:medicaments_app/ui/screens/widgets/text_medicament_form_field.dart';
+import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
+import 'package:medicaments_app/ui/widgets/date_time_medicament_picker.dart';
+import 'package:medicaments_app/ui/widgets/days_choosed_medicament.dart';
+import 'package:medicaments_app/ui/widgets/save_cancel_medicament_button.dart';
+import 'package:medicaments_app/ui/widgets/text_medicament_form_field.dart';
 
 class AddMedicamentPage extends StatefulWidget {
   final int id;
