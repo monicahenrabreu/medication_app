@@ -57,9 +57,12 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
             Navigator.of(context).pop();
           }
         },
-        child: Column(
-            children: [const CalendarWidget(), _buildFormToAddMedicament()],
-          ),
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+              children: [const CalendarWidget(), SizedBox(height: 200), _buildFormToAddMedicament()],
+            ),
+        ),
       ),
     );
   }

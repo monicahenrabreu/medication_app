@@ -55,11 +55,14 @@ class Notifications {
               );
             });
 
+    const MacOSInitializationSettings initializationSettingsMacOS =
+        MacOSInitializationSettings();
+
     final InitializationSettings _initializationSettings =
         InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-    );
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS,
+            macOS: initializationSettingsMacOS);
 
     notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
