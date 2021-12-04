@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/widgets/date_time_medicament_picker.dart';
 import 'package:medicaments_app/ui/widgets/days_choosed_medicament.dart';
@@ -13,9 +14,7 @@ import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 
 class AddMedicamentForm extends StatefulWidget {
-
-  const AddMedicamentForm({Key? key})
-      : super(key: key);
+  const AddMedicamentForm({Key? key}) : super(key: key);
 
   @override
   State<AddMedicamentForm> createState() => _AddMedicamentFormState();
@@ -25,7 +24,7 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
   final TextEditingController _controllerName = TextEditingController();
   late TextEditingController _timePickerController;
   final _formKey = GlobalKey<FormState>();
-  final DateFormat _timeFormat = DateFormat('HH:mm');
+  final DateFormat _timeFormat = DateFormat(Constants.hourFormat);
 
   @override
   void initState() {
@@ -67,7 +66,7 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
 
     DateTime _time = _timeFormat.parse(_timePickerController.value.text);
     Medicament medicament =
-    Medicament(title: _controllerName.text, hour: _time);
+        Medicament(title: _controllerName.text, hour: _time);
 
     Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 

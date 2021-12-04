@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/calendar_event.dart';
 import 'package:medicaments_app/bloc/calendar/calendar_state.dart';
+import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/screens/home/utils.dart';
@@ -107,7 +108,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     }
 
     //since this param date is comming with Z at the end, we need to remove it
-    final _dateFormat = DateFormat('d MMM yyyy');
+    final _dateFormat = DateFormat(Constants.dateFormat);
     String dateInString = _dateFormat.format(date);
     DateTime dateTransformed = _dateFormat.parse(dateInString);
     return medicamentList[dateTransformed] ?? [];

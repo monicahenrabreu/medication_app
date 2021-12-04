@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
+import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 
 class DaysChoosedMedicament extends StatelessWidget {
@@ -10,13 +11,10 @@ class DaysChoosedMedicament extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _dateFormat = DateFormat('d MMM yyyy');
+    final _dateFormat = DateFormat(Constants.dateFormat);
 
     return BlocBuilder<CalendarBloc, CalendarState>(builder: (context, state) {
       Calendar? calendarState = state.calendar;
-      if (calendarState == null) {
-        return const Text('Error!');
-      }
       if (state is CalendarLoadingState) {
         return const Center(
           child: CircularProgressIndicator(),
@@ -24,7 +22,7 @@ class DaysChoosedMedicament extends StatelessWidget {
       }
       return Column(
         children: [
-          calendarState.selectedDay != null
+          calendarState!.selectedDay != null
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

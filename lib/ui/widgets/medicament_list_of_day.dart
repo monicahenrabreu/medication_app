@@ -3,11 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
+import 'package:medicaments_app/configs/constants.dart';
 
 class MedicamentListOfDay extends StatelessWidget {
   MedicamentListOfDay({Key? key}) : super(key: key);
 
-  final DateFormat _timeFormat = DateFormat('HH:mm');
+  final DateFormat _timeFormat = DateFormat(Constants.hourFormat);
 
   @override
   Widget build(BuildContext context) {

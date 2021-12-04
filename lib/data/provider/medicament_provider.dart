@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/models/medicament_entity.dart';
 import 'package:medicaments_app/data/models/medicament_list_entity.dart';
@@ -8,6 +9,7 @@ import 'package:medicaments_app/data/provider/base_medicament_provider.dart';
 
 class MedicamentProvider extends BaseMedicamentProvider {
   final Box<MedicamentListEntity> hiveBox;
+  final _dateFormat = DateFormat(Constants.dateFormat);
 
   MedicamentProvider(this.hiveBox);
 
@@ -18,7 +20,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
         LinkedHashMap<DateTime, List<Medicament>>();
 
     hiveMap.forEach((key, value) {
-      final _dateFormat = DateFormat('d MMM yyyy');
+      final _dateFormat = DateFormat(Constants.dateFormat);
 
       DateTime date = _dateFormat.parse(key);
       final medicamentEntities = hiveMap[key] as MedicamentListEntity;
@@ -42,7 +44,6 @@ class MedicamentProvider extends BaseMedicamentProvider {
 
   @override
   Future<void> addMedicament(DateTime date, Medicament medicament) async {
-    final _dateFormat = DateFormat('d MMM yyyy');
     MedicamentEntity medicamentEntity = MedicamentEntity(
         title: medicament.title,
         hour: medicament.hour,
@@ -57,7 +58,6 @@ class MedicamentProvider extends BaseMedicamentProvider {
   @override
   Future<void> addRangeOfMedicament(
       DateTime fromDate, DateTime toDate, Medicament medicament) async {
-    final _dateFormat = DateFormat('d MMM yyyy');
 
     DateTime date = fromDate;
 
