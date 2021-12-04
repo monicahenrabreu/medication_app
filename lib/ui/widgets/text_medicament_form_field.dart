@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class TextMedicamentFormField extends StatelessWidget {
+class TextMedicamentFormField extends StatefulWidget {
   final TextEditingController _controllerName;
 
   const TextMedicamentFormField(this._controllerName, {Key? key})
       : super(key: key);
 
   @override
+  State<TextMedicamentFormField> createState() => _TextMedicamentFormFieldState();
+}
+
+class _TextMedicamentFormFieldState extends State<TextMedicamentFormField> {
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-        controller: _controllerName,
+        controller: widget._controllerName,
         validator: _validateName,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-            labelText: 'Pill name',
+            labelText: AppLocalizations.of(context)!.addMedicamentName,
             labelStyle: const TextStyle(fontSize: 18, color: Colors.grey),
-            hintText: 'ex: Benuron',
+            hintText: AppLocalizations.of(context)!.addMedicamentHint,
             hintStyle: const TextStyle(color: Colors.grey),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
@@ -31,7 +37,7 @@ class TextMedicamentFormField extends StatelessWidget {
 
   String? _validateName(String? text) {
     if (text == null || text.isEmpty) {
-      return 'NoName';
+      return AppLocalizations.of(context)!.addMedicamentNoName;
     }
     return null;
   }

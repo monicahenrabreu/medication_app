@@ -1,0 +1,46 @@
+{
+  "addMedicamentName": "Medicament name",
+  "@addMedicamentName": {
+    "description": "Name of the medicament"
+  },
+  "addMedicamentNoName": "Please insert a name",
+  "@addMedicamentNoName": {
+    "description": "The user must write the name of the medicament"
+  },
+  "addMedicamentHint": "ex: Benouron",
+  "@addMedicamentHint": {
+    "description": "Example of a Medicament"
+  },
+  "addMedicamentHours": "Hours",
+  "@addMedicamentHours": {
+    "description": "Hours of the medicament"
+  },
+  "didTakeMedicament": "Did you take the medicament?",
+  "@didTakeMedicament": {
+    "description": "When the notification is received, is asking to the user if he took the medicament"
+  },
+  "didTakeMedicamentYes": "Yes",
+  "@didTakeMedicamentYes": {
+    "description": "The user took the medicament"
+  },
+  "didTakeMedicamentNo": "No",
+  "@didTakeMedicamentNo": {
+    "description": "The user did not take the medicament"
+  },
+  "didTakeMedicamentSnooze": "Snooze",
+  "@didTakeMedicamentSnooze": {
+    "description": "The user wants to be notified again to take the medicament"
+  },
+  "addMedicamentCancelButton": "Cancel",
+  "@addMedicamentCancelButton": {
+    "description": "Cancel adding the medicament"
+  },
+  "addMedicamentSaveButton": "Save",
+  "@addMedicamentSaveButton": {
+    "description": "Save the medicament"
+  },
+  "noMedicaments": "No Medicaments",
+  "@noMedicaments": {
+    "description": "When there is no medicaments for the selected date"
+  }
+}

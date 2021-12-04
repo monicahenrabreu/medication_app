@@ -1,6 +1,7 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DateTimeMedicamentPicker extends StatelessWidget {
   final TextEditingController timePickerController;
@@ -17,7 +18,7 @@ class DateTimeMedicamentPicker extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(5.0, 4.0, 0.0, 1.0),
         child: Icon(Icons.event),
       ),
-      timeLabelText: 'DueTime',
+      timeLabelText: AppLocalizations.of(context)!.addMedicamentHours,
     );
   }
 }

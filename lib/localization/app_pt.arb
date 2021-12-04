@@ -1,0 +1,48 @@
+{
+  "addMedicamentName": "Nome do Medicamento",
+  "@addMedicamentName": {
+    "description": "Nome do Medicamento"
+  },
+  "addMedicamentNoName": "Por favor introduza o nome do medicamento",
+  "@addMedicamentNoName": {
+    "description": "O utilizador tem de introduzir o nome do medicamento"
+  },
+  "addMedicamentHint": "ex: Benouron",
+  "@addMedicamentHint": {
+    "description": "Examplo de um Medicamento"
+  },
+  "addMedicamentHours": "Hours",
+  "@addMedicamentHours": {
+    "description": "Horas do medicamento"
+  },
+  "didTakeMedicament": "Tomou o medicamento?",
+  "@didTakeMedicament": {
+    "description": "Quando é recebida a notificação é perguntado ao utilizador se tomou o medicamento"
+  },
+  "didTakeMedicamentYes": "Sim",
+  "@didTakeMedicamentYes": {
+    "description": "O utilizador tomou o medicamento"
+  },
+  "didTakeMedicamentNo": "Não",
+  "@didTakeMedicamentNo": {
+    "description": "O utilizador não tomou o medicamento"
+  },
+  "didTakeMedicamentSnooze": "Snooze",
+  "@didTakeMedicamentSnooze": {
+    "description": "O utilizador pretende ser notificado outravez para tomar o medicamento"
+  },
+  "addMedicamentCancelButton": "Cancelar",
+  "@addMedicamentCancelButton": {
+    "description": "Cancelar adicionar o medicamento"
+  },
+  "addMedicamentSaveButton": "Guardar",
+  "@addMedicamentSaveButton": {
+    "description": "Guardar o medicamento"
+  },
+  "noMedicaments": "Sem Medicamentos",
+  "@noMedicaments": {
+    "description": "Quando não existe medicamentos para o dia selecionado"
+  }
+}
+
+

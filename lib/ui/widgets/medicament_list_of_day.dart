@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/configs/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MedicamentListOfDay extends StatelessWidget {
   MedicamentListOfDay({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class MedicamentListOfDay extends StatelessWidget {
           builder: (context, state) {
             if (state.calendar!.selectedEvents == null ||
                 state.calendar!.selectedEvents!.isEmpty) {
-              return const Text('No medicaments!');
+              return Text(AppLocalizations.of(context)!.noMedicaments);
             }
             return ListView.builder(
               itemCount: state.calendar!.selectedEvents!.length,

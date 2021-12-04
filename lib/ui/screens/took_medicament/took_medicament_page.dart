@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TookMedicamentPage extends StatefulWidget {
   const TookMedicamentPage(
@@ -28,7 +29,7 @@ class TookMedicamentPageState extends State<TookMedicamentPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: const Text('Did you take the medicament?'),
+          title: Text(AppLocalizations.of(context)!.didTakeMedicament),
         ),
         body: BlocBuilder<NotificationBloc, NotificationState>(
             builder: (context, state) {
@@ -40,7 +41,7 @@ class TookMedicamentPageState extends State<TookMedicamentPage> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Yes'),
+                  child: Text(AppLocalizations.of(context)!.didTakeMedicamentYes),
                   style: ElevatedButton.styleFrom(
                     primary: Theme.of(context)
                         .primaryColor, // set the background color
@@ -50,7 +51,7 @@ class TookMedicamentPageState extends State<TookMedicamentPage> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('No'),
+                  child: Text(AppLocalizations.of(context)!.didTakeMedicamentNo),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red, // set the background color
                   ),
@@ -62,7 +63,7 @@ class TookMedicamentPageState extends State<TookMedicamentPage> {
                         .add(RescheduleNotificationEvent());
                     Navigator.pop(context);
                   },
-                  child: const Text('Snooze'),
+                  child: Text(AppLocalizations.of(context)!.didTakeMedicamentSnooze),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.grey, // set the background color
                   ),
