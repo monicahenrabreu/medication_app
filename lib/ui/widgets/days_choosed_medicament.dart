@@ -17,6 +17,11 @@ class DaysChoosedMedicament extends StatelessWidget {
       if (calendarState == null) {
         return const Text('Error!');
       }
+      if (state is CalendarLoadingState) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
       return Column(
         children: [
           calendarState.selectedDay != null

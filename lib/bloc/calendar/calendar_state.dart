@@ -38,11 +38,11 @@ class CalendarInitialState extends CalendarState {
 }
 
 class CalendarLoadingState extends CalendarState {
-  CalendarLoadingState(bool isLoading, Calendar? calendar, medicamentList)
-      : super(isLoading, calendar, medicamentList);
+  CalendarLoadingState(Calendar? calendar, LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
+      : super(true, calendar, medicamentList);
 }
 
 class CalendarLoadedState extends CalendarState {
-  CalendarLoadedState(Calendar? calendar, medicamentList)
+  CalendarLoadedState(Calendar? calendar, LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
       : super(false, calendar, medicamentList);
 }

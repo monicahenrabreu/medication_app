@@ -21,8 +21,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       CalendarOnDaySelectedEvent event, Emitter<CalendarState> emit) async {
     Calendar? stateCalendar = state.calendar;
 
-    if (stateCalendar != null &&
-        !isSameDay(event.calendar.selectedDay, stateCalendar.selectedDay)) {
+    if (stateCalendar != null) {
       List<Medicament> medicamentList =
           _getEventsForDay(event.medicamentList, event.calendar.selectedDay!);
 
@@ -94,9 +93,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   void _onCalendarOnAddMedicamentEvent(
       CalendarOnAddMedicamentEvent event, Emitter<CalendarState> emit) async {
-    print("CalendarOnAddMedicamentEvent");
-    emit(state.copyWith(
-        calendar: event.calendar, medicamentList: event.medicamentList));
+    emit(CalendarLoadingState(event.calendar, event.medicamentList));
+    // emit(state.copyWith(
+    //     calendar: event.calendar, medicamentList: event.medicamentList));
+    emit(CalendarLoadedState(event.calendar, event.medicamentList));
   }
 
   List<Medicament> _getEventsForDay(
