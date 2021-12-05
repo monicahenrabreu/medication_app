@@ -45,6 +45,7 @@ dependencies:
   flutter_local_notifications: ^9.1.2
   rxdart: ^0.27.2
   flutter_native_timezone: ^2.0.0
+  uuid: ^3.0.5
 
 
 dev_dependencies:

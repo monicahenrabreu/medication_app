@@ -8,4 +8,8 @@ abstract class BaseMedicamentProvider {
 
   Future<void> addRangeOfMedicament(
       DateTime fromDate, DateTime toDate, Medicament medicament);
+
+  Medicament? getMedicament(String date, String id);
+
+  Medicament? editMedicament(String date, String id, bool tookMedicament);
 }

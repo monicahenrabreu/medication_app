@@ -20,8 +20,6 @@ class MedicamentProvider extends BaseMedicamentProvider {
         LinkedHashMap<DateTime, List<Medicament>>();
 
     hiveMap.forEach((key, value) {
-      final _dateFormat = DateFormat(Constants.dateFormat);
-
       DateTime date = _dateFormat.parse(key);
       final medicamentEntities = hiveMap[key] as MedicamentListEntity;
 
@@ -30,9 +28,10 @@ class MedicamentProvider extends BaseMedicamentProvider {
       if (medicamentEntities.medicamentEntities.isNotEmpty) {
         for (var medicament in medicamentEntities.medicamentEntities) {
           list.add(Medicament(
+              id: medicament.id,
               title: medicament.title,
               hour: medicament.hour,
-              tookPill: medicament.tookPill));
+              tookMedicament: medicament.tookMedicament));
         }
       }
 
@@ -45,9 +44,10 @@ class MedicamentProvider extends BaseMedicamentProvider {
   @override
   Future<void> addMedicament(DateTime date, Medicament medicament) async {
     MedicamentEntity medicamentEntity = MedicamentEntity(
+        id: medicament.id,
         title: medicament.title,
         hour: medicament.hour,
-        tookPill: medicament.tookPill);
+        tookMedicament: medicament.tookMedicament);
     final key = _dateFormat.format(date);
     final MedicamentListEntity currentList =
         hiveBox.get(key) ?? MedicamentListEntity(medicamentEntities: []);
@@ -58,7 +58,6 @@ class MedicamentProvider extends BaseMedicamentProvider {
   @override
   Future<void> addRangeOfMedicament(
       DateTime fromDate, DateTime toDate, Medicament medicament) async {
-
     DateTime date = fromDate;
 
     while (date.compareTo(toDate) <= 0) {
@@ -67,13 +66,62 @@ class MedicamentProvider extends BaseMedicamentProvider {
           hiveBox.get(key) ?? MedicamentListEntity(medicamentEntities: []);
 
       MedicamentEntity medicamentEntity = MedicamentEntity(
+          id: medicament.id,
           title: medicament.title,
           hour: medicament.hour,
-          tookPill: medicament.tookPill);
+          tookMedicament: medicament.tookMedicament);
 
       currentList.medicamentEntities.add(medicamentEntity);
       await hiveBox.put(_dateFormat.format(date), currentList);
       date = date.add(const Duration(days: 1));
     }
+  }
+
+  @override
+  Medicament? getMedicament(String date, String id) {
+    Map hiveMap = hiveBox.toMap();
+
+    final medicamentEntities = hiveMap[date] as MedicamentListEntity;
+
+    List<MedicamentEntity> entities = medicamentEntities.medicamentEntities;
+
+    MedicamentEntity? medicamentEntity;
+
+    for (MedicamentEntity medicament in entities) {
+      if (medicament.id == id) {
+        medicamentEntity = medicament;
+        break;
+      }
+    }
+
+    if (medicamentEntity == null) {
+      return null;
+    }
+
+    Medicament medicament = Medicament(
+        id: medicamentEntity.id,
+        title: medicamentEntity.title,
+        hour: medicamentEntity.hour,
+        tookMedicament: medicamentEntity.tookMedicament);
+
+    return medicament;
+  }
+
+  @override
+  Medicament? editMedicament(String date, String id, bool tookMedicament) {
+    Map hiveMap = hiveBox.toMap();
+
+    final medicamentEntities = hiveMap[date] as MedicamentListEntity;
+
+    List<MedicamentEntity> entities = medicamentEntities.medicamentEntities;
+
+    for (MedicamentEntity medicamentEntity in entities) {
+      if (medicamentEntity.id == id) {
+        medicamentEntity.tookMedicament = tookMedicament;
+        break;
+      }
+    }
+
+    hiveBox.put(date, MedicamentListEntity(medicamentEntities: entities));
   }
 }

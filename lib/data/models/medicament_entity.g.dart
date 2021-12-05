@@ -17,22 +17,25 @@ class MedicamentEntityAdapter extends TypeAdapter<MedicamentEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MedicamentEntity(
-      title: fields[0] as String,
-      hour: fields[1] as DateTime,
-      tookPill: fields[2] as TookPill?,
+      id: fields[0] as String,
+      title: fields[1] as String,
+      hour: fields[2] as DateTime,
+      tookMedicament: fields[3] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, MedicamentEntity obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.hour)
+      ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.tookPill);
+      ..write(obj.hour)
+      ..writeByte(3)
+      ..write(obj.tookMedicament);
   }
 
   @override

@@ -41,8 +41,7 @@ Future main() async {
         ),
       ],
       child: MedicamentsApp(
-        initialRoute: initialRoute,
-      ),
+          initialRoute: initialRoute, medicamentProvider: medicamentProvider),
     ),
   );
 }

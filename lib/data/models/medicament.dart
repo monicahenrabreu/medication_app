@@ -1,9 +1,12 @@
-enum TookPill { took, didNotTook, snooze }
-
 class Medicament {
+  final String id;
   final String title;
   final DateTime hour;
-  final TookPill? tookPill;
+  final bool tookMedicament;
 
-  const Medicament({required this.title, required this.hour, this.tookPill});
+  const Medicament(
+      {required this.id,
+      required this.title,
+      required this.hour,
+      this.tookMedicament = false});
 }

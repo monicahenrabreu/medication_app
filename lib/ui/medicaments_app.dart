@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:medicaments_app/data/provider/medicament_provider.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
 import 'package:medicaments_app/ui/screens/home/home_page.dart';
 import 'package:medicaments_app/ui/screens/took_medicament/took_medicament_page.dart';
@@ -11,11 +12,11 @@ const String routeTookMedicament = '/tookMedicament';
 
 class MedicamentsApp extends StatelessWidget {
   const MedicamentsApp(
-      {Key? key, required this.initialRoute, this.selectedNotificationPayload})
+      {Key? key, required this.initialRoute, required this.medicamentProvider})
       : super(key: key);
 
   final String initialRoute;
-  final String? selectedNotificationPayload;
+  final MedicamentProvider medicamentProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class MedicamentsApp extends StatelessWidget {
       routes: {
         routeHome: (context) => const HomePage(),
         routeTookMedicament: (context) =>
-            TookMedicamentPage(selectedNotificationPayload),
+            TookMedicamentPage(medicamentProvider: medicamentProvider),
       },
       onGenerateRoute: (settings) {
         if (settings.name == routeAdd) {

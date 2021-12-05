@@ -4,26 +4,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 
 class MedicamentCalendarMarker extends StatefulWidget {
-
   final DateTime date;
   final List<Medicament> medicaments;
 
-  const MedicamentCalendarMarker({required this.date, required this.medicaments, Key? key}) : super(key: key);
+  const MedicamentCalendarMarker(
+      {required this.date, required this.medicaments, Key? key})
+      : super(key: key);
 
   @override
-  State<MedicamentCalendarMarker> createState() => _MedicamentCalendarMarkerState();
+  State<MedicamentCalendarMarker> createState() =>
+      _MedicamentCalendarMarkerState();
 }
 
 class _MedicamentCalendarMarkerState extends State<MedicamentCalendarMarker> {
-
-
   @override
   Widget build(BuildContext context) {
-    bool took = true;
+    bool took = false;
 
     for (Medicament medicament in widget.medicaments) {
-      if (medicament.tookPill == TookPill.didNotTook) {
-        took = false;
+      if (medicament.tookMedicament) {
+        took = true;
       }
     }
 
@@ -41,15 +41,15 @@ class _MedicamentCalendarMarkerState extends State<MedicamentCalendarMarker> {
             ),
             child: took
                 ? const Icon(
-              Icons.check,
-              color: Colors.white,
-            )
+                    Icons.check,
+                    color: Colors.white,
+                  )
                 : Transform.rotate(
-                angle: 180,
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ))),
+                    angle: 180,
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ))),
       );
     }
 

@@ -15,7 +15,7 @@
   "@addMedicamentHours": {
     "description": "Horas do medicamento"
   },
-  "didTakeMedicament": "Tomou o medicamento?",
+  "didTakeMedicament": "Tomou o",
   "@didTakeMedicament": {
     "description": "Quando é recebida a notificação é perguntado ao utilizador se tomou o medicamento"
   },

@@ -1,32 +1,39 @@
 import 'package:hive/hive.dart';
-import 'package:medicaments_app/data/models/medicament.dart';
 
 part 'medicament_entity.g.dart';
 
 @HiveType(typeId: 0)
 class MedicamentEntity extends HiveObject {
   MedicamentEntity(
-      {required this.title, required this.hour, required this.tookPill});
+      {required this.id,
+      required this.title,
+      required this.hour,
+      this.tookMedicament = false});
 
   @HiveField(0)
-  String title;
+  String id;
 
   @HiveField(1)
-  DateTime hour;
+  String title;
 
   @HiveField(2)
-  TookPill? tookPill;
+  DateTime hour;
+
+  @HiveField(3)
+  bool tookMedicament;
 
   factory MedicamentEntity.fromJson(Map<String, dynamic> json) =>
       MedicamentEntity(
+        id: json["id"],
         title: json["title"],
         hour: json["hour"],
-        tookPill: json["tookPill"],
+        tookMedicament: json["tookMedicament"],
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "title": title,
         "hour": hour,
-        "tookPill": tookPill,
+        "tookMedicament": tookMedicament,
       };
 }

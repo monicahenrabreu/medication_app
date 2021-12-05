@@ -5,6 +5,7 @@ abstract class NotificationEvent {}
 
 class InitNotificationEvent extends NotificationEvent {
   final BuildContext context;
+
   InitNotificationEvent(this.context);
 }
 
@@ -16,10 +17,11 @@ class ScheduleDailyNotificationEvent extends NotificationEvent {
 }
 
 class RescheduleNotificationEvent extends NotificationEvent {
-  RescheduleNotificationEvent();
+  final Medicament medicament;
+
+  RescheduleNotificationEvent(this.medicament);
 }
 
 class ReceivedNotificationEvent extends NotificationEvent {
   ReceivedNotificationEvent();
 }
-

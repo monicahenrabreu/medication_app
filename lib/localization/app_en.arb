@@ -15,7 +15,7 @@
   "@addMedicamentHours": {
     "description": "Hours of the medicament"
   },
-  "didTakeMedicament": "Did you take the medicament?",
+  "didTakeMedicament": "Did you take",
   "@didTakeMedicament": {
     "description": "When the notification is received, is asking to the user if he took the medicament"
   },

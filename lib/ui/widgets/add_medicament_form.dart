@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
+import 'package:uuid/uuid.dart';
 
 class AddMedicamentForm extends StatefulWidget {
   const AddMedicamentForm({Key? key}) : super(key: key);
@@ -65,12 +66,19 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
     }
 
     DateTime _time = _timeFormat.parse(_timePickerController.value.text);
-    Medicament medicament =
-        Medicament(title: _controllerName.text, hour: _time);
-
     Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 
     if (calendar != null) {
+      final _dateFormat = DateFormat(Constants.dateFormat);
+      final date = _dateFormat.format(calendar.selectedDay!);
+
+      var uuid = const Uuid();
+
+      String id = date + '--' + uuid.v1();
+
+      Medicament medicament =
+          Medicament(id: id, title: _controllerName.text, hour: _time);
+
       if (calendar.selectedDay != null) {
         context
             .read<MedicamentListBloc>()

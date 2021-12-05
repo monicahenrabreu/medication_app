@@ -4,10 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicaments_app/bloc/notification/notification_event.dart';
 import 'package:medicaments_app/bloc/notification/notification_state.dart';
-import 'package:medicaments_app/data/models/received_notification.dart';
 import 'package:medicaments_app/data/provider/notifications_provider.dart';
 import 'package:medicaments_app/ui/medicaments_app.dart';
-import 'package:medicaments_app/ui/screens/took_medicament/took_medicament_page.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
@@ -21,7 +19,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   _onInitNotificationEvent(
       InitNotificationEvent event, Emitter<NotificationState> emit) async {
     _requestPermissions();
-    _configureDidReceiveLocalNotificationSubject(event.context, emit);
     _configureSelectNotificationSubject(event.context, emit);
   }
 
@@ -39,11 +36,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
               channelDescription: 'daily notification description'),
         ),
         androidAllowWhileIdle: true,
+        payload: event.medicament.id,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
 
-    emit(state.copyWith(state.index! +
-        1)); //, state.notifications!.flutterLocalNotificationsPlugin));
+    emit(state.copyWith(state.index! + 1));
   }
 
   Future<void> _onRescheduleNotificationEvent(RescheduleNotificationEvent event,
@@ -53,19 +50,19 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
     await state.notifications!.flutterLocalNotificationsPlugin.zonedSchedule(
         state.index!,
-        'scheduled title',
-        'scheduled body',
+        event.medicament.title,
+        event.medicament.title,
         date,
         const NotificationDetails(
             android: AndroidNotificationDetails(
                 'your channel id', 'your channel name',
                 channelDescription: 'your channel description')),
         androidAllowWhileIdle: true,
+        payload: event.medicament.id,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
 
-    emit(state.copyWith(
-        state.index! + 1)); //, state.flutterLocalNotificationsPlugin));
+    emit(state.copyWith(state.index! + 1));
   }
 
   tz.TZDateTime _scheduleDate(DateTime dateTime, DateTime hour) {
@@ -93,45 +90,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         );
   }
 
-  void _configureDidReceiveLocalNotificationSubject(
-      BuildContext context, Emitter<NotificationState> emit) {
-    state.notifications!.didReceiveLocalNotificationSubject.stream
-        .listen((ReceivedNotification receivedNotification) async {
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != null
-              ? Text(receivedNotification.title!)
-              : null,
-          content: receivedNotification.body != null
-              ? Text(receivedNotification.body!)
-              : null,
-          actions: <Widget>[
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              onPressed: () async {
-                Navigator.of(context, rootNavigator: true).pop();
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        TookMedicamentPage(receivedNotification.payload),
-                  ),
-                );
-              },
-              child: const Text('Ok'),
-            )
-          ],
-        ),
-      );
-    });
-  }
-
   void _configureSelectNotificationSubject(
       BuildContext context, Emitter<NotificationState> emit) {
     state.notifications!.selectNotificationSubject.stream
         .listen((String? payload) async {
-      await Navigator.pushNamed(context, routeTookMedicament);
+      await Navigator.pushNamed(context, routeTookMedicament,
+          arguments: payload);
     });
   }
 }
