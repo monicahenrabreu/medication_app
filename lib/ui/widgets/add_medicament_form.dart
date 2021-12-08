@@ -69,38 +69,68 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
     Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 
     if (calendar != null) {
-      final _dateFormat = DateFormat(Constants.dateFormat);
-      final date = _dateFormat.format(calendar.selectedDay!);
-
-      var uuid = const Uuid();
-
-      String id = date + '--' + uuid.v1();
-
-      Medicament medicament =
-          Medicament(id: id, title: _controllerName.text, hour: _time);
-
       if (calendar.selectedDay != null) {
+        final _dateFormat = DateFormat(Constants.dateFormat);
+        final date = _dateFormat.format(calendar.selectedDay!);
+
+        var uuid = const Uuid();
+
+        String id = date + '--' + uuid.v1();
+
+        Medicament medicament =
+        Medicament(id: id, title: _controllerName.text, hour: _time);
         context
             .read<MedicamentListBloc>()
-            .add(AddMedicamentEvent(medicament, calendar.selectedDay!));
-      }
+            .add(AddMedicamentEvent(calendar.selectedDay!, _controllerName.text, _time, medicament));
 
-      if (calendar.rangeStartDay != null && calendar.rangeEndDay != null) {
-        context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
-            medicament, calendar.rangeStartDay!, calendar.rangeEndDay!));
-      }
-
-      if (calendar.selectedDay != null ||
-          (calendar.rangeStartDay != null && calendar.rangeEndDay != null)) {
-        DateTime date = DateTime(
+        DateTime notificationDate = DateTime(
             calendar.selectedDay!.year,
             calendar.selectedDay!.month,
             calendar.selectedDay!.day,
             _time.hour,
             _time.minute);
+
         context
             .read<NotificationBloc>()
-            .add(ScheduleDailyNotificationEvent(date, medicament));
+            .add(ScheduleDailyNotificationEvent(notificationDate, medicament));
+      }
+
+      if (calendar.rangeStartDay != null && calendar.rangeEndDay != null) {
+
+        DateTime formDddate = calendar.rangeStartDay!;
+        final toDate = calendar.rangeEndDay;
+        List<Medicament> medicamentList = List.of([]);
+
+        while (formDddate.compareTo(toDate!) <= 0) {
+          final _dateFormat = DateFormat(Constants.dateFormat);
+          final _formatedDate = _dateFormat.format(formDddate);
+
+          var uuid = const Uuid();
+
+          String id = _formatedDate + '--' + uuid.v1();
+
+          Medicament medicament = Medicament(id: id, title: _controllerName.text, hour: _time);
+
+          medicamentList.add(medicament);
+
+          DateTime notificationDate = DateTime(
+              formDddate.year,
+              formDddate.month,
+              formDddate.day,
+              _time.hour,
+              _time.minute);
+
+          print('notificationDate: ' + notificationDate.toString());
+
+          context
+              .read<NotificationBloc>()
+              .add(ScheduleDailyNotificationEvent(notificationDate, medicament));
+
+          formDddate = formDddate.add(const Duration(days: 1));
+        }
+
+        context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
+            calendar.rangeStartDay!, calendar.rangeEndDay!, _controllerName.text, _time, medicamentList));
       }
     }
   }

@@ -16,8 +16,14 @@ class MedicamentListOfDay extends StatelessWidget {
     return BlocListener<CalendarBloc, CalendarState>(
       listener: (context, state) {
         if (state is CalendarLoadedState) {
-          context.read<CalendarBloc>().add(CalendarOnDaySelectedEvent(
-              state.calendar!, state.medicamentList));
+          if (state.calendar!.selectedDay != null) {
+            context.read<CalendarBloc>().add(CalendarOnDaySelectedEvent(
+                state.calendar!, state.medicamentList));
+          } else {
+            context
+                .read<CalendarBloc>()
+                .add(CalendarOnRangeSelectedEvent(state.calendar!));
+          }
         }
       },
       child: Expanded(

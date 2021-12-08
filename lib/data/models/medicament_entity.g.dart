@@ -20,14 +20,17 @@ class MedicamentEntityAdapter extends TypeAdapter<MedicamentEntity> {
       id: fields[0] as String,
       title: fields[1] as String,
       hour: fields[2] as DateTime,
-      tookMedicament: fields[3] as bool,
+      dateOnlyOneTime: fields[3] as DateTime?,
+      fromDate: fields[4] as DateTime?,
+      toDate: fields[5] as DateTime?,
+      tookMedicament: fields[6] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, MedicamentEntity obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,6 +38,12 @@ class MedicamentEntityAdapter extends TypeAdapter<MedicamentEntity> {
       ..writeByte(2)
       ..write(obj.hour)
       ..writeByte(3)
+      ..write(obj.dateOnlyOneTime)
+      ..writeByte(4)
+      ..write(obj.fromDate)
+      ..writeByte(5)
+      ..write(obj.toDate)
+      ..writeByte(6)
       ..write(obj.tookMedicament);
   }
 

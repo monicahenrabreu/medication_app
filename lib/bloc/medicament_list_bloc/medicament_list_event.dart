@@ -7,16 +7,21 @@ class GetMedicamentListEvent extends MedicamentListEvent {
 }
 
 class AddMedicamentEvent extends MedicamentListEvent {
-  final Medicament medicament;
   final DateTime date;
+  final String title;
+  final DateTime hour;
+  final Medicament medicament;
 
-  AddMedicamentEvent(this.medicament, this.date);
+  AddMedicamentEvent(this.date, this.title, this.hour, this.medicament);
 }
 
 class AddRangeOfMedicamentEvent extends MedicamentListEvent {
-  final Medicament medicament;
   final DateTime fromDate;
   final DateTime toDate;
+  final String title;
+  final DateTime hour;
+  final List<Medicament> medicamentList;
 
-  AddRangeOfMedicamentEvent(this.medicament, this.fromDate, this.toDate);
+  AddRangeOfMedicamentEvent(
+      this.fromDate, this.toDate, this.title, this.hour, this.medicamentList);
 }

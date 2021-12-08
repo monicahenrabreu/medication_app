@@ -4,11 +4,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:medicaments_app/data/provider/medicament_provider.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
 import 'package:medicaments_app/ui/screens/home/home_page.dart';
+import 'package:medicaments_app/ui/screens/medicaments/medicaments_page.dart';
 import 'package:medicaments_app/ui/screens/took_medicament/took_medicament_page.dart';
 
 const String routeHome = '/home';
 const String routeAdd = '/add';
 const String routeTookMedicament = '/tookMedicament';
+const String routeMedicamentList = '/routeMedicamentList';
 
 class MedicamentsApp extends StatelessWidget {
   const MedicamentsApp(
@@ -45,6 +47,7 @@ class MedicamentsApp extends StatelessWidget {
         routeHome: (context) => const HomePage(),
         routeTookMedicament: (context) =>
             TookMedicamentPage(medicamentProvider: medicamentProvider),
+        routeMedicamentList: (context) => const MedicamentsPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == routeAdd) {

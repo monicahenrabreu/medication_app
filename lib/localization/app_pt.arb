@@ -1,4 +1,8 @@
 {
+  "medicamentsTitle": "Medicaments",
+  "@medicamentsTitle": {
+    "description": "App name"
+  },
   "addMedicamentName": "Nome do Medicamento",
   "@addMedicamentName": {
     "description": "Nome do Medicamento"
@@ -42,7 +46,25 @@
   "noMedicaments": "Sem Medicamentos",
   "@noMedicaments": {
     "description": "Quando não existe medicamentos para o dia selecionado"
+  },
+  "medicamentsPageTitle": "Lista de Medicamentos",
+  "@medicamentsPageTitle": {
+    "description": "nome do botão e título da Página de Medicamentos"
+  },
+  "medicamentsPageDateOnlyOneTime": "Só no dia ",
+  "@medicamentsPageDateOnlyOneTime": {
+    "description": "If the medicament is only in one day"
+  },
+  "medicamentsPageFromDate": "Desde ",
+  "@medicamentsPageFromDate": {
+       "description": "Se o medicamento pertence a num intervalo de dias, apresentar o primeiro dia"
+  },
+  "medicamentsPageToDate": " até ",
+  "@medicamentsPageToDate": {
+       "description": "Se o medicamento pertence a num intervalo de dias, apresentar o último dia"
+  },
+  "medicamentsPageAtHours": " às ",
+  "@medicamentsPageAtHours": {
+       "description": "Para especificar as horas"
   }
 }
-
-
