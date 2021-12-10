@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:medicaments_app/ui/medicaments_app.dart';
 
 class AddMedicamentIcon extends StatelessWidget {
-
-  const AddMedicamentIcon({Key? key})
-      : super(key: key);
+  const AddMedicamentIcon({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

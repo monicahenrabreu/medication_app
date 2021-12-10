@@ -9,7 +9,8 @@ class TextMedicamentFormField extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<TextMedicamentFormField> createState() => _TextMedicamentFormFieldState();
+  State<TextMedicamentFormField> createState() =>
+      _TextMedicamentFormFieldState();
 }
 
 class _TextMedicamentFormFieldState extends State<TextMedicamentFormField> {
