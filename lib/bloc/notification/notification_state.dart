@@ -12,9 +12,11 @@ class NotificationState {
 }
 
 class NotificationInitialState extends NotificationState {
-  NotificationInitialState(NotificationsProvider notifications) : super(0, notifications);
+  NotificationInitialState(NotificationsProvider notifications)
+      : super(0, notifications);
 }
 
 class ReceivedNotificationState extends NotificationState {
-  ReceivedNotificationState(int? index, NotificationsProvider? notifications) : super(index, notifications);
+  ReceivedNotificationState(int? index, NotificationsProvider? notifications)
+      : super(index, notifications);
 }

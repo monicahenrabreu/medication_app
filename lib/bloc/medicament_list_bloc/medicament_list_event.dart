@@ -1,6 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 
-abstract class MedicamentListEvent {}
+abstract class MedicamentListEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
 
 class GetMedicamentListEvent extends MedicamentListEvent {
   GetMedicamentListEvent();
@@ -13,6 +17,9 @@ class AddMedicamentEvent extends MedicamentListEvent {
   final Medicament medicament;
 
   AddMedicamentEvent(this.date, this.title, this.hour, this.medicament);
+
+  @override
+  List<Object?> get props => [date, title, hour, medicament];
 }
 
 class AddRangeOfMedicamentEvent extends MedicamentListEvent {
@@ -24,4 +31,7 @@ class AddRangeOfMedicamentEvent extends MedicamentListEvent {
 
   AddRangeOfMedicamentEvent(
       this.fromDate, this.toDate, this.title, this.hour, this.medicamentList);
+
+  @override
+  List<Object?> get props => [fromDate, toDate, title, hour, medicamentList];
 }

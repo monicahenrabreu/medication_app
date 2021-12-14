@@ -6,13 +6,14 @@ class UserMedicamentListBloc
     extends Bloc<UserMedicamentListEvent, UserMedicamentListState> {
   final MedicamentProvider provider;
 
-  UserMedicamentListBloc(this.provider) : super(UserMedicamentListInitialState()) {
+  UserMedicamentListBloc(this.provider)
+      : super(UserMedicamentListInitialState()) {
     on<GetUserMedicamentListEvent>(_onGetUserMedicamentListEvent);
   }
 
   //TODO: QUESTION
-  void _onGetUserMedicamentListEvent(
-      GetUserMedicamentListEvent event, Emitter<UserMedicamentListState> emit) async {
+  void _onGetUserMedicamentListEvent(GetUserMedicamentListEvent event,
+      Emitter<UserMedicamentListState> emit) async {
     emit(state.copyLoading(isLoading: true));
     final medicamentList = provider.getUserMedicamentList();
     //emit(state.copyWith(medicamentList: medicamentList));

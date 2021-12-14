@@ -27,7 +27,8 @@ Future main() async {
   final box = Hive.box<MedicamentListEntity>(Constants.hiveBox);
 
   await Hive.openBox<MedicamentEntity>(Constants.hiveUserMedicaments);
-  final boxUserMedicaments = Hive.box<MedicamentEntity>(Constants.hiveUserMedicaments);
+  final boxUserMedicaments =
+      Hive.box<MedicamentEntity>(Constants.hiveUserMedicaments);
 
   final medicamentProvider = MedicamentProvider(box, boxUserMedicaments);
 

@@ -89,7 +89,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
         if (medicaments.isNotEmpty) {
           children = Positioned(
-            child: MedicamentCalendarMarker(date: date, medicaments: medicaments),
+            child:
+                MedicamentCalendarMarker(date: date, medicaments: medicaments),
           );
         }
         return children;

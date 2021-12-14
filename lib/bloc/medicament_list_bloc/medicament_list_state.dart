@@ -1,28 +1,26 @@
 import 'dart:collection';
+import 'package:equatable/equatable.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 
-class MedicamentListState {
+class MedicamentListState extends Equatable {
   final bool isLoading;
   late final LinkedHashMap<DateTime, List<Medicament>>? medicamentList;
 
-  MedicamentListState(this.isLoading, this.medicamentList);
+  MedicamentListState({required this.isLoading, this.medicamentList});
 
   MedicamentListState copyWith({
     bool? isLoading,
     LinkedHashMap<DateTime, List<Medicament>>? medicamentList,
   }) {
     return MedicamentListState(
-      isLoading ?? this.isLoading,
-      medicamentList ?? this.medicamentList,
+      isLoading: isLoading ?? this.isLoading,
+      medicamentList: medicamentList ?? this.medicamentList,
     );
   }
 
-  MedicamentListState copyLoading({
-    bool? isLoading,
-  }) {
-    return MedicamentListState(
-      isLoading ?? this.isLoading,
-      medicamentList,
+  MedicamentListLoadingState copyLoading() {
+    return MedicamentListLoadingState(
+      medicamentList: medicamentList,
     );
   }
 
@@ -33,8 +31,8 @@ class MedicamentListState {
     medicamentList!.addAll(map);
 
     return MedicamentListState(
-      isLoading,
-      medicamentList,
+      isLoading: isLoading,
+      medicamentList: medicamentList,
     );
   }
 
@@ -53,41 +51,46 @@ class MedicamentListState {
     }
 
     return MedicamentListState(
-      isLoading,
-      medicamentList,
+      isLoading: isLoading,
+      medicamentList: medicamentList,
     );
   }
 
   int getHashCode(DateTime key) {
     return key.day * 1000000 + key.month * 10000 + key.year;
   }
+
+  @override
+  List<Object?> get props => [isLoading, medicamentList];
 }
 
 class MedicamentListInitialState extends MedicamentListState {
   MedicamentListInitialState()
-      : super(false, LinkedHashMap<DateTime, List<Medicament>>());
+      : super(
+            isLoading: false,
+            medicamentList: LinkedHashMap<DateTime, List<Medicament>>());
 }
 
 class MedicamentListLoadingState extends MedicamentListState {
   MedicamentListLoadingState(
-      LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
-      : super(true, medicamentList);
+      {LinkedHashMap<DateTime, List<Medicament>>? medicamentList})
+      : super(isLoading: true, medicamentList: medicamentList);
 }
 
 class MedicamentListLoadedState extends MedicamentListState {
   MedicamentListLoadedState(
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
-      : super(false, medicamentList);
+      : super(isLoading: false, medicamentList: medicamentList);
 }
 
 class MedicamentAddedState extends MedicamentListState {
   MedicamentAddedState(
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
-      : super(false, medicamentList);
+      : super(isLoading: false, medicamentList: medicamentList);
 }
 
 class RangeMedicamentAddedState extends MedicamentListState {
   RangeMedicamentAddedState(
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
-      : super(false, medicamentList);
+      : super(isLoading: false, medicamentList: medicamentList);
 }

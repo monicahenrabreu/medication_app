@@ -78,10 +78,9 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
         String id = date + '--' + uuid.v1();
 
         Medicament medicament =
-        Medicament(id: id, title: _controllerName.text, hour: _time);
-        context
-            .read<MedicamentListBloc>()
-            .add(AddMedicamentEvent(calendar.selectedDay!, _controllerName.text, _time, medicament));
+            Medicament(id: id, title: _controllerName.text, hour: _time);
+        context.read<MedicamentListBloc>().add(AddMedicamentEvent(
+            calendar.selectedDay!, _controllerName.text, _time, medicament));
 
         DateTime notificationDate = DateTime(
             calendar.selectedDay!.year,
@@ -96,7 +95,6 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
       }
 
       if (calendar.rangeStartDay != null && calendar.rangeEndDay != null) {
-
         DateTime formDddate = calendar.rangeStartDay!;
         final toDate = calendar.rangeEndDay;
         List<Medicament> medicamentList = List.of([]);
@@ -109,28 +107,28 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
 
           String id = _formatedDate + '--' + uuid.v1();
 
-          Medicament medicament = Medicament(id: id, title: _controllerName.text, hour: _time);
+          Medicament medicament =
+              Medicament(id: id, title: _controllerName.text, hour: _time);
 
           medicamentList.add(medicament);
 
-          DateTime notificationDate = DateTime(
-              formDddate.year,
-              formDddate.month,
-              formDddate.day,
-              _time.hour,
-              _time.minute);
+          DateTime notificationDate = DateTime(formDddate.year,
+              formDddate.month, formDddate.day, _time.hour, _time.minute);
 
           print('notificationDate: ' + notificationDate.toString());
 
-          context
-              .read<NotificationBloc>()
-              .add(ScheduleDailyNotificationEvent(notificationDate, medicament));
+          context.read<NotificationBloc>().add(
+              ScheduleDailyNotificationEvent(notificationDate, medicament));
 
           formDddate = formDddate.add(const Duration(days: 1));
         }
 
         context.read<MedicamentListBloc>().add(AddRangeOfMedicamentEvent(
-            calendar.rangeStartDay!, calendar.rangeEndDay!, _controllerName.text, _time, medicamentList));
+            calendar.rangeStartDay!,
+            calendar.rangeEndDay!,
+            _controllerName.text,
+            _time,
+            medicamentList));
       }
     }
   }

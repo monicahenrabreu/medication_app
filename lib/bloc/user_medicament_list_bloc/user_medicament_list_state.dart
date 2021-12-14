@@ -27,18 +27,15 @@ class UserMedicamentListState {
 }
 
 class UserMedicamentListInitialState extends UserMedicamentListState {
-  UserMedicamentListInitialState()
-      : super(false, List.of([]));
+  UserMedicamentListInitialState() : super(false, List.of([]));
 }
 
 class UserMedicamentListLoadingState extends UserMedicamentListState {
-  UserMedicamentListLoadingState(
-      List<Medicament>? medicamentList)
+  UserMedicamentListLoadingState(List<Medicament>? medicamentList)
       : super(true, medicamentList);
 }
 
 class UserMedicamentListLoadedState extends UserMedicamentListState {
-  UserMedicamentListLoadedState(
-      List<Medicament>? medicamentList)
+  UserMedicamentListLoadedState(List<Medicament>? medicamentList)
       : super(false, medicamentList);
 }
