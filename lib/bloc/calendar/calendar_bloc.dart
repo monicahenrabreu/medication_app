@@ -16,6 +16,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<CalendarOnPageChangedEvent>(_onCalendarOnPageChangedEvent);
     on<CalendarOnFormatChangedEvent>(_onCalendarOnFormatChangedEvent);
     on<CalendarOnAddMedicamentEvent>(_onCalendarOnAddMedicamentEvent);
+    on<CalendarOnAddRangeOfMedicamentEvent>(
+        _onCalendarOnAddRangeOfMedicamentEvent);
   }
 
   void _onCalendarOnDaySelectedEvent(
@@ -23,6 +25,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Calendar? stateCalendar = state.calendar;
 
     if (stateCalendar != null) {
+      emit(state.copyLoading(isLoading: true));
+
       List<Medicament> medicamentList =
           _getEventsForDay(event.medicamentList, event.calendar.selectedDay!);
 
@@ -37,7 +41,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           rangeSelectionMode: RangeSelectionMode.toggledOff,
           selectedEvents: medicamentList);
 
-      emit(state.copyWith(calendar: newCalendar));
+      emit(state.copyWith(
+          isLoading: false,
+          calendar: newCalendar,
+          medicamentList: event.medicamentList));
     }
   }
 
@@ -46,6 +53,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Calendar? stateCalendar = state.calendar;
 
     if (stateCalendar != null) {
+      emit(state.copyLoading(isLoading: true));
       Calendar newCalendar = Calendar(
         firstDay: calendarFirstDay,
         lastDay: calendarLastDay,
@@ -56,7 +64,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         rangeEndDay: event.calendar.rangeEndDay,
         rangeSelectionMode: RangeSelectionMode.toggledOn,
       );
-      emit(state.copyWith(calendar: newCalendar));
+      emit(state.copyWith(
+          isLoading: false,
+          calendar: newCalendar,
+          medicamentList: event.medicamentList));
     }
   }
 
@@ -65,6 +76,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Calendar? stateCalendar = state.calendar;
 
     if (stateCalendar != null) {
+      emit(state.copyLoading(isLoading: true));
       Calendar newCalendar = Calendar(
           firstDay: stateCalendar.firstDay,
           lastDay: stateCalendar.lastDay,
@@ -74,7 +86,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           // Important to clean those
           rangeEndDay: stateCalendar.rangeEndDay,
           rangeSelectionMode: stateCalendar.rangeSelectionMode);
-      emit(state.copyWith(calendar: newCalendar));
+      emit(state.copyWith(isLoading: false, calendar: newCalendar));
     }
   }
 
@@ -94,10 +106,25 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   void _onCalendarOnAddMedicamentEvent(
       CalendarOnAddMedicamentEvent event, Emitter<CalendarState> emit) async {
-    emit(CalendarLoadingState(event.calendar, event.medicamentList));
-    // emit(state.copyWith(
-    //     calendar: event.calendar, medicamentList: event.medicamentList));
-    emit(CalendarLoadedState(event.calendar, event.medicamentList));
+    emit(state.copyLoading(isLoading: true));
+    emit(state.copyAddedMedicament(event.calendar, event.medicamentList));
+  }
+
+  void _onCalendarOnAddRangeOfMedicamentEvent(
+      CalendarOnAddRangeOfMedicamentEvent event,
+      Emitter<CalendarState> emit) async {
+    emit(state.copyLoading(isLoading: true));
+
+    Calendar calendar = state.copyWith().calendar!;
+    calendar.rangeStartDay = null;
+    calendar.rangeEndDay = null;
+    calendar.focusedDay = calendarToday;
+    calendar.selectedDay = calendarToday;
+    calendar.rangeSelectionMode = RangeSelectionMode.toggledOff;
+
+    //after added the range it will emit the added medicament event in order
+    //to only show the events of today
+    emit(state.copyAddedMedicament(event.calendar, event.medicamentList));
   }
 
   List<Medicament> _getEventsForDay(

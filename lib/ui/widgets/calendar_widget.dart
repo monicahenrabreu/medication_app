@@ -14,7 +14,11 @@ import 'package:intl/intl.dart';
 class CalendarWidget extends StatefulWidget {
   final LinkedHashMap<DateTime, List<Medicament>>? medicamentList;
 
-  const CalendarWidget({Key? key, this.medicamentList}) : super(key: key);
+  //if hasRange is true it will be possible to select a range
+  final bool hasRange;
+
+  const CalendarWidget({Key? key, this.medicamentList, this.hasRange = false})
+      : super(key: key);
 
   @override
   State<CalendarWidget> createState() => _CalendarWidgetState();
@@ -37,7 +41,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         eventLoader: widget.medicamentList == null ? null : _getEventsForDay,
         startingDayOfWeek: StartingDayOfWeek.monday,
         onDaySelected: _onDaySelected,
-        onRangeSelected: _onRangeSelected,
+        onRangeSelected: widget.hasRange ? _onRangeSelected : null,
         onFormatChanged: _onFormatChanged,
         onPageChanged: _onPageChanged,
         calendarBuilders: _calendarBuilder(),
@@ -71,7 +75,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         focusedDay: focusedDay,
         rangeStartDay: start,
         rangeEndDay: end);
-    context.read<CalendarBloc>().add(CalendarOnRangeSelectedEvent(calendar));
+    context
+        .read<CalendarBloc>()
+        .add(CalendarOnRangeSelectedEvent(calendar, widget.medicamentList));
   }
 
   void _onPageChanged(DateTime focusedDay) {

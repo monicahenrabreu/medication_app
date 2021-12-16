@@ -18,41 +18,26 @@ class MedicamentListState extends Equatable {
     );
   }
 
-  MedicamentListLoadingState copyLoading() {
+  MedicamentListLoadingState copyLoading({
+    bool? isLoading,
+  }) {
     return MedicamentListLoadingState(
+      isLoading: isLoading ?? this.isLoading,
       medicamentList: medicamentList,
     );
   }
 
-  MedicamentListState addMedicament(
-      {required Medicament medicament, required DateTime date}) {
-    List<Medicament> list = [medicament];
-    Map<DateTime, List<Medicament>> map = {date: list};
-    medicamentList!.addAll(map);
-
-    return MedicamentListState(
-      isLoading: isLoading,
-      medicamentList: medicamentList,
+  MedicamentAddedState addMedicament(
+      {required LinkedHashMap<DateTime, List<Medicament>> medicamentList}) {
+    return MedicamentAddedState(
+      medicamentList,
     );
   }
 
-  MedicamentListState addRangeOfMedicament(
-      {required Medicament medicament,
-      required DateTime fromDate,
-      required DateTime toDate}) {
-    List<Medicament> list = [medicament];
-    DateTime date = fromDate;
-
-    while (date.compareTo(toDate) <= 0) {
-      Map<DateTime, List<Medicament>> map = {date: list};
-      medicamentList!.addAll(map);
-
-      date = date.add(const Duration(days: 1));
-    }
-
-    return MedicamentListState(
-      isLoading: isLoading,
-      medicamentList: medicamentList,
+  RangeMedicamentAddedState addRangeOfMedicament(
+      {required LinkedHashMap<DateTime, List<Medicament>> medicamentList}) {
+    return RangeMedicamentAddedState(
+      medicamentList,
     );
   }
 
@@ -73,8 +58,9 @@ class MedicamentListInitialState extends MedicamentListState {
 
 class MedicamentListLoadingState extends MedicamentListState {
   MedicamentListLoadingState(
-      {LinkedHashMap<DateTime, List<Medicament>>? medicamentList})
-      : super(isLoading: true, medicamentList: medicamentList);
+      {required bool isLoading,
+      LinkedHashMap<DateTime, List<Medicament>>? medicamentList})
+      : super(isLoading: isLoading, medicamentList: medicamentList);
 }
 
 class MedicamentListLoadedState extends MedicamentListState {

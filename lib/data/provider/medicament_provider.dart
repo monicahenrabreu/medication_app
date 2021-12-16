@@ -44,8 +44,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
   }
 
   @override
-  Future<void> addMedicament(
-      DateTime date, String title, DateTime hour, Medicament medicament) async {
+  Future<bool> addMedicament(DateTime date, Medicament medicament) async {
     MedicamentEntity medicamentEntity = MedicamentEntity(
         id: medicament.id,
         title: medicament.title,
@@ -59,10 +58,11 @@ class MedicamentProvider extends BaseMedicamentProvider {
 
     medicamentEntity.dateOnlyOneTime = date;
     await hiveUserMedicamentsBox.add(medicamentEntity);
+    return true;
   }
 
   @override
-  Future<void> addRangeOfMedicament(DateTime fromDate, DateTime toDate,
+  Future<bool> addRangeOfMedicament(DateTime fromDate, DateTime toDate,
       String title, DateTime hour, List<Medicament> medicamentList) async {
     DateTime date = fromDate;
     int index = 0;
@@ -96,6 +96,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
         id: id, title: title, hour: hour, fromDate: fromDate, toDate: toDate);
 
     await hiveUserMedicamentsBox.add(medicamentEntity);
+    return true;
   }
 
   @override

@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Calendar {
+class Calendar extends Equatable {
   final DateTime firstDay;
   final DateTime lastDay;
   DateTime focusedDay;
@@ -22,4 +23,16 @@ class Calendar {
       this.rangeSelectionMode = RangeSelectionMode.toggledOff,
       this.calendarFormat = CalendarFormat.month,
       this.selectedEvents});
+
+  @override
+  List<Object?> get props => [
+        firstDay,
+        lastDay,
+        focusedDay,
+        selectedDay,
+        rangeStartDay,
+        rangeSelectionMode,
+        calendarFormat,
+        selectedEvents
+      ];
 }

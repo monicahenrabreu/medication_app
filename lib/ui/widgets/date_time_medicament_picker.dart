@@ -6,8 +6,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class DateTimeMedicamentPicker extends StatelessWidget {
   final TextEditingController timePickerController;
 
-  const DateTimeMedicamentPicker(this.timePickerController, {Key? key})
-      : super(key: key);
+  const DateTimeMedicamentPicker({
+    Key? key,
+    required this.timePickerController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

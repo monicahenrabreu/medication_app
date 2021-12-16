@@ -4,13 +4,14 @@ import 'package:medicaments_app/data/models/medicament.dart';
 abstract class BaseMedicamentProvider {
   LinkedHashMap<DateTime, List<Medicament>> getMedicamentList();
 
-  Future<void> addMedicament(
-      DateTime date, String title, DateTime hour, Medicament medicament);
+  Future<bool> addMedicament(DateTime date, Medicament medicament);
 
-  Future<void> addRangeOfMedicament(DateTime fromDate, DateTime toDate,
+  Future<bool> addRangeOfMedicament(DateTime fromDate, DateTime toDate,
       String title, DateTime hour, List<Medicament> medicamentList);
 
   Medicament? getMedicament(String date, String id);
 
   Medicament? editMedicament(String date, String id, bool tookMedicament);
+
+  List<Medicament>? getUserMedicamentList();
 }

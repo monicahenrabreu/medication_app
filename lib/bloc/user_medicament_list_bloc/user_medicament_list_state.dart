@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 
-class UserMedicamentListState {
+class UserMedicamentListState extends Equatable {
   final bool isLoading;
   late final List<Medicament>? medicamentList;
 
@@ -16,14 +17,26 @@ class UserMedicamentListState {
     );
   }
 
-  UserMedicamentListState copyLoading({
+  UserMedicamentListLoadingState copyLoading({
     bool? isLoading,
   }) {
-    return UserMedicamentListState(
-      isLoading ?? this.isLoading,
-      medicamentList,
+    return UserMedicamentListLoadingState(
+      isLoading: isLoading ?? this.isLoading,
+      medicamentList: medicamentList,
     );
   }
+
+  UserMedicamentListLoadedState copyResult({List<Medicament>? medicamentList}) {
+    return UserMedicamentListLoadedState(
+      medicamentList: medicamentList ?? this.medicamentList,
+    );
+  }
+
+  @override
+  int get hashCode => isLoading.hashCode ^ medicamentList.hashCode;
+
+  @override
+  List<Object?> get props => [isLoading, medicamentList];
 }
 
 class UserMedicamentListInitialState extends UserMedicamentListState {
@@ -31,11 +44,12 @@ class UserMedicamentListInitialState extends UserMedicamentListState {
 }
 
 class UserMedicamentListLoadingState extends UserMedicamentListState {
-  UserMedicamentListLoadingState(List<Medicament>? medicamentList)
-      : super(true, medicamentList);
+  UserMedicamentListLoadingState(
+      {required bool isLoading, List<Medicament>? medicamentList})
+      : super(isLoading, medicamentList);
 }
 
 class UserMedicamentListLoadedState extends UserMedicamentListState {
-  UserMedicamentListLoadedState(List<Medicament>? medicamentList)
+  UserMedicamentListLoadedState({required List<Medicament>? medicamentList})
       : super(false, medicamentList);
 }

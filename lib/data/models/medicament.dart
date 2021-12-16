@@ -1,4 +1,6 @@
-class Medicament {
+import 'package:equatable/equatable.dart';
+
+class Medicament extends Equatable {
   final String id;
   final String title;
   final DateTime hour;
@@ -15,4 +17,7 @@ class Medicament {
       this.fromDate,
       this.toDate,
       this.tookMedicament = false});
+
+  @override
+  List<Object?> get props => [id, title, hour, dateOnlyOneTime, fromDate, toDate, tookMedicament];
 }

@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/configs/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:medicaments_app/data/models/calendar.dart';
+import 'package:medicaments_app/ui/screens/home/utils.dart';
 
 class MedicamentListOfDay extends StatelessWidget {
   MedicamentListOfDay({Key? key}) : super(key: key);
@@ -15,15 +17,18 @@ class MedicamentListOfDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<CalendarBloc, CalendarState>(
       listener: (context, state) {
-        if (state is CalendarLoadedState) {
-          if (state.calendar!.selectedDay != null) {
-            context.read<CalendarBloc>().add(CalendarOnDaySelectedEvent(
-                state.calendar!, state.medicamentList));
-          } else {
-            context
-                .read<CalendarBloc>()
-                .add(CalendarOnRangeSelectedEvent(state.calendar!));
-          }
+        if (state is CalendarInitialState ||
+            state is CalendarAddedMedicamentState) {
+          Calendar calendar =
+              context.read<CalendarBloc>().state.copyWith().calendar!;
+
+          calendar.rangeStartDay = null;
+          calendar.rangeEndDay = null;
+          calendar.focusedDay = calendarToday;
+          calendar.selectedDay = calendarToday;
+
+          context.read<CalendarBloc>().add(CalendarOnDaySelectedEvent(
+              state.calendar!, state.medicamentList));
         }
       },
       child: Expanded(

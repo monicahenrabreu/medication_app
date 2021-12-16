@@ -44,7 +44,7 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
           alignment: WrapAlignment.start,
           runSpacing: 20.0,
           children: [
-            TextMedicamentFormField(_controllerName),
+            TextMedicamentFormField(controllerName: _controllerName),
             const SizedBox(
               height: 10.0,
             ),
@@ -52,7 +52,9 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
             const SizedBox(
               height: 10.0,
             ),
-            DateTimeMedicamentPicker(_timePickerController),
+            DateTimeMedicamentPicker(
+              timePickerController: _timePickerController,
+            ),
             SaveCancelMedicamentButton(_onPressedCancel, _onPressedSave),
           ],
         ),

@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TextMedicamentFormField extends StatefulWidget {
-  final TextEditingController _controllerName;
+  final TextEditingController controllerName;
 
-  const TextMedicamentFormField(this._controllerName, {Key? key})
-      : super(key: key);
+  const TextMedicamentFormField({
+    Key? key,
+    required this.controllerName,
+  }) : super(key: key);
 
   @override
   State<TextMedicamentFormField> createState() =>
@@ -17,7 +19,7 @@ class _TextMedicamentFormFieldState extends State<TextMedicamentFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        controller: widget._controllerName,
+        controller: widget.controllerName,
         validator: _validateName,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,

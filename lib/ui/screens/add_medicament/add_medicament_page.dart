@@ -28,8 +28,7 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
       ),
       body: BlocListener<MedicamentListBloc, MedicamentListState>(
         listener: (context, state) {
-          if (state is MedicamentAddedState ||
-              state is RangeMedicamentAddedState) {
+          if (state is MedicamentAddedState || state is RangeMedicamentAddedState) {
             final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
                 context.read<MedicamentListBloc>().state.medicamentList;
 
@@ -44,7 +43,12 @@ class _AddMedicamentPageState extends State<AddMedicamentPage> {
         child: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Column(
-            children: const [CalendarWidget(), AddMedicamentForm()],
+            children: const [
+              CalendarWidget(
+                hasRange: true,
+              ),
+              AddMedicamentForm()
+            ],
           ),
         ),
       ),

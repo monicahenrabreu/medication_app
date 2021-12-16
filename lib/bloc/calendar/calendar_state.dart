@@ -1,9 +1,10 @@
 import 'dart:collection';
+import 'package:equatable/equatable.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/screens/home/utils.dart';
 
-class CalendarState {
+class CalendarState extends Equatable {
   final bool isLoading;
   final Calendar? calendar;
   final LinkedHashMap<DateTime, List<Medicament>>? medicamentList;
@@ -24,6 +25,16 @@ class CalendarState {
   }) {
     return CalendarState(isLoading ?? this.isLoading, calendar, medicamentList);
   }
+
+  CalendarAddedMedicamentState copyAddedMedicament(
+    Calendar? calendar,
+    LinkedHashMap<DateTime, List<Medicament>>? medicamentList,
+  ) {
+    return CalendarAddedMedicamentState(calendar, medicamentList);
+  }
+
+  @override
+  List<Object?> get props => [isLoading, calendar, medicamentList];
 }
 
 class CalendarInitialState extends CalendarState {
@@ -33,7 +44,8 @@ class CalendarInitialState extends CalendarState {
             Calendar(
                 firstDay: calendarFirstDay,
                 lastDay: calendarLastDay,
-                focusedDay: calendarToday),
+                focusedDay: calendarToday,
+                selectedDay: calendarToday),
             LinkedHashMap<DateTime, List<Medicament>>());
 }
 
@@ -45,6 +57,12 @@ class CalendarLoadingState extends CalendarState {
 
 class CalendarLoadedState extends CalendarState {
   CalendarLoadedState(Calendar? calendar,
+      LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
+      : super(false, calendar, medicamentList);
+}
+
+class CalendarAddedMedicamentState extends CalendarState {
+  CalendarAddedMedicamentState(Calendar? calendar,
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
       : super(false, calendar, medicamentList);
 }
