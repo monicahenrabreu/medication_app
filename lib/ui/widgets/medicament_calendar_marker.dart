@@ -19,17 +19,18 @@ class MedicamentCalendarMarker extends StatefulWidget {
 class _MedicamentCalendarMarkerState extends State<MedicamentCalendarMarker> {
   @override
   Widget build(BuildContext context) {
-    bool took = false;
+    bool took = true;
 
     for (Medicament medicament in widget.medicaments) {
-      if (medicament.tookMedicament) {
-        took = true;
+      if (!medicament.tookMedicament) {
+        took = false;
+        break;
       }
     }
 
     DateTime now = DateTime.now();
 
-    if (widget.date.compareTo(DateTime(now.year, now.month, now.day)) < 0) {
+    if (widget.date.compareTo(now) < 0) {
       return Opacity(
         opacity: 0.9,
         child: Container(
