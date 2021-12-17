@@ -15,23 +15,23 @@ void main() {
 
     testWidgets('Both medicaments successfully tooked',
         (WidgetTester tester) async {
-      DateTime now = DateTime.now();
+      DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
 
       final medicamentCalendarMarker = medicamentCalendarMarkerTestableWidget(
           child: MedicamentCalendarMarker(
-        date: now.subtract(const Duration(hours: 1)),
+        date: yesterday.subtract(const Duration(hours: 1)),
         medicaments: [
           Medicament(
               id: '1',
               title: 'Bruffen',
-              dateOnlyOneTime: now,
-              hour: now,
+              dateOnlyOneTime: yesterday,
+              hour: yesterday,
               tookMedicament: true),
           Medicament(
               id: '2',
               title: 'Benouron',
-              dateOnlyOneTime: now,
-              hour: now,
+              dateOnlyOneTime: yesterday,
+              hour: yesterday,
               tookMedicament: true),
         ],
       ));
@@ -45,23 +45,23 @@ void main() {
 
     testWidgets('Both medicaments unsuccessfully tooked',
         (WidgetTester tester) async {
-      DateTime now = DateTime.now();
+      DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
 
       final medicamentCalendarMarker = medicamentCalendarMarkerTestableWidget(
           child: MedicamentCalendarMarker(
-        date: now,
+        date: yesterday,
         medicaments: [
           Medicament(
               id: '1',
               title: 'Bruffen',
-              dateOnlyOneTime: now,
-              hour: now,
+              dateOnlyOneTime: yesterday,
+              hour: yesterday,
               tookMedicament: false),
           Medicament(
               id: '2',
               title: 'Benouron',
-              dateOnlyOneTime: now,
-              hour: now,
+              dateOnlyOneTime: yesterday,
+              hour: yesterday,
               tookMedicament: true),
         ],
       ));

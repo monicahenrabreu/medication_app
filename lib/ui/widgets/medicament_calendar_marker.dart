@@ -28,9 +28,10 @@ class _MedicamentCalendarMarkerState extends State<MedicamentCalendarMarker> {
       }
     }
 
-    DateTime now = DateTime.now();
+    var now = DateTime.now();
+    var lastMidnight = DateTime(now.year, now.month, now.day);
 
-    if (widget.date.compareTo(now) < 0) {
+    if (widget.date.compareTo(lastMidnight) < 0) {
       return Opacity(
         opacity: 0.9,
         child: Container(
