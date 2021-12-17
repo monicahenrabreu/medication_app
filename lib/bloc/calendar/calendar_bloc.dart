@@ -14,7 +14,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<CalendarOnDaySelectedEvent>(_onCalendarOnDaySelectedEvent);
     on<CalendarOnRangeSelectedEvent>(_onCalendarOnRangeSelectedEvent);
     on<CalendarOnPageChangedEvent>(_onCalendarOnPageChangedEvent);
-    on<CalendarOnFormatChangedEvent>(_onCalendarOnFormatChangedEvent);
     on<CalendarOnAddMedicamentEvent>(_onCalendarOnAddMedicamentEvent);
     on<CalendarOnAddRangeOfMedicamentEvent>(
         _onCalendarOnAddRangeOfMedicamentEvent);
@@ -87,20 +86,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           rangeEndDay: stateCalendar.rangeEndDay,
           rangeSelectionMode: stateCalendar.rangeSelectionMode);
       emit(state.copyWith(isLoading: false, calendar: newCalendar));
-    }
-  }
-
-  void _onCalendarOnFormatChangedEvent(
-      CalendarOnFormatChangedEvent event, Emitter<CalendarState> emit) async {
-    Calendar? stateCalendar = state.calendar;
-
-    if (stateCalendar != null && stateCalendar.calendarFormat != event.format) {
-      Calendar newCalendar = Calendar(
-          firstDay: stateCalendar.firstDay,
-          lastDay: stateCalendar.lastDay,
-          focusedDay: stateCalendar.focusedDay,
-          calendarFormat: event.format);
-      emit(state.copyWith(calendar: newCalendar));
     }
   }
 

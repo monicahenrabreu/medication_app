@@ -42,7 +42,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         startingDayOfWeek: StartingDayOfWeek.monday,
         onDaySelected: _onDaySelected,
         onRangeSelected: widget.hasRange ? _onRangeSelected : null,
-        onFormatChanged: _onFormatChanged,
+        availableCalendarFormats: const {
+          CalendarFormat.month: 'Month',
+        },
         onPageChanged: _onPageChanged,
         calendarBuilders: _calendarBuilder(),
       );
@@ -82,10 +84,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   void _onPageChanged(DateTime focusedDay) {
     context.read<CalendarBloc>().add(CalendarOnPageChangedEvent(focusedDay));
-  }
-
-  void _onFormatChanged(CalendarFormat format) {
-    context.read<CalendarBloc>().add(CalendarOnFormatChangedEvent(format));
   }
 
   _calendarBuilder() {
