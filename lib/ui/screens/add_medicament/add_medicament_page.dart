@@ -9,16 +9,7 @@ import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/widgets/add_medicament_form.dart';
 import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
 
-class AddMedicamentPage extends StatefulWidget {
-  final int id;
-
-  const AddMedicamentPage({Key? key, required this.id}) : super(key: key);
-
-  @override
-  _AddMedicamentPageState createState() => _AddMedicamentPageState();
-}
-
-class _AddMedicamentPageState extends State<AddMedicamentPage> {
+class AddMedicamentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

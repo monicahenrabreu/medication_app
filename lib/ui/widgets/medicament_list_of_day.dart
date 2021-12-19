@@ -6,7 +6,7 @@ import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/configs/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
-import 'package:medicaments_app/ui/screens/home/utils.dart';
+import 'package:medicaments_app/utils/utils.dart';
 
 class MedicamentListOfDay extends StatelessWidget {
   MedicamentListOfDay({Key? key}) : super(key: key);

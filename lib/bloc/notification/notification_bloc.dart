@@ -14,6 +14,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<InitNotificationEvent>(_onInitNotificationEvent);
     on<ScheduleDailyNotificationEvent>(_onScheduleDailyNotificationEvent);
     on<RescheduleNotificationEvent>(_onRescheduleNotificationEvent);
+    on<SaveRescheduleSettingsEvent>(_onSaveRescheduleSettingsEvent);
   }
 
   _onInitNotificationEvent(
@@ -46,7 +47,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Future<void> _onRescheduleNotificationEvent(RescheduleNotificationEvent event,
       Emitter<NotificationState> emit) async {
     tz.TZDateTime date =
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5));
+        tz.TZDateTime.now(tz.local).add(Duration(seconds: state.rescheduleMinutes!));
 
     await state.notifications!.flutterLocalNotificationsPlugin.zonedSchedule(
         state.index!,
@@ -63,6 +64,10 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             UILocalNotificationDateInterpretation.absoluteTime);
 
     emit(state.copyWith(state.index! + 1));
+  }
+
+  _onSaveRescheduleSettingsEvent(SaveRescheduleSettingsEvent event, Emitter<NotificationState> emit) async {
+    emit(state.saveRescheduleMinutes(event.minutes));
   }
 
   tz.TZDateTime _scheduleDate(DateTime dateTime, DateTime hour) {

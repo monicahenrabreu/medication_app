@@ -22,6 +22,8 @@ class RescheduleNotificationEvent extends NotificationEvent {
   RescheduleNotificationEvent(this.medicament);
 }
 
-class ReceivedNotificationEvent extends NotificationEvent {
-  ReceivedNotificationEvent();
+class SaveRescheduleSettingsEvent extends NotificationEvent {
+  final int minutes;
+
+  SaveRescheduleSettingsEvent(this.minutes);
 }

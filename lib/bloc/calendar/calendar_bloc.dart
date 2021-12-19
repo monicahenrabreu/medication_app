@@ -5,7 +5,7 @@ import 'package:medicaments_app/bloc/calendar/calendar_state.dart';
 import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
-import 'package:medicaments_app/ui/screens/home/utils.dart';
+import 'package:medicaments_app/utils/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 

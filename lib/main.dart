@@ -17,7 +17,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   NotificationsProvider notifications = NotificationsProvider();
-  String initialRoute = await notifications.initialize();
+  await notifications.initialize();
 
   //Hive initialization
   await Hive.initFlutter();
@@ -49,7 +49,7 @@ Future main() async {
         ),
       ],
       child: MedicamentsApp(
-          initialRoute: initialRoute, medicamentProvider: medicamentProvider),
+          medicamentProvider: medicamentProvider),
     ),
   );
 }

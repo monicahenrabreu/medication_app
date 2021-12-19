@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:medicaments_app/data/models/received_notification.dart';
-import 'package:medicaments_app/ui/medicaments_app.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -28,7 +27,7 @@ class NotificationsProvider {
 
   NotificationsProvider();
 
-  Future<String> initialize() async {
+  Future<void> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
 
@@ -68,11 +67,9 @@ class NotificationsProvider {
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
     await _configureLocalTimeZone();
-    String initialRoute = routeHome;
 
     if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
       selectedNotificationPayload = notificationAppLaunchDetails!.payload;
-      initialRoute = routeTookMedicament;
     }
 
     await flutterLocalNotificationsPlugin.initialize(_initializationSettings,
@@ -83,8 +80,6 @@ class NotificationsProvider {
       selectedNotificationPayload = payload;
       selectNotificationSubject.add(payload);
     });
-
-    return initialRoute;
   }
 
   static Future<void> _configureLocalTimeZone() async {

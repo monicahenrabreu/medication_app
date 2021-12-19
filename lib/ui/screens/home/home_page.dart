@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:medicaments_app/ui/medicaments_app.dart';
 import 'package:medicaments_app/ui/widgets/add_medicament_icon.dart';
 import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
@@ -23,7 +22,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<MedicamentListBloc>().add(GetMedicamentListEvent());
-    context.read<NotificationBloc>().add(InitNotificationEvent(context));
   }
 
   @override
@@ -32,6 +30,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(AppLocalizations.of(context)!.medicamentsTitle),
+        actions: [
+          IconButton(
+            onPressed: _onPressedGoToAddMedicamentPage,
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
         builder: (context, state) {
@@ -47,16 +51,6 @@ class _HomePageState extends State<HomePage> {
               const AddMedicamentIcon(),
               const SizedBox(height: 8.0),
               MedicamentListOfDay(),
-              ElevatedButton(
-                child: Text(AppLocalizations.of(context)!.medicamentsPageTitle),
-                style: ElevatedButton.styleFrom(
-                  textStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 18),
-                  primary: Theme.of(context).primaryColor,
-                ),
-                onPressed: _onPressedMedicamentListPage,
-              ),
               const SizedBox(height: 15),
             ],
           );
@@ -65,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _onPressedMedicamentListPage() {
-    Navigator.of(context).pushNamed(routeMedicamentList);
+  void _onPressedGoToAddMedicamentPage() {
+    Navigator.of(context).pushNamed(routeAdd);
   }
 }
