@@ -8,6 +8,7 @@ import 'package:medicaments_app/data/models/calendar.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/ui/widgets/add_medicament_form.dart';
 import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddMedicamentPage extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class AddMedicamentPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('Add Medicament'),
+        title: Text(AppLocalizations.of(context)!.addMedicamentTitle),
       ),
       body: BlocListener<MedicamentListBloc, MedicamentListState>(
         listener: (context, state) {

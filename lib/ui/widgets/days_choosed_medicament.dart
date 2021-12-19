@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DaysChoosedMedicament extends StatelessWidget {
   const DaysChoosedMedicament({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class DaysChoosedMedicament extends StatelessWidget {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Only one day'),
+                    Text(AppLocalizations.of(context)!.daysChoosedMedicamentOnlyOneDay),
                     Text(_dateFormat.format(calendarState.selectedDay!)),
                   ],
                 )
@@ -35,7 +36,7 @@ class DaysChoosedMedicament extends StatelessWidget {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('From'),
+                    Text(AppLocalizations.of(context)!.daysChoosedMedicamentFrom),
                     Text(_dateFormat.format(calendarState.rangeStartDay!)),
                   ],
                 )
@@ -47,7 +48,7 @@ class DaysChoosedMedicament extends StatelessWidget {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('To'),
+                    Text(AppLocalizations.of(context)!.daysChoosedMedicamentTo),
                     Text(_dateFormat.format(calendarState.rangeEndDay!)),
                   ],
                 )

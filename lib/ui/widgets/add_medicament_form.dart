@@ -117,8 +117,6 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
           DateTime notificationDate = DateTime(formDddate.year,
               formDddate.month, formDddate.day, _time.hour, _time.minute);
 
-          print('notificationDate: ' + notificationDate.toString());
-
           context.read<NotificationBloc>().add(
               ScheduleDailyNotificationEvent(notificationDate, medicament));
 

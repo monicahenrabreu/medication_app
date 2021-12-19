@@ -3,6 +3,10 @@
   "@medicamentsTitle": {
     "description": "App name"
   },
+  "addMedicamentTitle": "Add Medicament",
+  "@addMedicamentTitle": {
+    "description": "Add Medicament page title"
+  },
   "addMedicamentName": "Nome do Medicamento",
   "@addMedicamentName": {
     "description": "Nome do Medicamento"
@@ -66,5 +70,37 @@
   "medicamentsPageAtHours": " às ",
   "@medicamentsPageAtHours": {
        "description": "Para especificar as horas"
-  }
+  },
+  "bottomNavigationBarItemHome": "Home",
+  "@bottomNavigationBarItemHome": {
+    "description": "Home - item de navegação"
+  },
+  "bottomNavigationBarItemMedicamentList": "Lista Medicamentos",
+  "@bottomNavigationBarItemMedicamentList": {
+    "description": "Lista Medicamentos - item de navegação"
+  },
+  "bottomNavigationBarItemSettings": "Settings",
+  "@bottomNavigationBarItemSettings": {
+    "description": "Settings - item de navegação"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Título da página Settings"
+  },
+  "settingsSnooze": "Por Snooze (minutos):",
+  "@settingsSnooze": {
+    "description": "Explica que esta é uma opção para fazer snooze"
+  },
+  "daysChoosedMedicamentOnlyOneDay": "Só um dia",
+  "@daysChoosedMedicamentOnlyOneDay": {
+    "description": "é mostrado caso o utilizador escolha apenas um dia"
+  },
+  "daysChoosedMedicamentFrom": "Deste",
+  "@daysChoosedMedicamentFrom": {
+    "description": "é mostrado caso o utilizador escolha um intervalo de dias"
+  },
+  "daysChoosedMedicamentTo": "até",
+  "@daysChoosedMedicamentTo": {
+    "description": "é mostrado caso o utilizador escolha um intervalo de dias"
+ }
 }

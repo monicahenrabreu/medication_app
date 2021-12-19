@@ -3,6 +3,10 @@
   "@medicamentsTitle": {
     "description": "App name"
   },
+  "addMedicamentTitle": "Add Medicament",
+  "@addMedicamentTitle": {
+    "description": "Add Medicament page title"
+  },
   "addMedicamentName": "Medicament name",
   "@addMedicamentName": {
     "description": "Name of the medicament"
@@ -66,5 +70,37 @@
   "medicamentsPageAtHours": " at ",
   "@medicamentsPageAtHours": {
     "description": "To specify the hours"
+  },
+  "bottomNavigationBarItemHome": "Home",
+  "@bottomNavigationBarItemHome": {
+    "description": "Home - navigation item"
+  },
+  "bottomNavigationBarItemMedicamentList": "Medicament List",
+  "@bottomNavigationBarItemMedicamentList": {
+    "description": "Medicament List - navigation item"
+  },
+  "bottomNavigationBarItemSettings": "Settings",
+  "@bottomNavigationBarItemSettings": {
+    "description": "Settings - navigation item"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title"
+  },
+  "settingsSnooze": "Set Snooze Time (in minutes):",
+  "@settingsSnooze": {
+    "description": "Explains that this is an option to set the snooze"
+  },
+  "daysChoosedMedicamentOnlyOneDay": "Only one day",
+  "@daysChoosedMedicamentOnlyOneDay": {
+    "description": "appears if the user only chooses one day"
+  },
+  "daysChoosedMedicamentFrom": "From",
+  "@daysChoosedMedicamentFrom": {
+    "description": "appears if the user chooses a range"
+  },
+  "daysChoosedMedicamentTo": "To",
+  "@daysChoosedMedicamentTo": {
+    "description": "appears if the user chooses a range"
   }
 }
