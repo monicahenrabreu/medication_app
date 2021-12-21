@@ -25,6 +25,7 @@ class _MedicamentsPageState extends State<MedicamentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(AppLocalizations.of(context)!.medicamentsTitle),
       ),

@@ -28,7 +28,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       Emitter<NotificationState> emit) async {
     await state.notifications!.flutterLocalNotificationsPlugin.zonedSchedule(
         state.index!,
-        event.medicament.title,
+        'Medication',
         event.medicament.title,
         _scheduleDate(event.date, event.medicament.hour),
         const NotificationDetails(
@@ -51,7 +51,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
     await state.notifications!.flutterLocalNotificationsPlugin.zonedSchedule(
         state.index!,
-        event.medicament.title,
+        'Medication',
         event.medicament.title,
         date,
         const NotificationDetails(

@@ -36,7 +36,10 @@ class MedicamentListOfDay extends StatelessWidget {
           builder: (context, state) {
             if (state.calendar!.selectedEvents == null ||
                 state.calendar!.selectedEvents!.isEmpty) {
-              return Text(AppLocalizations.of(context)!.noMedicaments);
+              return Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(AppLocalizations.of(context)!.noMedicaments),
+              );
             }
             return ListView.builder(
               itemCount: state.calendar!.selectedEvents!.length,

@@ -30,7 +30,7 @@ class MedicamentsApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xff6fbe53),
+        primaryColor: const Color(0xFF476c98),
       ),
 
       // Provide the generated AppLocalizations to the MaterialApp. This

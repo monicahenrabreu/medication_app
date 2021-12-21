@@ -15,6 +15,7 @@ class AddMedicamentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(AppLocalizations.of(context)!.addMedicamentTitle),
       ),

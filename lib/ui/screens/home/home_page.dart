@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/ui/medicaments_app.dart';
-import 'package:medicaments_app/ui/widgets/add_medicament_icon.dart';
 import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/widgets/medicament_list_of_day.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(AppLocalizations.of(context)!.medicamentsTitle),
         actions: [
@@ -47,8 +47,6 @@ class _HomePageState extends State<HomePage> {
           return Column(
             children: [
               CalendarWidget(medicamentList: state.copyWith().medicamentList),
-              const SizedBox(height: 8.0),
-              const AddMedicamentIcon(),
               const SizedBox(height: 8.0),
               MedicamentListOfDay(),
               const SizedBox(height: 15),
