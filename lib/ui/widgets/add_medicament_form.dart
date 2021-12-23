@@ -84,16 +84,21 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
         context.read<MedicamentListBloc>().add(AddMedicamentEvent(
             calendar.selectedDay!, _controllerName.text, _time, medicament));
 
-        DateTime notificationDate = DateTime(
-            calendar.selectedDay!.year,
-            calendar.selectedDay!.month,
-            calendar.selectedDay!.day,
-            _time.hour,
-            _time.minute);
+        DateTime now = DateTime.now();
 
-        context
-            .read<NotificationBloc>()
-            .add(ScheduleDailyNotificationEvent(notificationDate, medicament));
+        DateTime hoje = DateTime(now.year, now.month, now.day);
+
+        if (calendar.selectedDay!.compareTo(hoje) == 0) {
+          DateTime notificationDate = DateTime(
+              calendar.selectedDay!.year,
+              calendar.selectedDay!.month,
+              calendar.selectedDay!.day,
+              _time.hour,
+              _time.minute);
+
+          context.read<NotificationBloc>().add(
+              ScheduleDailyNotificationEvent(notificationDate, medicament));
+        }
       }
 
       if (calendar.rangeStartDay != null && calendar.rangeEndDay != null) {

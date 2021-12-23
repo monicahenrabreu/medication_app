@@ -44,6 +44,29 @@ class MedicamentProvider extends BaseMedicamentProvider {
   }
 
   @override
+  List<Medicament>? getMedicamentListOfDay(DateTime date) {
+    Map hiveMap = hiveBox.toMap();
+    List<Medicament> list = [];
+    final key = _dateFormat.format(date);
+
+    if (hiveMap.isNotEmpty) {
+      final medicamentEntities = hiveMap[key] as MedicamentListEntity;
+
+      if (medicamentEntities.medicamentEntities.isNotEmpty) {
+        for (var medicament in medicamentEntities.medicamentEntities) {
+          list.add(Medicament(
+              id: medicament.id,
+              title: medicament.title,
+              hour: medicament.hour,
+              tookMedicament: medicament.tookMedicament));
+        }
+      }
+    }
+
+    return list;
+  }
+
+  @override
   Future<bool> addMedicament(DateTime date, Medicament medicament) async {
     MedicamentEntity medicamentEntity = MedicamentEntity(
         id: medicament.id,

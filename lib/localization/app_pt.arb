@@ -102,5 +102,9 @@
   "daysChoosedMedicamentTo": "até",
   "@daysChoosedMedicamentTo": {
     "description": "é mostrado caso o utilizador escolha um intervalo de dias"
- }
+ },
+ "medicamentRemoved": "foi removido!",
+ "@medicamentRemoved": {
+    "description": "Esta mensagem é mostrada ao utilizador após ter removido um medicamento"
+  }
 }

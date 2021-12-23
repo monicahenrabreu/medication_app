@@ -27,8 +27,12 @@ class DaysChoosedMedicament extends StatelessWidget {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(AppLocalizations.of(context)!.daysChoosedMedicamentOnlyOneDay),
-                    Text(_dateFormat.format(calendarState.selectedDay!)),
+                    Expanded(
+                        child: Text(AppLocalizations.of(context)!
+                            .daysChoosedMedicamentOnlyOneDay)),
+                    Expanded(
+                        child: Text(
+                            _dateFormat.format(calendarState.selectedDay!))),
                   ],
                 )
               : Container(),
@@ -36,7 +40,8 @@ class DaysChoosedMedicament extends StatelessWidget {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(AppLocalizations.of(context)!.daysChoosedMedicamentFrom),
+                    Text(AppLocalizations.of(context)!
+                        .daysChoosedMedicamentFrom),
                     Text(_dateFormat.format(calendarState.rangeStartDay!)),
                   ],
                 )

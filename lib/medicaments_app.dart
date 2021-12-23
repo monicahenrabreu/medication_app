@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:medicaments_app/data/provider/medicament_provider.dart';
+import 'package:medicaments_app/data/provider/notifications_provider.dart';
 import 'package:medicaments_app/ui/app.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
 import 'package:medicaments_app/ui/screens/home/home_page.dart';
@@ -20,10 +21,13 @@ const String routeSettingsPageKey = 'settingsPage';
 
 class MedicamentsApp extends StatelessWidget {
   const MedicamentsApp(
-      {Key? key, required this.medicamentProvider})
+      {Key? key,
+      required this.medicamentProvider,
+      required this.notificationsProvider})
       : super(key: key);
 
   final MedicamentProvider medicamentProvider;
+  final NotificationsProvider notificationsProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +50,20 @@ class MedicamentsApp extends StatelessWidget {
         Locale('en', ''), // English, no country code
         Locale('pt', ''),
       ],
-      home: const App(),
+      home: App(
+        notificationsProvider: notificationsProvider,
+      ),
       routes: {
-        routeHome: (context) => const HomePage(key: PageStorageKey(routeHomeKey)),
+        routeHome: (context) =>
+            const HomePage(key: PageStorageKey(routeHomeKey)),
         routeTookMedicament: (context) =>
             TookMedicamentPage(medicamentProvider: medicamentProvider),
-        routeMedicamentList: (context) => const MedicamentsPage(key: PageStorageKey(routeMedicamentsPageKey)),
+        routeMedicamentList: (context) => MedicamentsPage(
+            notificationsProvider: notificationsProvider,
+            key: const PageStorageKey(routeMedicamentsPageKey)),
         routeAdd: (context) => AddMedicamentPage(),
-        routeSettings: (context) => const SettingsPage(key: PageStorageKey(routeSettingsPageKey)),
+        routeSettings: (context) =>
+            const SettingsPage(key: PageStorageKey(routeSettingsPageKey)),
       },
     );
   }

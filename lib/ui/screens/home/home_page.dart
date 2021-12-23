@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medicaments_app/ui/medicaments_app.dart';
+import 'package:medicaments_app/medicaments_app.dart';
 import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/widgets/medicament_list_of_day.dart';
 import 'package:flutter/cupertino.dart';

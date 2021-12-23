@@ -5,6 +5,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/ui/widgets/days_choosed_medicament.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MockCalendarBloc extends MockBloc<CalendarEvent, CalendarState>
     implements CalendarBloc {}
@@ -14,6 +16,18 @@ class CalendarStateFake extends Fake implements CalendarState {}
 class CalendarEventFake extends Fake implements CalendarEvent {}
 
 void main() {
+  final daysChoosedMedicamentWidget = MaterialApp(
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    home: Column(
+      children: const [DaysChoosedMedicament()],
+    ),
+  );
+
   group('DaysChoosedMedicament', () {
     setUpAll(() {
       registerFallbackValue(CalendarStateFake());
@@ -28,15 +42,7 @@ void main() {
             create: (context) => CalendarBloc(),
           ),
         ],
-        child: MaterialApp(
-          home: Scaffold(
-            body: Builder(
-              builder: (context) {
-                return const DaysChoosedMedicament();
-              },
-            ),
-          ),
-        ),
+        child: daysChoosedMedicamentWidget,
       );
 
       await tester.pumpWidget(daysChoosedMedicament);

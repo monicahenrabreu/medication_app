@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medicaments_app/data/provider/medicament_provider.dart';
-import 'package:medicaments_app/ui/medicaments_app.dart';
+import 'package:medicaments_app/data/provider/notifications_provider.dart';
+import 'package:medicaments_app/medicaments_app.dart';
 import 'package:medicaments_app/ui/screens/home/home_page.dart';
 import 'package:medicaments_app/ui/screens/medicaments/medicaments_page.dart';
 import 'package:medicaments_app/ui/screens/settings/settings_page.dart';
@@ -9,7 +9,9 @@ import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+  const App({Key? key, required this.notificationsProvider}) : super(key: key);
+
+  final NotificationsProvider notificationsProvider;
 
   @override
   State<App> createState() => _AppState();
@@ -17,19 +19,23 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _currentIndex = 0;
-  late MedicamentProvider medicamentProvider;
+  late NotificationsProvider notificationsProvider;
+  late var screens;
 
   @override
   void initState() {
     super.initState();
     context.read<NotificationBloc>().add(InitNotificationEvent(context));
-  }
+    notificationsProvider = widget.notificationsProvider;
 
-  final screens = [
-    const HomePage(key: PageStorageKey(routeHomeKey)),
-    const MedicamentsPage(key: PageStorageKey(routeMedicamentsPageKey)),
-    const SettingsPage(key: PageStorageKey(routeSettingsPageKey)),
-  ];
+    screens = [
+      const HomePage(key: PageStorageKey(routeHomeKey)),
+      MedicamentsPage(
+          notificationsProvider: notificationsProvider,
+          key: PageStorageKey(routeMedicamentsPageKey)),
+      const SettingsPage(key: PageStorageKey(routeSettingsPageKey)),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +56,17 @@ class _AppState extends State<App> {
           _currentIndex = index;
         }),
         items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.home), label: AppLocalizations.of(context)!.bottomNavigationBarItemHome),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.list), label: AppLocalizations.of(context)!.bottomNavigationBarItemMedicamentList),
-          BottomNavigationBarItem(icon: const Icon(Icons.settings), label: AppLocalizations.of(context)!.bottomNavigationBarItemSettings)
+              icon: const Icon(Icons.home),
+              label: AppLocalizations.of(context)!.bottomNavigationBarItemHome),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.list),
+              label: AppLocalizations.of(context)!
+                  .bottomNavigationBarItemMedicamentList),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.settings),
+              label:
+                  AppLocalizations.of(context)!.bottomNavigationBarItemSettings)
         ],
       ),
     );

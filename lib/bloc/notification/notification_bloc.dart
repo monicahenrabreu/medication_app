@@ -5,7 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicaments_app/bloc/notification/notification_event.dart';
 import 'package:medicaments_app/bloc/notification/notification_state.dart';
 import 'package:medicaments_app/data/provider/notifications_provider.dart';
-import 'package:medicaments_app/ui/medicaments_app.dart';
+import 'package:medicaments_app/medicaments_app.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
@@ -26,8 +26,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Future<void> _onScheduleDailyNotificationEvent(
       ScheduleDailyNotificationEvent event,
       Emitter<NotificationState> emit) async {
+    int index = state.notifications!.getIndex();
     await state.notifications!.flutterLocalNotificationsPlugin.zonedSchedule(
-        state.index!,
+        index,
         'Medication',
         event.medicament.title,
         _scheduleDate(event.date, event.medicament.hour),
@@ -41,16 +42,19 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
 
-    emit(state.copyWith(state.index! + 1));
+    state.notifications!.setIndex(index + 1);
+    emit(state.copyWith(state.notifications!.getIndex()));
   }
 
   Future<void> _onRescheduleNotificationEvent(RescheduleNotificationEvent event,
       Emitter<NotificationState> emit) async {
-    tz.TZDateTime date =
-        tz.TZDateTime.now(tz.local).add(Duration(seconds: state.rescheduleMinutes!));
+    tz.TZDateTime date = tz.TZDateTime.now(tz.local)
+        .add(Duration(seconds: state.rescheduleMinutes!));
+
+    int index = state.notifications!.getIndex();
 
     await state.notifications!.flutterLocalNotificationsPlugin.zonedSchedule(
-        state.index!,
+        index,
         'Medication',
         event.medicament.title,
         date,
@@ -63,10 +67,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
 
-    emit(state.copyWith(state.index! + 1));
+    state.notifications!.setIndex(index + 1);
+    emit(state.copyWith(state.notifications!.getIndex()));
   }
 
-  _onSaveRescheduleSettingsEvent(SaveRescheduleSettingsEvent event, Emitter<NotificationState> emit) async {
+  _onSaveRescheduleSettingsEvent(SaveRescheduleSettingsEvent event,
+      Emitter<NotificationState> emit) async {
     emit(state.saveRescheduleMinutes(event.minutes));
   }
 
