@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medicaments_app/data/provider/notifications_provider.dart';
 import 'package:medicaments_app/medicaments_app.dart';
 import 'package:medicaments_app/ui/screens/home/home_page.dart';
 import 'package:medicaments_app/ui/screens/medicaments/medicaments_page.dart';
@@ -9,9 +8,7 @@ import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class App extends StatefulWidget {
-  const App({Key? key, required this.notificationsProvider}) : super(key: key);
-
-  final NotificationsProvider notificationsProvider;
+  const App({Key? key}) : super(key: key);
 
   @override
   State<App> createState() => _AppState();
@@ -19,21 +16,17 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _currentIndex = 0;
-  late NotificationsProvider notificationsProvider;
   late var screens;
 
   @override
   void initState() {
     super.initState();
     context.read<NotificationBloc>().add(InitNotificationEvent(context));
-    notificationsProvider = widget.notificationsProvider;
 
-    screens = [
-      const HomePage(key: PageStorageKey(routeHomeKey)),
-      MedicamentsPage(
-          notificationsProvider: notificationsProvider,
-          key: PageStorageKey(routeMedicamentsPageKey)),
-      const SettingsPage(key: PageStorageKey(routeSettingsPageKey)),
+    screens = const [
+      HomePage(key: PageStorageKey(routeHomeKey)),
+      MedicamentsPage(key: PageStorageKey(routeMedicamentsPageKey)),
+      SettingsPage(key: PageStorageKey(routeSettingsPageKey)),
     ];
   }
 

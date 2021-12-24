@@ -7,10 +7,7 @@ import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/provider/medicament_provider.dart';
 
 class TookMedicamentPage extends StatelessWidget {
-  MedicamentProvider medicamentProvider;
-
   TookMedicamentPage({
-    required this.medicamentProvider,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +23,8 @@ class TookMedicamentPage extends StatelessWidget {
       id = argument.toString();
       List<String> medicamentId = argument.toString().split('--');
       date = medicamentId.first;
-      medicament = medicamentProvider.getMedicament(date, id);
+      //TODO: convert into a bloc
+      medicament = context.read<MedicamentProvider>().getMedicament(date, id);
     }
 
     if (medicament == null) {
@@ -49,7 +47,9 @@ class TookMedicamentPage extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  medicamentProvider.editMedicament(date!, id, true);
+                  context
+                      .read<MedicamentProvider>()
+                      .editMedicament(date!, id, true);
                   Navigator.pop(context);
                 },
                 child: Text(AppLocalizations.of(context)!.didTakeMedicamentYes),
@@ -60,7 +60,9 @@ class TookMedicamentPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  medicamentProvider.editMedicament(date!, id, false);
+                  context
+                      .read<MedicamentProvider>()
+                      .editMedicament(date!, id, false);
                   Navigator.pop(context);
                 },
                 child: Text(AppLocalizations.of(context)!.didTakeMedicamentNo),
@@ -70,7 +72,9 @@ class TookMedicamentPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  medicamentProvider.editMedicament(date!, id, false);
+                  context
+                      .read<MedicamentProvider>()
+                      .editMedicament(date!, id, false);
                   context
                       .read<NotificationBloc>()
                       .add(RescheduleNotificationEvent(medicament!));
