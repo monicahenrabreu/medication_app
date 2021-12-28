@@ -31,11 +31,13 @@ class _MedicamentsPageState extends State<MedicamentsPage> {
       ),
       body: BlocBuilder<UserMedicamentListBloc, UserMedicamentListState>(
         builder: (context, state) {
-          if (state is UserMedicamentListLoadingState) {
-            return const CircularProgressIndicator();
+
+          print('MedicamentsPage: state.copyWith().medicamentList');
+          print(state.copyWith().medicamentList!.length);
+          if (state is UserMedicamentListLoadedState) {
+            return UserMedicamentsWidget();
           }
-          return UserMedicamentsWidget(
-              medicaments: state.copyWith().medicamentList!);
+          return const CircularProgressIndicator();
         },
       ),
     );

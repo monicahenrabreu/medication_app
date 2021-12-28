@@ -1,32 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medicaments_app/bloc/user_medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/provider/notifications_provider.dart';
 import 'package:medicaments_app/ui/widgets/date_and_hours.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserMedicamentsWidget extends StatefulWidget {
-  final List<Medicament> medicaments;
-
-  const UserMedicamentsWidget({required this.medicaments, Key? key})
-      : super(key: key);
+  const UserMedicamentsWidget({Key? key}) : super(key: key);
 
   @override
   State<UserMedicamentsWidget> createState() => _UserMedicamentsWidgetState();
 }
 
 class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
-  late final List<Medicament> medicaments;
-
-  @override
-  void initState() {
-    super.initState();
-    medicaments = widget.medicaments;
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    List<Medicament> medicaments =
+    context.read<UserMedicamentListBloc>().state.copyWith().medicamentList!;
+
     return ListView.builder(
       itemCount: medicaments.length,
       itemBuilder: (context, index) {
@@ -34,7 +29,7 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
         return Dismissible(
           key: Key(item.id),
           onDismissed: (direction) {
-            _removeNotifications(index);
+            _removeNotifications(index, medicaments[index].id);
             final snackBar = SnackBar(
               content: Text(medicaments[index].title +
                   ' ' +
@@ -66,10 +61,10 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
     );
   }
 
-  void _removeNotifications(int index) async {
+  void _removeNotifications(int index, String id) async {
     //TODO: Check if the medicament to remove is from today in order to only search the notification if exists
     context
         .read<NotificationsProvider>()
-        .cancelNotification(medicaments[index].id);
+        .cancelNotification(id);
   }
 }
