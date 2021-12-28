@@ -1,12 +1,13 @@
+import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/configs/constants.dart';
+import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:medicaments_app/data/models/calendar.dart';
-import 'package:medicaments_app/utils/utils.dart';
 
 class MedicamentListOfDay extends StatelessWidget {
   MedicamentListOfDay({Key? key}) : super(key: key);
@@ -15,55 +16,49 @@ class MedicamentListOfDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CalendarBloc, CalendarState>(
-      listener: (context, state) {
-        if (state is CalendarInitialState ||
-            state is CalendarAddedMedicamentState) {
-          Calendar calendar =
-              context.read<CalendarBloc>().state.copyWith().calendar!;
+    final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
+        context.read<MedicamentListBloc>().state.copyWith().medicamentList;
 
-          calendar.rangeStartDay = null;
-          calendar.rangeEndDay = null;
-          calendar.focusedDay = calendarToday;
-          calendar.selectedDay = calendarToday;
+    return BlocBuilder<CalendarBloc, CalendarState>(builder: (context, state) {
+      if (state.copyWith().calendar!.selectedDay != null) {
+        DateTime selectedDay = state.copyWith().calendar!.selectedDay!;
 
-          context.read<CalendarBloc>().add(CalendarOnDaySelectedEvent(
-              state.calendar!, state.medicamentList));
+        DateTime dd =
+            DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
+
+        List<Medicament> medicaments = medicamentList![dd] ?? [];
+
+        if (medicaments.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Text(AppLocalizations.of(context)!.noMedicaments),
+          );
         }
-      },
-      child: Expanded(
-        child: BlocBuilder<CalendarBloc, CalendarState>(
-          builder: (context, state) {
-            if (state.calendar!.selectedEvents == null ||
-                state.calendar!.selectedEvents!.isEmpty) {
-              return Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Text(AppLocalizations.of(context)!.noMedicaments),
+
+        return Expanded(
+          child: ListView.builder(
+            itemCount: medicaments.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 4.0,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: ListTile(
+                  title: Text(medicaments[index].title),
+                  subtitle: Text(_timeFormat.format(medicaments[index].hour)),
+                ),
               );
-            }
-            return ListView.builder(
-              itemCount: state.calendar!.selectedEvents!.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                    vertical: 4.0,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: ListTile(
-                    title: Text(state.calendar!.selectedEvents![index].title),
-                    subtitle: Text(_timeFormat
-                        .format(state.calendar!.selectedEvents![index].hour)),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
+            },
+          ),
+        );
+      } else {
+        return const CircularProgressIndicator();
+      }
+    });
   }
 }

@@ -21,15 +21,22 @@ class AddMedicamentPage extends StatelessWidget {
       ),
       body: BlocListener<MedicamentListBloc, MedicamentListState>(
         listener: (context, state) {
-          if (state is MedicamentAddedState || state is RangeMedicamentAddedState) {
+          if (state is MedicamentAddedState ||
+              state is RangeMedicamentAddedState) {
             final LinkedHashMap<DateTime, List<Medicament>>? medicamentList =
                 context.read<MedicamentListBloc>().state.medicamentList;
 
             Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 
-            context
-                .read<CalendarBloc>()
-                .add(CalendarOnAddMedicamentEvent(calendar!, medicamentList));
+            if (state is MedicamentAddedState) {
+              context
+                  .read<CalendarBloc>()
+                  .add(CalendarOnAddMedicamentEvent(calendar!, medicamentList));
+            } else if (state is RangeMedicamentAddedState) {
+              context.read<CalendarBloc>().add(
+                  CalendarOnAddRangeOfMedicamentEvent(
+                      calendar!, medicamentList));
+            }
             Navigator.of(context).pop();
           }
         },
