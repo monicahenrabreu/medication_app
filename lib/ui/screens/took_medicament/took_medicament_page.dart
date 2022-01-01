@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/provider/medicament_provider.dart';
+import 'package:medicaments_app/data/provider/notifications_provider.dart';
 
 class TookMedicamentPage extends StatelessWidget {
-  TookMedicamentPage({
+  const TookMedicamentPage({
     Key? key,
   }) : super(key: key);
 
@@ -23,7 +25,6 @@ class TookMedicamentPage extends StatelessWidget {
       id = argument.toString();
       List<String> medicamentId = argument.toString().split('--');
       date = medicamentId.first;
-      //TODO: convert into a bloc
       medicament = context.read<MedicamentProvider>().getMedicament(date, id);
     }
 
@@ -50,7 +51,7 @@ class TookMedicamentPage extends StatelessWidget {
                   context
                       .read<MedicamentProvider>()
                       .editMedicament(date!, id, true);
-                  Navigator.pop(context);
+                  _addNextNotifications(context);
                 },
                 child: Text(AppLocalizations.of(context)!.didTakeMedicamentYes),
                 style: ElevatedButton.styleFrom(
@@ -63,7 +64,7 @@ class TookMedicamentPage extends StatelessWidget {
                   context
                       .read<MedicamentProvider>()
                       .editMedicament(date!, id, false);
-                  Navigator.pop(context);
+                  _addNextNotifications(context);
                 },
                 child: Text(AppLocalizations.of(context)!.didTakeMedicamentNo),
                 style: ElevatedButton.styleFrom(
@@ -91,5 +92,32 @@ class TookMedicamentPage extends StatelessWidget {
         );
       }),
     );
+  }
+
+  //if this medicament is the last one of the of day then fetch the medicaments for next day
+  void _addNextNotifications(BuildContext context) async {
+    List<PendingNotificationRequest> numberOfNotifications = await context
+        .read<NotificationsProvider>()
+        .flutterLocalNotificationsPlugin
+        .pendingNotificationRequests();
+
+    if (numberOfNotifications.isEmpty) {
+      DateTime now = DateTime.now();
+      DateTime tomorrow =
+          DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
+
+      List<Medicament> medicaments =
+          context.read<MedicamentProvider>().getMedicamentListOfDay(tomorrow) ??
+              [];
+
+      if (medicaments.isNotEmpty) {
+        medicaments.forEach((medicament) async {
+          await context.read<NotificationsProvider>().scheduleDailyNotification(
+              medicament.id, medicament.title, tomorrow, medicament.hour);
+        });
+      }
+    }
+
+    Navigator.pop(context);
   }
 }

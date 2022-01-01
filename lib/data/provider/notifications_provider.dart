@@ -14,6 +14,9 @@ class NotificationsProvider {
 
   int _index = 0;
 
+  FlutterLocalNotificationsPlugin get flutterLocalNotificationsPlugin =>
+      _flutterLocalNotificationsPlugin;
+
   /// Streams are created so that app can respond to notification-related events
   /// since the plugin is initialised in the `main` function
   final BehaviorSubject<ReceivedNotification>
