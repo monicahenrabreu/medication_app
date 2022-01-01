@@ -55,8 +55,7 @@ class TookMedicamentPage extends StatelessWidget {
                 },
                 child: Text(AppLocalizations.of(context)!.didTakeMedicamentYes),
                 style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context)
-                      .primaryColor, // set the background color
+                  primary: const Color(0xff6fbe53), // set the background color
                 ),
               ),
               ElevatedButton(
