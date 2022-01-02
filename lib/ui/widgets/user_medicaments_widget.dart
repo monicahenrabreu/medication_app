@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/bloc/user_medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/provider/notifications_provider.dart';
@@ -16,20 +18,24 @@ class UserMedicamentsWidget extends StatefulWidget {
 
 class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
 
+  late List<Medicament> medicaments;
+
+  @override
+  void initState() {
+    medicaments =
+    context.read<UserMedicamentListBloc>().state.copyWith().medicamentList!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    List<Medicament> medicaments =
-    context.read<UserMedicamentListBloc>().state.copyWith().medicamentList!;
-
     return ListView.builder(
       itemCount: medicaments.length,
       itemBuilder: (context, index) {
-        final item = medicaments[index];
         return Dismissible(
-          key: Key(item.id),
-          onDismissed: (direction) {
-            _removeNotifications(index, medicaments[index].id);
+          key: UniqueKey(),
+          onDismissed: (_) {
+            _removeNotifications(medicaments[index]);
             final snackBar = SnackBar(
               content: Text(medicaments[index].title +
                   ' ' +
@@ -61,10 +67,31 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
     );
   }
 
-  void _removeNotifications(int index, String id) async {
-    //TODO: Check if the medicament to remove is from today in order to only search the notification if exists
-    context
-        .read<NotificationsProvider>()
-        .cancelNotification(id);
+  //if the medicament to remove is from today in order to only search the notification if exists
+  void _removeNotifications(Medicament medicament) async {
+
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    DateTime selectedD = DateTime(medicament.dateOnlyOneTime!.year, medicament.dateOnlyOneTime!.month, medicament.dateOnlyOneTime!.day);
+
+    if(selectedD.compareTo(today) == 0 && medicament.hour.compareTo(today) > 0) {
+      List<PendingNotificationRequest> pendingNotifications = await context
+          .read<NotificationsProvider>()
+          .flutterLocalNotificationsPlugin
+          .pendingNotificationRequests();
+
+      pendingNotifications.forEach((element) {
+        if(element.payload == medicament.id){
+          context
+              .read<NotificationsProvider>()
+              .flutterLocalNotificationsPlugin.cancel(element.id);
+          print('notificacao eliminada! ' + medicament.id);
+        }
+      });
+    }
+    if(medicament.dateOnlyOneTime != null) {
+      context.read<UserMedicamentListBloc>().add(RemoveUserMedicamentEvent(medicament));
+      context.read<MedicamentListBloc>().add(RemoveMedicamentEvent(medicament.dateOnlyOneTime!, medicament));
+    }
   }
 }

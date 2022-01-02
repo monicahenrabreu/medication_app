@@ -41,6 +41,13 @@ class MedicamentListState extends Equatable {
     );
   }
 
+  MedicamentRemovedState removeMedicament(
+      {required LinkedHashMap<DateTime, List<Medicament>> medicamentList}) {
+    return MedicamentRemovedState(
+      medicamentList,
+    );
+  }
+
   int getHashCode(DateTime key) {
     return key.day * 1000000 + key.month * 10000 + key.year;
   }
@@ -77,6 +84,12 @@ class MedicamentAddedState extends MedicamentListState {
 
 class RangeMedicamentAddedState extends MedicamentListState {
   RangeMedicamentAddedState(
+      LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
+      : super(isLoading: false, medicamentList: medicamentList);
+}
+
+class MedicamentRemovedState extends MedicamentListState {
+  MedicamentRemovedState(
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
       : super(isLoading: false, medicamentList: medicamentList);
 }

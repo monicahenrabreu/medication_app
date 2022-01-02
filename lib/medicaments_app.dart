@@ -45,7 +45,7 @@ class MedicamentsApp extends StatelessWidget {
       routes: {
         routeHome: (_) =>
             const HomePage(key: PageStorageKey(routeHomeKey)),
-        routeTookMedicament: (_) => TookMedicamentPage(),
+        routeTookMedicament: (_) => const TookMedicamentPage(),
         routeMedicamentList: (_) =>
             const MedicamentsPage(key: PageStorageKey(routeMedicamentsPageKey)),
         routeAdd: (_) => AddMedicamentPage(),

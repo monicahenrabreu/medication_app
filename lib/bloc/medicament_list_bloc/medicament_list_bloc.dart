@@ -11,6 +11,7 @@ class MedicamentListBloc
     on<GetMedicamentListEvent>(_onGetMedicamentListEvent);
     on<AddMedicamentEvent>(_onAddMedicamentEvent);
     on<AddRangeOfMedicamentEvent>(_onAddRangeOfMedicamentEvent);
+    on<RemoveMedicamentEvent>(_onRemoveMedicamentEvent);
   }
 
   void _onGetMedicamentListEvent(
@@ -35,5 +36,13 @@ class MedicamentListBloc
         event.title, event.hour, event.medicamentList);
     final medicamentList = provider.getMedicamentList();
     emit(state.addRangeOfMedicament(medicamentList: medicamentList));
+  }
+
+  void _onRemoveMedicamentEvent(
+      RemoveMedicamentEvent event, Emitter<MedicamentListState> emit) async {
+    emit(state.copyLoading(isLoading: true));
+    await provider.removeMedicament(event.date, event.medicament);
+    final medicamentList = provider.getMedicamentList();
+    emit(state.removeMedicament(medicamentList: medicamentList));
   }
 }

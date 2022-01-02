@@ -49,7 +49,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
     List<Medicament> list = [];
     final key = _dateFormat.format(date);
 
-    if (hiveMap.isNotEmpty) {
+    if (hiveMap.isNotEmpty && hiveMap[key] != null) {
       final medicamentEntities = hiveMap[key] as MedicamentListEntity;
 
       if (medicamentEntities.medicamentEntities.isNotEmpty) {
@@ -123,6 +123,37 @@ class MedicamentProvider extends BaseMedicamentProvider {
   }
 
   @override
+  Future<bool> removeMedicament(DateTime date, Medicament medicament) async {
+
+    final _dateFormat = DateFormat(Constants.dateFormat);
+
+    final key = _dateFormat.format(date);
+
+    List<MedicamentEntity> medicamentsEntities = hiveBox.get(key)!.medicamentEntities;
+
+    var sss = null;
+
+    for (var medicamentEntity in medicamentsEntities) {
+      if(medicamentEntity.id == medicament.id){
+        sss = medicamentEntity;
+        break;
+      }
+    }
+
+    if(sss != null){
+      MedicamentListEntity? www = hiveBox.get(key);
+
+      if(www != null){
+        List<MedicamentEntity> meee = www.medicamentEntities;
+        meee.remove(sss);
+        hiveBox.put(key, www);
+      }
+    }
+
+    return true;
+  }
+
+  @override
   Medicament? getMedicament(String date, String id) {
     Map hiveMap = hiveBox.toMap();
 
@@ -188,5 +219,30 @@ class MedicamentProvider extends BaseMedicamentProvider {
     }
 
     return medicamentList;
+  }
+
+  @override
+  Future<bool> removeUserMedicament(String id) async {
+    Iterable<MedicamentEntity> medicaments = hiveUserMedicamentsBox.values;
+
+    int index = -1;
+    late MedicamentEntity m;
+
+    for (var medicamentEntity in medicaments) {
+      if(medicamentEntity.id == id){
+        m = medicamentEntity;
+        index++;
+        break;
+      }
+      index++;
+    }
+
+    if(m != null){
+      MedicamentEntity? ooo = hiveUserMedicamentsBox.getAt(index);
+      await hiveUserMedicamentsBox.deleteAt(index);
+      print(ooo!.title);
+    }
+
+    return true;
   }
 }

@@ -9,11 +9,20 @@ class UserMedicamentListBloc
   UserMedicamentListBloc(this.provider)
       : super(UserMedicamentListInitialState()) {
     on<GetUserMedicamentListEvent>(_onGetUserMedicamentListEvent);
+    on<RemoveUserMedicamentEvent>(_onRemoveUserMedicamentEvent);
   }
 
   void _onGetUserMedicamentListEvent(GetUserMedicamentListEvent event,
       Emitter<UserMedicamentListState> emit) async {
     emit(state.copyLoading(isLoading: true));
+    final medicamentList = provider.getUserMedicamentList();
+    emit(state.copyResult(medicamentList: medicamentList));
+  }
+
+  void _onRemoveUserMedicamentEvent(
+      RemoveUserMedicamentEvent event, Emitter<UserMedicamentListState> emit) async {
+    emit(state.copyLoading(isLoading: true));
+    await provider.removeUserMedicament(event.medicament.id);
     final medicamentList = provider.getUserMedicamentList();
     emit(state.copyResult(medicamentList: medicamentList));
   }

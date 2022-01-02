@@ -68,6 +68,8 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
     }
 
     DateTime _time = _timeFormat.parse(_timePickerController.value.text);
+    DateTime now = DateTime.now();
+    DateTime hoje = DateTime(now.year, now.month, now.day, _time.hour, _time.minute);
     Calendar? calendar = context.read<CalendarBloc>().state.calendar;
 
     if (calendar != null) {
@@ -80,19 +82,21 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
         String id = date + '--' + uuid.v1();
 
         Medicament medicament =
-            Medicament(id: id, title: _controllerName.text, hour: _time);
+            Medicament(id: id, title: _controllerName.text, hour: hoje);
         context.read<MedicamentListBloc>().add(AddMedicamentEvent(
-            calendar.selectedDay!, _controllerName.text, _time, medicament));
+            calendar.selectedDay!, _controllerName.text, hoje, medicament));
 
         DateTime now = DateTime.now();
 
-        DateTime hoje = DateTime(now.year, now.month, now.day);
+        DateTime today = DateTime(now.year, now.month, now.day);
 
-        if (calendar.selectedDay!.compareTo(hoje) == 0) {
+        DateTime selectedD = DateTime(calendar.selectedDay!.year, calendar.selectedDay!.month, calendar.selectedDay!.day);
+
+        if (selectedD.compareTo(today) == 0 && calendar.selectedDay!.compareTo(today) > 0) {
           DateTime notificationDate = DateTime(
-              calendar.selectedDay!.year,
-              calendar.selectedDay!.month,
-              calendar.selectedDay!.day,
+              selectedD.year,
+              selectedD.month,
+              selectedD.day,
               _time.hour,
               _time.minute);
 
