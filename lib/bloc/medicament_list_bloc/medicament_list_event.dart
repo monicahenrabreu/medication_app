@@ -45,3 +45,12 @@ class RemoveMedicamentEvent extends MedicamentListEvent {
   @override
   List<Object?> get props => [date, medicament];
 }
+
+class RemoveMedicamentRangeEvent extends MedicamentListEvent {
+  final Medicament medicament;
+
+  RemoveMedicamentRangeEvent(this.medicament);
+
+  @override
+  List<Object?> get props => [medicament];
+}

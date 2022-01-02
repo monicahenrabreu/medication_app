@@ -13,6 +13,8 @@ abstract class BaseMedicamentProvider {
 
   Future<bool> removeMedicament(DateTime date, Medicament medicament);
 
+  Future<bool> removeRangeMedicaments(Medicament medicament);
+
   Medicament? getMedicament(String date, String id);
 
   Medicament? editMedicament(String date, String id, bool tookMedicament);
