@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:medicaments_app/ui/app.dart';
+import 'package:medicaments_app/app.dart';
 import 'package:medicaments_app/ui/screens/add_medicament/add_medicament_page.dart';
 import 'package:medicaments_app/ui/screens/home/home_page.dart';
 import 'package:medicaments_app/ui/screens/medicaments/medicaments_page.dart';
@@ -45,7 +45,7 @@ class MedicamentsApp extends StatelessWidget {
       routes: {
         routeHome: (_) =>
             const HomePage(key: PageStorageKey(routeHomeKey)),
-        routeTookMedicament: (_) => TookMedicamentPage(),
+        routeTookMedicament: (_) => const TookMedicamentPage(),
         routeMedicamentList: (_) =>
             const MedicamentsPage(key: PageStorageKey(routeMedicamentsPageKey)),
         routeAdd: (_) => AddMedicamentPage(),

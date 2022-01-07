@@ -35,3 +35,22 @@ class AddRangeOfMedicamentEvent extends MedicamentListEvent {
   @override
   List<Object?> get props => [fromDate, toDate, title, hour, medicamentList];
 }
+
+class RemoveMedicamentEvent extends MedicamentListEvent {
+  final DateTime date;
+  final Medicament medicament;
+
+  RemoveMedicamentEvent(this.date, this.medicament);
+
+  @override
+  List<Object?> get props => [date, medicament];
+}
+
+class RemoveMedicamentRangeEvent extends MedicamentListEvent {
+  final Medicament medicament;
+
+  RemoveMedicamentRangeEvent(this.medicament);
+
+  @override
+  List<Object?> get props => [medicament];
+}

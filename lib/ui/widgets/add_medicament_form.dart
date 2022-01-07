@@ -68,7 +68,10 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
     }
 
     DateTime _time = _timeFormat.parse(_timePickerController.value.text);
+    DateTime now = DateTime.now();
+    DateTime hoje = DateTime(now.year, now.month, now.day, _time.hour, _time.minute);
     Calendar? calendar = context.read<CalendarBloc>().state.calendar;
+    DateTime today = DateTime(now.year, now.month, now.day);
 
     if (calendar != null) {
       if (calendar.selectedDay != null) {
@@ -80,19 +83,17 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
         String id = date + '--' + uuid.v1();
 
         Medicament medicament =
-            Medicament(id: id, title: _controllerName.text, hour: _time);
+            Medicament(id: id, title: _controllerName.text, hour: hoje);
         context.read<MedicamentListBloc>().add(AddMedicamentEvent(
-            calendar.selectedDay!, _controllerName.text, _time, medicament));
+            calendar.selectedDay!, _controllerName.text, hoje, medicament));
 
-        DateTime now = DateTime.now();
+        DateTime selectedD = DateTime(calendar.selectedDay!.year, calendar.selectedDay!.month, calendar.selectedDay!.day);
 
-        DateTime hoje = DateTime(now.year, now.month, now.day);
-
-        if (calendar.selectedDay!.compareTo(hoje) == 0) {
+        if (selectedD.compareTo(today) == 0 && calendar.selectedDay!.compareTo(today) > 0) {
           DateTime notificationDate = DateTime(
-              calendar.selectedDay!.year,
-              calendar.selectedDay!.month,
-              calendar.selectedDay!.day,
+              selectedD.year,
+              selectedD.month,
+              selectedD.day,
               _time.hour,
               _time.minute);
 
@@ -105,25 +106,32 @@ class _AddMedicamentFormState extends State<AddMedicamentForm> {
         DateTime formDddate = calendar.rangeStartDay!;
         final toDate = calendar.rangeEndDay;
         List<Medicament> medicamentList = List.of([]);
+        var uuid = const Uuid();
+        String uniqueId = uuid.v1();
 
         while (formDddate.compareTo(toDate!) <= 0) {
           final _dateFormat = DateFormat(Constants.dateFormat);
           final _formatedDate = _dateFormat.format(formDddate);
 
-          var uuid = const Uuid();
+          DateTime d = DateTime(formDddate.year, formDddate.month, formDddate.day, _time.hour, _time.minute);
 
-          String id = _formatedDate + '--' + uuid.v1();
+          String id = _formatedDate + '--' + uniqueId;
 
           Medicament medicament =
-              Medicament(id: id, title: _controllerName.text, hour: _time);
+              Medicament(id: id, title: _controllerName.text, hour: d);
 
           medicamentList.add(medicament);
 
           DateTime notificationDate = DateTime(formDddate.year,
               formDddate.month, formDddate.day, _time.hour, _time.minute);
 
-          context.read<NotificationBloc>().add(
-              ScheduleDailyNotificationEvent(notificationDate, medicament));
+          DateTime dd = DateTime(formDddate.year,
+              formDddate.month, formDddate.day);
+
+          if(dd.compareTo(today) == 0 && d.compareTo(now) > 0 ){
+            context.read<NotificationBloc>().add(
+                ScheduleDailyNotificationEvent(notificationDate, medicament));
+          }
 
           formDddate = formDddate.add(const Duration(days: 1));
         }

@@ -6,7 +6,6 @@ import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/models/medicament_entity.dart';
 import 'package:medicaments_app/data/models/medicament_list_entity.dart';
 import 'package:medicaments_app/data/provider/base_medicament_provider.dart';
-import 'package:uuid/uuid.dart';
 
 class MedicamentProvider extends BaseMedicamentProvider {
   final Box<MedicamentListEntity> hiveBox;
@@ -49,7 +48,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
     List<Medicament> list = [];
     final key = _dateFormat.format(date);
 
-    if (hiveMap.isNotEmpty) {
+    if (hiveMap.isNotEmpty && hiveMap[key] != null) {
       final medicamentEntities = hiveMap[key] as MedicamentListEntity;
 
       if (medicamentEntities.medicamentEntities.isNotEmpty) {
@@ -108,17 +107,88 @@ class MedicamentProvider extends BaseMedicamentProvider {
       index++;
     }
 
-    var uuid = const Uuid();
-
-    final _dateFormat = DateFormat(Constants.dateFormat);
-    final _formatedDate = _dateFormat.format(date);
-
-    String id = _formatedDate + '--' + uuid.v1();
+    List<String> medicamentId = medicamentList.first.id.toString().split('--');
+    String uniqueId = medicamentId.last;
 
     MedicamentEntity medicamentEntity = MedicamentEntity(
-        id: id, title: title, hour: hour, fromDate: fromDate, toDate: toDate);
+        id: uniqueId, title: title, hour: hour, fromDate: fromDate, toDate: toDate);
 
     await hiveUserMedicamentsBox.add(medicamentEntity);
+    return true;
+  }
+
+  @override
+  Future<bool> removeMedicament(DateTime date, Medicament medicament) async {
+
+    final _dateFormat = DateFormat(Constants.dateFormat);
+
+    final key = _dateFormat.format(date);
+
+    List<MedicamentEntity> medicamentsEntities = hiveBox.get(key)!.medicamentEntities;
+
+    var sss = null;
+
+    for (var medicamentEntity in medicamentsEntities) {
+      if(medicamentEntity.id == medicament.id){
+        sss = medicamentEntity;
+        break;
+      }
+    }
+
+    if(sss != null){
+      MedicamentListEntity? www = hiveBox.get(key);
+
+      if(www != null){
+        List<MedicamentEntity> meee = www.medicamentEntities;
+        meee.remove(sss);
+        hiveBox.put(key, www);
+      }
+    }
+
+    return true;
+  }
+
+  @override
+  Future<bool> removeRangeMedicaments(Medicament medicament) async {
+
+    DateTime date = medicament.fromDate!;
+    DateTime endDate = medicament.toDate!;
+    final _dateFormat = DateFormat(Constants.dateFormat);
+
+    while (date.compareTo(endDate) <= 0) {
+      final key = _dateFormat.format(date);
+
+      List<MedicamentEntity> medicamentsEntities = hiveBox.get(key)!.medicamentEntities;
+
+      if(medicamentsEntities.isNotEmpty){
+
+        MedicamentEntity? medicamentToRemove = null;
+
+        for (var medicamentEntity in medicamentsEntities) {
+
+          List<String> medicamentEntityId = medicamentEntity.id.toString().split('--');
+          String medicamentEntityUniqueId = medicamentEntityId.last;
+
+          if(medicamentEntityUniqueId == medicament.id){
+            medicamentToRemove = medicamentEntity;
+            break;
+          }
+        }
+
+        if(medicamentToRemove != null){
+          MedicamentListEntity? medicamentListEntity = hiveBox.get(key);
+
+          if(medicamentListEntity != null){
+            List<MedicamentEntity> medicamentEntities = medicamentListEntity.medicamentEntities;
+            medicamentEntities.remove(medicamentToRemove);
+            hiveBox.put(key, medicamentListEntity);
+          }
+        }
+      }
+
+      date = date.add(const Duration(days: 1));
+    }
+
     return true;
   }
 
@@ -188,5 +258,28 @@ class MedicamentProvider extends BaseMedicamentProvider {
     }
 
     return medicamentList;
+  }
+
+  @override
+  Future<bool> removeUserMedicament(String id) async {
+    Iterable<MedicamentEntity> medicaments = hiveUserMedicamentsBox.values;
+
+    int index = -1;
+    MedicamentEntity? medicament;
+
+    for (var medicamentEntity in medicaments) {
+      if(medicamentEntity.id == id){
+        medicament = medicamentEntity;
+        index++;
+        break;
+      }
+      index++;
+    }
+
+    if(medicament != null){
+      await hiveUserMedicamentsBox.deleteAt(index);
+    }
+
+    return true;
   }
 }

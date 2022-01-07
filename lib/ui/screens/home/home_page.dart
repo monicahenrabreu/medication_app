@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medicaments_app/data/models/medicament.dart';
+import 'package:medicaments_app/data/provider/medicament_provider.dart';
+import 'package:medicaments_app/data/provider/notifications_provider.dart';
 import 'package:medicaments_app/medicaments_app.dart';
 import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/widgets/medicament_list_of_day.dart';
@@ -39,6 +43,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocBuilder<MedicamentListBloc, MedicamentListState>(
         builder: (context, state) {
+          if(state is MedicamentListInitialState) {
+            _addNextNotifications(context);
+          }
           if (state is MedicamentListLoadingState) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -59,5 +66,29 @@ class _HomePageState extends State<HomePage> {
 
   void _onPressedGoToAddMedicamentPage() {
     Navigator.of(context).pushNamed(routeAdd);
+  }
+
+  void _addNextNotifications(BuildContext context) async {
+    List<PendingNotificationRequest> numberOfNotifications = await context
+        .read<NotificationsProvider>()
+        .flutterLocalNotificationsPlugin
+        .pendingNotificationRequests();
+
+    if (numberOfNotifications.isEmpty) {
+      DateTime now = DateTime.now();
+
+      List<Medicament> medicaments =
+          context.read<MedicamentProvider>().getMedicamentListOfDay(now) ??
+              [];
+
+      if (medicaments.isNotEmpty) {
+        medicaments.forEach((medicament) async {
+          if(medicament.hour.compareTo(now) >= 0){
+            await context.read<NotificationsProvider>().scheduleDailyNotification(
+                medicament.id, medicament.title, now, medicament.hour);
+          }
+        });
+      }
+    }
   }
 }
