@@ -5,6 +5,9 @@ workflows:
   default-workflow:
     name: Default Workflow
     max_build_duration: 60
+    environment:
+      groups:
+        - group
     triggering:
       events:
         - push
@@ -60,7 +63,7 @@ workflows:
         recipients:
           - monica.henr.abreu@gmail.com
       firebase:
-        firebase_token: $FIREBASE_TOKEN
+        firebase_token: Encrypted($FIREBASE_TOKEN)
         ios:
           app_id: 1:971328283453:ios:c21bce313d3d4eb8159b54
           groups:
