@@ -1,0 +1,71 @@
+# Automatically generated on 2022-01-08 UTC from https://codemagic.io/app/61c44a1717920f0a50aa393c/settings
+# Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
+
+workflows:
+  default-workflow:
+    name: Default Workflow
+    max_build_duration: 60
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: master
+          include: true
+          source: false
+      tag_patterns:
+        - pattern: '*'
+          include: true
+    scripts:
+      - |
+        # set up debug keystore
+        rm -f ~/.android/debug.keystore
+        keytool -genkeypair \
+          -alias androiddebugkey \
+          -keypass android \
+          -keystore ~/.android/debug.keystore \
+          -storepass android \
+          -dname 'CN=Android Debug,O=Android,C=US' \
+          -keyalg 'RSA' \
+          -keysize 2048 \
+          -validity 10000
+      - |
+        # set up local properties
+        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+      - flutter packages pub get
+      - |
+        echo $ANDROID_FIREBASE_JSON | base64 --decode > $FCI_BUILD_DIR/android/app/google-services.json
+        echo $IOS_FIREBASE_JSON | base64 --decode > $FCI_BUILD_DIR/ios/Runner/GoogleService-Info.plist
+      - flutter build appbundle --release
+      - |
+        # generate universal apk signed with debug key
+        android-app-bundle build-universal-apk \
+          --bundle build/**/outputs/**/*.aab \
+          --ks ~/.android/debug.keystore \
+          --ks-pass android \
+          --ks-key-alias androiddebugkey \
+          --key-pass android
+      - find . -name "Podfile" -execdir pod install \;
+      - flutter build ios --release --no-codesign
+    artifacts:
+      - build/**/outputs/apk/**/*.apk
+      - build/**/outputs/bundle/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - '*.snap'
+      - build/windows/**/*.msix
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - monica.henr.abreu@gmail.com
+      firebase:
+        firebase_token: $FIREBASE_TOKEN
+        ios:
+          app_id: 1:971328283453:ios:c21bce313d3d4eb8159b54
+          groups:
+            - ios-testers
+        android:
+          app_id: 1:971328283453:android:5dac659229e6d091159b54
+          groups:
+            - android-testers
