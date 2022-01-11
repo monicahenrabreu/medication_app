@@ -45,6 +45,8 @@ class _AppState extends State<App> {
         currentIndex: _currentIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white54,
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
         onTap: (index) => setState(() {
           _currentIndex = index;
         }),
