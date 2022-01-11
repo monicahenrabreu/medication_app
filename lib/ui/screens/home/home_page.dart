@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(AppLocalizations.of(context)!.medicamentsTitle),
+        title: Text(AppLocalizations.of(context)!.homeTitle),
         actions: [
           IconButton(
             onPressed: _onPressedGoToAddMedicamentPage,

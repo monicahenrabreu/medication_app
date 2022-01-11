@@ -3,9 +3,17 @@
   "@medicamentsTitle": {
     "description": "App name"
   },
-  "addMedicamentTitle": "Add Medicament",
+  "homeTitle": "Medication",
+  "@homeTitle": {
+    "description": "Medication page title"
+  },
+  "medicamentListTitle": "Lista de Medicamentos",
+  "@medicamentListTitle": {
+     "description": "Título da página da Lista de Medicamentos"
+  },
+  "addMedicamentTitle": "Adicionar Medicamento",
   "@addMedicamentTitle": {
-    "description": "Add Medicament page title"
+    "description": "Título da página de Adicionar Medicamento"
   },
   "addMedicamentName": "Nome do Medicamento",
   "@addMedicamentName": {

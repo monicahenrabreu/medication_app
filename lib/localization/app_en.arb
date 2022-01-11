@@ -1,7 +1,15 @@
 {
   "medicamentsTitle": "Medication",
   "@medicamentsTitle": {
-    "description": "App name"
+    "description": "Nome da App"
+  },
+  "homeTitle": "Medication",
+  "@homeTitle": {
+    "description": "Medication page title"
+  },
+  "medicamentListTitle": "Medicament List",
+  "@medicamentListTitle": {
+    "description": "Medicament List page title"
   },
   "addMedicamentTitle": "Add Medicament",
   "@addMedicamentTitle": {

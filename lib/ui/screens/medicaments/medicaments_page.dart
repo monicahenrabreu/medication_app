@@ -27,7 +27,7 @@ class _MedicamentsPageState extends State<MedicamentsPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(AppLocalizations.of(context)!.medicamentsTitle),
+        title: Text(AppLocalizations.of(context)!.medicamentListTitle),
       ),
       body: BlocBuilder<UserMedicamentListBloc, UserMedicamentListState>(
         builder: (context, state) {
