@@ -36,3 +36,10 @@ To notify the user that he needs to take the medication it is used the [flutter_
 
 ## Quick overview
 ![](./assets/images/Medication_app.gif)
+
+
+## Next steps
+* Give a clear view to the user if he took that specific medicament by just add a check or a cross Icon next to the description
+* If you get the notification but you delete it you will never have a change to see the **Did you take the medication** screen,
+so the idea is to add the possibility to the user to click on the medicament and open this screen
+* Give to the user the possibility to take a medicament X times per day
