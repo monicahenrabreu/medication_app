@@ -1,16 +1,38 @@
-# medicaments_app
+# Medication App
 
-A new Flutter project.
+Medication App is a Flutter project that helps you reminder all the medication throughout the day by notifying you.
 
-## Getting Started
+This app has **5 pages**:
+* **Home** - here you will see a calendar with all the medication and if you already took the pill in the last days
+* **Add Medicament** - here you can add a medicament and set the hours in order to be remembered
+* **Medicaments List** - has all the medication that you are taking
+* **Settings** - where you can set the Snooze Time (in minutes) of the medication
+* **Did you take the medication** - this page appears because a notification was received, and it asks if you took that medicament at that hour
 
-This project is a starting point for a Flutter application.
+## What is used
+### Localization
 
-A few resources to get you started if this is your first Flutter project:
+This project generates localized messages based on arb files found in
+the `lib/localization` directory.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Right now, the languages used are the english and the portuguese.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To support additional languages, please visit the tutorial on
+[Internationalizing Flutter
+apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+
+### State Management
+
+In order to manage the state inside this app is used the [flutter_bloc](https://pub.dev/packages/flutter_bloc).
+
+### Data Base
+
+To save the medication, it was used [hive](https://pub.dev/packages/hive).
+
+### Flutter Local Notifications
+
+To notify the user that he needs to take the medication it is used the [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications).
+
+
+## Quick overview
+![](./assets/images/Medication_app.gif)
