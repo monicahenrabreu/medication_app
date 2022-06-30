@@ -27,6 +27,9 @@ dependencies:
   uuid: ^3.0.5
   equatable: ^2.0.3
 
+dependency_overrides:
+  platform: 3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
