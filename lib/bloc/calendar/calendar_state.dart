@@ -9,7 +9,7 @@ class CalendarState extends Equatable {
   final Calendar? calendar;
   final LinkedHashMap<DateTime, List<Medicament>>? medicamentList;
 
-  CalendarState(this.isLoading, this.calendar, this.medicamentList);
+  const CalendarState(this.isLoading, this.calendar, this.medicamentList);
 
   CalendarState copyWith({
     bool? isLoading,
@@ -50,19 +50,19 @@ class CalendarInitialState extends CalendarState {
 }
 
 class CalendarLoadingState extends CalendarState {
-  CalendarLoadingState(Calendar? calendar,
+  const CalendarLoadingState(Calendar? calendar,
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
       : super(true, calendar, medicamentList);
 }
 
 class CalendarLoadedState extends CalendarState {
-  CalendarLoadedState(Calendar? calendar,
+  const CalendarLoadedState(Calendar? calendar,
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
       : super(false, calendar, medicamentList);
 }
 
 class CalendarAddedMedicamentState extends CalendarState {
-  CalendarAddedMedicamentState(Calendar? calendar,
+  const CalendarAddedMedicamentState(Calendar? calendar,
       LinkedHashMap<DateTime, List<Medicament>>? medicamentList)
       : super(false, calendar, medicamentList);
 }

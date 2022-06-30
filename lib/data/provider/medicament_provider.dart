@@ -126,7 +126,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
 
     List<MedicamentEntity> medicamentsEntities = hiveBox.get(key)!.medicamentEntities;
 
-    var sss = null;
+    var sss;
 
     for (var medicamentEntity in medicamentsEntities) {
       if(medicamentEntity.id == medicament.id){
@@ -162,7 +162,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
 
       if(medicamentsEntities.isNotEmpty){
 
-        MedicamentEntity? medicamentToRemove = null;
+        MedicamentEntity? medicamentToRemove;
 
         for (var medicamentEntity in medicamentsEntities) {
 

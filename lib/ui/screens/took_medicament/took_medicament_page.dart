@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicaments_app/bloc/notification/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/provider/medicament_provider.dart';

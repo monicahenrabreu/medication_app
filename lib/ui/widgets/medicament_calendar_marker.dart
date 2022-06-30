@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 
 class MedicamentCalendarMarker extends StatefulWidget {

@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
@@ -11,6 +10,8 @@ import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddMedicamentPage extends StatelessWidget {
+  const AddMedicamentPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

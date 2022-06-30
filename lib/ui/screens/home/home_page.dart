@@ -8,7 +8,6 @@ import 'package:medicaments_app/data/provider/notifications_provider.dart';
 import 'package:medicaments_app/medicaments_app.dart';
 import 'package:medicaments_app/ui/widgets/calendar_widget.dart';
 import 'package:medicaments_app/ui/widgets/medicament_list_of_day.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {

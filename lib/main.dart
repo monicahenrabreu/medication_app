@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:medicaments_app/bloc/calendar/bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';

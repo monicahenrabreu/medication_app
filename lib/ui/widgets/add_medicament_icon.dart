@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:medicaments_app/medicaments_app.dart';
 
 class AddMedicamentIcon extends StatelessWidget {

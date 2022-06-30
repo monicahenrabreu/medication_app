@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/provider/base_medicament_provider.dart';
-import 'medicament_list_event.dart';
 
 class MedicamentListBloc
     extends Bloc<MedicamentListEvent, MedicamentListState> {
