@@ -29,6 +29,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarBloc, CalendarState>(builder: (context, state) {
       return TableCalendar<Medicament>(
+        headerStyle: const HeaderStyle(
+          titleCentered: true,
+        ),
         firstDay: calendarFirstDay,
         lastDay: calendarLastDay,
         focusedDay: state.calendar!.focusedDay,
