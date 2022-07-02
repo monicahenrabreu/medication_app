@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:intl/intl.dart';
+import 'package:medicaments_app/ui/widgets/list_tile_medicament_subtitle_widget.dart';
 
 class ListTileMedicamentWidget extends StatelessWidget {
-  ListTileMedicamentWidget({Key? key, required this.medicament})
+  ListTileMedicamentWidget(
+      {Key? key, required this.medicament, this.showDetails = false})
       : super(key: key);
 
   final Medicament medicament;
+  final bool showDetails;
 
   final DateFormat _timeFormat = DateFormat(Constants.hourFormat);
 
@@ -25,9 +28,14 @@ class ListTileMedicamentWidget extends StatelessWidget {
       child: ListTile(
         title: Text(
           '${medicament.title} - ${_timeFormat.format(medicament.hour)}',
-          style: TextStyle(fontSize: 14),
+          style: const TextStyle(fontSize: 14),
         ),
-        trailing: medicament.hour.compareTo(DateTime.now()) < 0
+        subtitle: showDetails
+            ? ListTileMedicamentSubtitleWidget(
+                medicament: medicament,
+              )
+            : null,
+        trailing: showDetails && medicament.hour.compareTo(DateTime.now()) < 0
             ? (medicament.tookMedicament
                 ? const Icon(
                     Icons.check,

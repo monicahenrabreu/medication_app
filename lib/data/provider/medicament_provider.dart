@@ -66,19 +66,18 @@ class MedicamentProvider extends BaseMedicamentProvider {
   }
 
   @override
-  Future<bool> addMedicament(DateTime date, Medicament medicament) async {
+  Future<bool> addMedicament(DateTime dateTime, Medicament medicament) async {
     MedicamentEntity medicamentEntity = MedicamentEntity(
         id: medicament.id,
         title: medicament.title,
         hour: medicament.hour,
+        dateOnlyOneTime: dateTime,
         tookMedicament: medicament.tookMedicament);
-    final key = _dateFormat.format(date);
+    final key = _dateFormat.format(dateTime);
     final MedicamentListEntity currentList =
         hiveBox.get(key) ?? MedicamentListEntity(medicamentEntities: []);
     currentList.medicamentEntities.add(medicamentEntity);
-    await hiveBox.put(_dateFormat.format(date), currentList);
-
-    medicamentEntity.dateOnlyOneTime = date;
+    await hiveBox.put(_dateFormat.format(dateTime), currentList);
     await hiveUserMedicamentsBox.add(medicamentEntity);
     return true;
   }
@@ -99,7 +98,9 @@ class MedicamentProvider extends BaseMedicamentProvider {
       MedicamentEntity medicamentEntity = MedicamentEntity(
           id: medicamentList[index].id,
           title: medicamentList[index].title,
-          hour: medicamentList[index].hour);
+          hour: medicamentList[index].hour,
+          fromDate: fromDate,
+          toDate: toDate);
 
       currentList.medicamentEntities.add(medicamentEntity);
       await hiveBox.put(_dateFormat.format(date), currentList);
@@ -217,6 +218,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
         id: medicamentEntity.id,
         title: medicamentEntity.title,
         hour: medicamentEntity.hour,
+        dateOnlyOneTime: medicamentEntity.dateOnlyOneTime,
         tookMedicament: medicamentEntity.tookMedicament);
 
     return medicament;

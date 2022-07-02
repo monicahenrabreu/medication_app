@@ -51,7 +51,7 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
           },
           // Show a red background as the item is swiped away.
           background: Container(color: Colors.red),
-          child: ListTileMedicamentWidget(medicament: medicaments[index]),
+          child: ListTileMedicamentWidget(medicament: medicaments[index], showDetails: true,),
         );
       },
     );
