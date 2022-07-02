@@ -50,6 +50,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         },
         onPageChanged: _onPageChanged,
         calendarBuilders: _calendarBuilder(),
+        rowHeight: 45,
       );
     });
   }

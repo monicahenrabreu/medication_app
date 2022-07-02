@@ -5,8 +5,8 @@ import 'package:medicaments_app/bloc/medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/bloc/user_medicament_list_bloc/bloc.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:medicaments_app/data/provider/notifications_provider.dart';
-import 'package:medicaments_app/ui/widgets/date_and_hours.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:medicaments_app/ui/widgets/list_tile_medicament_widget.dart';
 
 class UserMedicamentsWidget extends StatefulWidget {
   const UserMedicamentsWidget({Key? key}) : super(key: key);
@@ -51,20 +51,7 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
           },
           // Show a red background as the item is swiped away.
           background: Container(color: Colors.red),
-          child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 4.0,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: ListTile(
-              title: Text(medicaments[index].title),
-              subtitle: DateAndHours(medicament: medicaments[index]),
-            ),
-          ),
+          child: ListTileMedicamentWidget(medicament: medicaments[index]),
         );
       },
     );
