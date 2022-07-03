@@ -16,17 +16,12 @@ class UserMedicamentsWidget extends StatefulWidget {
 }
 
 class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
-
   late List<Medicament> medicaments;
 
   @override
   void initState() {
     medicaments =
-    context
-        .read<UserMedicamentListBloc>()
-        .state
-        .copyWith()
-        .medicamentList!;
+        context.read<UserMedicamentListBloc>().state.copyWith().medicamentList!;
     super.initState();
   }
 
@@ -51,7 +46,11 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
           },
           // Show a red background as the item is swiped away.
           background: Container(color: Colors.red),
-          child: ListTileMedicamentWidget(medicament: medicaments[index], showDetails: true,),
+          child: ListTileMedicamentWidget(
+            medicament: medicaments[index],
+            showDetails: false,
+            showSubtitle: true,
+          ),
         );
       },
     );
@@ -62,9 +61,8 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
     if (medicament.dateOnlyOneTime != null) {
       DateTime now = DateTime.now();
       DateTime today = DateTime(now.year, now.month, now.day);
-      DateTime selectedD = DateTime(
-          medicament.dateOnlyOneTime!.year, medicament.dateOnlyOneTime!.month,
-          medicament.dateOnlyOneTime!.day);
+      DateTime selectedD = DateTime(medicament.dateOnlyOneTime!.year,
+          medicament.dateOnlyOneTime!.month, medicament.dateOnlyOneTime!.day);
 
       if (selectedD.compareTo(today) == 0 &&
           medicament.hour.compareTo(now) > 0) {
@@ -82,12 +80,13 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
           }
         });
       }
-      context.read<UserMedicamentListBloc>().add(
-          RemoveUserMedicamentEvent(medicament));
-      context.read<MedicamentListBloc>().add(
-          RemoveMedicamentEvent(medicament.dateOnlyOneTime!, medicament));
-    }
-    else if (medicament.fromDate != null && medicament.toDate != null) {
+      context
+          .read<UserMedicamentListBloc>()
+          .add(RemoveUserMedicamentEvent(medicament));
+      context
+          .read<MedicamentListBloc>()
+          .add(RemoveMedicamentEvent(medicament.dateOnlyOneTime!, medicament));
+    } else if (medicament.fromDate != null && medicament.toDate != null) {
       DateTime date = medicament.fromDate!;
       DateTime now = DateTime.now();
       DateTime today = DateTime(now.year, now.month, now.day);
@@ -96,10 +95,10 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
 
       while (date.compareTo(medicament.toDate!) <= 0) {
         DateTime selectedD = DateTime(date.year, date.month, date.day);
-        DateTime pp = DateTime(selectedD.year, selectedD.month, selectedD.day, medicament.hour.hour, medicament.hour.minute);
+        DateTime pp = DateTime(selectedD.year, selectedD.month, selectedD.day,
+            medicament.hour.hour, medicament.hour.minute);
 
-        if (selectedD.compareTo(today) == 0 &&
-            pp.compareTo(now) > 0) {
+        if (selectedD.compareTo(today) == 0 && pp.compareTo(now) > 0) {
           List<PendingNotificationRequest> pendingNotifications = await context
               .read<NotificationsProvider>()
               .flutterLocalNotificationsPlugin
@@ -120,10 +119,12 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
         date = date.add(const Duration(days: 1));
       }
 
-      context.read<UserMedicamentListBloc>().add(
-          RemoveUserMedicamentEvent(medicament));
-      context.read<MedicamentListBloc>().add(
-          RemoveMedicamentRangeEvent(medicament));
+      context
+          .read<UserMedicamentListBloc>()
+          .add(RemoveUserMedicamentEvent(medicament));
+      context
+          .read<MedicamentListBloc>()
+          .add(RemoveMedicamentRangeEvent(medicament));
     }
   }
 }

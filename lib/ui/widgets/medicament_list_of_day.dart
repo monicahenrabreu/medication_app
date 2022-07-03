@@ -19,10 +19,10 @@ class MedicamentListOfDay extends StatelessWidget {
       if (state.copyWith().calendar!.selectedDay != null) {
         DateTime selectedDay = state.copyWith().calendar!.selectedDay!;
 
-        DateTime dd =
+        DateTime day =
             DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
 
-        List<Medicament> medicaments = medicamentList![dd] ?? [];
+        List<Medicament> medicaments = medicamentList![day] ?? [];
 
         if (medicaments.isEmpty) {
           return Padding(
@@ -35,7 +35,11 @@ class MedicamentListOfDay extends StatelessWidget {
           child: ListView.builder(
             itemCount: medicaments.length,
             itemBuilder: (context, index) {
-              return ListTileMedicamentWidget(medicament: medicaments[index]);
+              return ListTileMedicamentWidget(
+                medicament: medicaments[index],
+                dateTime: day,
+                showDetails: true,
+              );
             },
           ),
         );

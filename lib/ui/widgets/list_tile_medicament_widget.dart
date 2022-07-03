@@ -3,14 +3,22 @@ import 'package:medicaments_app/configs/constants.dart';
 import 'package:medicaments_app/data/models/medicament.dart';
 import 'package:intl/intl.dart';
 import 'package:medicaments_app/ui/widgets/list_tile_medicament_subtitle_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medicaments_app/data/provider/medicament_provider.dart';
 
 class ListTileMedicamentWidget extends StatelessWidget {
   ListTileMedicamentWidget(
-      {Key? key, required this.medicament, this.showDetails = false})
+      {Key? key,
+      required this.medicament,
+      this.showDetails = false,
+      this.showSubtitle = false,
+      this.dateTime})
       : super(key: key);
 
   final Medicament medicament;
   final bool showDetails;
+  final bool showSubtitle;
+  final DateTime? dateTime;
 
   final DateFormat _timeFormat = DateFormat(Constants.hourFormat);
 
@@ -30,21 +38,24 @@ class ListTileMedicamentWidget extends StatelessWidget {
           '${medicament.title} - ${_timeFormat.format(medicament.hour)}',
           style: const TextStyle(fontSize: 14),
         ),
-        subtitle: showDetails
+        subtitle: showSubtitle
             ? ListTileMedicamentSubtitleWidget(
                 medicament: medicament,
               )
             : null,
-        trailing: showDetails && medicament.hour.compareTo(DateTime.now()) < 0
-            ? (medicament.tookMedicament
-                ? const Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  )
-                : const Icon(
-                    Icons.close,
-                    color: Colors.red,
-                  ))
+        trailing: showDetails
+            ? Checkbox(
+                value: medicament.tookMedicament,
+                onChanged: (bool? value) {
+                  List<String> medicamentId =
+                      medicament.id.toString().split('--');
+                  final date = medicamentId.first;
+
+                  context
+                      .read<MedicamentProvider>()
+                      .editMedicament(date, medicament.id, value!);
+                },
+              )
             : null,
       ),
     );
