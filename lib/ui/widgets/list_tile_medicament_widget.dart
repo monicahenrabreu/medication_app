@@ -46,6 +46,11 @@ class ListTileMedicamentWidget extends StatelessWidget {
         trailing: showDetails
             ? Checkbox(
                 value: medicament.tookMedicament,
+                side: MaterialStateBorderSide.resolveWith(
+                  (states) => const BorderSide(width: 1.0, color: Colors.black),
+                ),
+                activeColor: Colors.white,
+                checkColor: const Color(0xFF476c98),
                 onChanged: (bool? value) {
                   List<String> medicamentId =
                       medicament.id.toString().split('--');
