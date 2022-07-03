@@ -114,5 +114,9 @@
  "medicamentRemoved": "foi removido!",
  "@medicamentRemoved": {
     "description": "Esta mensagem é mostrada ao utilizador após ter removido um medicamento"
-  }
+  },
+ "supportContact": "Em caso de dúvidas, por favor contacte:",
+ "@supportContact": {
+    "description": "Indica ao utilizador quem pode contactar caso necessite de ajuda"
+ }
 }

@@ -114,5 +114,9 @@
   "medicamentRemoved": "was removed!",
   "@medicamentRemoved": {
     "description": "This message is shown to the user after he removes a medicament"
+  },
+  "supportContact": "For anything please reach out to:",
+  "@supportContact": {
+    "description": "Inform the user whom he needed to contact"
   }
 }
