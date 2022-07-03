@@ -27,7 +27,7 @@ class SupportWidget extends StatelessWidget {
 
   void _launchUrl() async {
     final Uri _url = Uri.parse(
-        'mailto:monica.henr.abreu@gmail.com?subject=Medication%20App%20Support');
+        'mailto:monica.i.h.abreu@gmail.com?subject=Medication%20App%20Support');
 
     if (!await launchUrl(_url)) throw 'Could not launch $_url';
   }
