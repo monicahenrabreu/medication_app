@@ -61,7 +61,9 @@ class ListTileMedicamentWidget extends StatelessWidget {
                       .editMedicament(date, medicament.id, value!);
                 },
               )
-            : null,
+            : const Icon(
+                Icons.delete,
+              ),
       ),
     );
   }
