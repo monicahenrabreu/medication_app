@@ -14,6 +14,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(AppLocalizations.of(context)!.settings),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
