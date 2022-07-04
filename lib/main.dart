@@ -52,8 +52,8 @@ Future main() async {
         BlocProvider<NotificationBloc>(
           create: (_) => NotificationBloc(notificationsProvider),
         ),
-        BlocProvider<UserMedicamentListBloc>(
-          create: (_) => UserMedicamentListBloc(medicamentProvider),
+        BlocProvider<UserMedicamentListCubit>(
+          create: (_) => UserMedicamentListCubit(medicamentProvider),
         ),
       ],
       child: const MedicamentsApp(),

@@ -17,7 +17,7 @@ abstract class BaseMedicamentProvider {
 
   Medicament? getMedicament(String date, String id);
 
-  Medicament? editMedicament(String date, String id, bool tookMedicament);
+  void editMedicament(String date, String id, bool tookMedicament);
 
   List<Medicament>? getUserMedicamentList();
 

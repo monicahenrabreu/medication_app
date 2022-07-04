@@ -235,7 +235,7 @@ class MedicamentProvider extends BaseMedicamentProvider {
   }
 
   @override
-  Medicament? editMedicament(String date, String id, bool tookMedicament) {
+  void editMedicament(String date, String id, bool tookMedicament) {
     Map hiveMap = hiveBox.toMap();
 
     final medicamentEntities = hiveMap[date] as MedicamentListEntity;

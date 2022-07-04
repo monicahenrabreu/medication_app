@@ -17,7 +17,7 @@ class _MedicamentsPageState extends State<MedicamentsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<UserMedicamentListBloc>().add(GetUserMedicamentListEvent());
+    context.read<UserMedicamentListCubit>().getUserMedicamentListEvent();
   }
 
   @override
@@ -28,12 +28,12 @@ class _MedicamentsPageState extends State<MedicamentsPage> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(AppLocalizations.of(context)!.medicamentListTitle),
       ),
-      body: BlocBuilder<UserMedicamentListBloc, UserMedicamentListState>(
+      body: BlocBuilder<UserMedicamentListCubit, UserMedicamentListState>(
         builder: (context, state) {
-          if (state is UserMedicamentListLoadedState) {
-            return const UserMedicamentsWidget();
+          if (state.medicamentList == null) {
+            return const CircularProgressIndicator();
           }
-          return const CircularProgressIndicator();
+          return UserMedicamentsWidget(medicamentList: state.medicamentList!);
         },
       ),
     );

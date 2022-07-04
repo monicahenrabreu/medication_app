@@ -24,18 +24,16 @@ void main() {
       provider = MockMedicamentProvider();
     });
 
-    blocTest<UserMedicamentListBloc, UserMedicamentListState>(
-      'emits isLoading: true and when UserMedicamentListBloc is called'
+    blocTest<UserMedicamentListCubit, UserMedicamentListState>(
+      'emits isLoading: true and when UserMedicamentListCubit is called'
           'and emits isLoading: false and retrieves the medicamentList',
-      build: () => UserMedicamentListBloc(provider),
-      act: (bloc) => bloc.add(GetUserMedicamentListEvent()),
+      build: () => UserMedicamentListCubit(provider),
+      act: (bloc) => bloc.getUserMedicamentListEvent(),
       setUp: () {
         when(() => provider.getUserMedicamentList()).thenReturn(medicamentList);
       },
       expect: () => <UserMedicamentListState>[
-        UserMedicamentListLoadingState(
-            isLoading: true, medicamentList: const []),
-        UserMedicamentListLoadedState(medicamentList: medicamentList)
+        GetUserMedicamentList(medicamentList: medicamentList)
       ],
     );
   });

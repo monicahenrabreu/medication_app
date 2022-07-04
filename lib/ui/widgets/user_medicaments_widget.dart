@@ -9,7 +9,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:medicaments_app/ui/widgets/list_tile_medicament_widget.dart';
 
 class UserMedicamentsWidget extends StatefulWidget {
-  const UserMedicamentsWidget({Key? key}) : super(key: key);
+  const UserMedicamentsWidget({Key? key, required this.medicamentList})
+      : super(key: key);
+
+  final List<Medicament> medicamentList;
 
   @override
   State<UserMedicamentsWidget> createState() => _UserMedicamentsWidgetState();
@@ -20,8 +23,7 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
 
   @override
   void initState() {
-    medicaments =
-        context.read<UserMedicamentListBloc>().state.copyWith().medicamentList!;
+    medicaments = widget.medicamentList;
     super.initState();
   }
 
@@ -81,8 +83,7 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
         });
       }
       context
-          .read<UserMedicamentListBloc>()
-          .add(RemoveUserMedicamentEvent(medicament));
+          .read<UserMedicamentListCubit>().removeUserMedicamentEvent(medicament);
       context
           .read<MedicamentListBloc>()
           .add(RemoveMedicamentEvent(medicament.dateOnlyOneTime!, medicament));
@@ -120,8 +121,7 @@ class _UserMedicamentsWidgetState extends State<UserMedicamentsWidget> {
       }
 
       context
-          .read<UserMedicamentListBloc>()
-          .add(RemoveUserMedicamentEvent(medicament));
+          .read<UserMedicamentListCubit>().removeUserMedicamentEvent(medicament);
       context
           .read<MedicamentListBloc>()
           .add(RemoveMedicamentRangeEvent(medicament));
